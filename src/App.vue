@@ -6,11 +6,12 @@
       <router-link to="/gmap">Gmap</router-link>||
     </div>
     <!-- v-bind:渡すときの名前="渡すもの" -->
-    <gmap @coord="coordinate" :coord="coord">
+    <gmap @coord="coordinate" :coord="coord" :geoLatlng="geoLatlng">
       <!-- ここでGmapからmapDataの受け取り -->
     </gmap>
+    <b-button variant="outline-success" class="geolocation" @click="geolocation">現在地取得</b-button>
     <!--子から$emitでもらいここで受け取る -->
-    <gnavi @coordData="coordSet" :mapData="mapData">
+    <gnavi @coordData="coordSet" :mapData="mapData" :geoLatlng="geoLatlng">
       <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
     </gnavi>
   </div>
@@ -27,10 +28,22 @@ export default {
   data() {
     return {
       mapData: null, //子からのデータを一回ここに入れる
-      coord: null //子に渡すもの
+      coord: null, //子に渡すもの
+      geoLatlng: null
     };
   },
   methods: {
+    geolocation() {
+      //現在地取得
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.success);
+      } else {
+        alert("端末が対応していません");
+      }
+    },
+    success(position) {
+      this.geoLatlng = position.coords;
+    },
     //子からもらった値の代入
     coordinate(mapData) {
       this.mapData = mapData;
@@ -51,7 +64,7 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 20px;
 }
 
 #nav a {
@@ -61,5 +74,9 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.geolocation {
+  margin-top: 15px;
 }
 </style>

@@ -8,7 +8,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router'
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
-console.log(process.env.GNAVI)
 // Vue.use(Vuex)
 
 // const store = new Vuex.store({})

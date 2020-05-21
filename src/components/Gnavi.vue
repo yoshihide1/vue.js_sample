@@ -84,7 +84,13 @@ import axios from "axios";
 export default {
   props: {
     mapData: {
+      //クリックした場所の座標
       type: Object,
+      default: null
+    },
+    geoLatlng: {
+      //現在地の座標
+      // type: Object,//入れるとエラーがでる
       default: null
     }
   },
@@ -117,10 +123,14 @@ export default {
     mapData() {
       //propsで受けとる値が変化したらここが実行される
       this.searchShops(this.mapData);
+    },
+    geoLatlng() {
+      this.searchShops(this.geoLatlng);
     }
   },
   methods: {
     searchShops(coord) {
+      console.log(coord);
       //親、経由mapから座標もらう
       if (this.freeword != "") {
         //freeword検索時にrangeを入れない為
@@ -158,3 +168,5 @@ export default {
   }
 };
 </script>
+<style>
+</style>

@@ -9,8 +9,13 @@ import GoogleMapsApiLoader from "google-maps-api-loader";
 export default {
   props: {
     coord: {
+      //お店の座標
       type: Array,
       deafult: []
+    },
+    geoLatlng: {
+      //現在地
+      default: null
     }
   },
   data() {
@@ -27,13 +32,19 @@ export default {
       markers: [],
       latitude: [],
       longitude: [],
-      latlng: []
+      latlng: [],
+      infoWindows: [],
+      currentInfoWindow: ""
     };
   },
   watch: {
     coord() {
       //propsで受けとる値が変化したらここが実行される
       this.setMarkers(this.coord);
+    },
+    geoLatlng() {
+      //現在地取得からそこへZoom
+      this.mapZoom(this.geoLatlng);
     }
   },
 
@@ -64,11 +75,22 @@ export default {
           position: this.latlng,
           animation: this.google.maps.Animation.DROP
         });
-        // const infoWindow = new this.google.maps.InfoWindow({
-        //   position: this.latlng,
-        //   content:
-        // })
+        const offset = new this.google.maps.Size(0, -10);
+        const infoWindow = new this.google.maps.InfoWindow({
+          position: this.latlng,
+          pixelOffset: offset,
+          content: "<div><h3>" + data[i].name + "</h3></div>"
+        });
+        marker.addListener("click", () => {
+          if (this.currentInfoWindow) {
+            //infoWindowが開かれていたら
+            this.currentInfoWindow.close();
+          }
+          infoWindow.open(this.map);
+          this.currentInfoWindow = infoWindow;
+        });
         this.markers.push(marker);
+        this.infoWindows.push(infoWindow);
       }
     },
     mapCoord() {
@@ -90,7 +112,6 @@ export default {
       this.map.setCenter(latlng);
       this.map.setZoom(15);
     },
-
     clearMarkers() {
       //markerの削除（検索毎に）
       for (let i in this.markers) {
