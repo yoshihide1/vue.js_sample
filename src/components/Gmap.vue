@@ -1,14 +1,18 @@
 <template>
   <div>
-    <!-- <p>Gmap</p>
-    <button @click="clearMarkers">マーカー削除</button>-->
+    <!-- <p>{{coord}}</p> -->
     <div id="map" @click="mapCoord"></div>
   </div>
 </template>
 
 <script>
 export default {
-  // props: ["coordinate"], //子→親→からもらったデータ
+  props: {
+    coord: {
+      type: Array,
+      deafult: []
+    }
+  },
   data() {
     return {
       mapName: "map",
@@ -19,9 +23,15 @@ export default {
       latlng: []
     };
   },
+  watch: {
+    coord () {//propsで受けとる値が変化したらここが実行される
+      this.setMarkers(this.coord)
+    }
+  },
 
   methods: {
-    initMap: function() {
+    initMap () {
+      console.log(this.coord)
       //mapの初期化
       //windowがないとエラーが出る
       this.map = new window.google.maps.Map(
@@ -35,7 +45,7 @@ export default {
         }
       );
     },
-    setMarkers: function(data) {
+    setMarkers (data) {
       this.clearMarkers();
       for (let i in data) {
         this.latitude = data[i].latitude;
@@ -52,7 +62,7 @@ export default {
         this.markers.push(marker);
       }
     },
-    mapCoord: function() {
+    mapCoord () {
       //マップクリックで座標取得
       this.map.addListener("click", e => {
         const mapData = {
@@ -63,7 +73,7 @@ export default {
         this.mapZoom(mapData);
       });
     },
-    mapZoom: function(mapData) {
+    mapZoom (mapData) {
       const latlng = new window.google.maps.LatLng(
         mapData.latitude,
         mapData.longitude
@@ -72,7 +82,7 @@ export default {
       this.map.setZoom(15);
     },
 
-    clearMarkers: function() {
+    clearMarkers () {
       //markerの削除（検索毎に）
       for (let i in this.markers) {
         this.markers[i].setMap(null);

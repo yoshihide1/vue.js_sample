@@ -82,6 +82,12 @@
 import axios from "axios";
 
 export default {
+  props:{
+      mapData:{
+        type: Object,
+        default: null
+      }
+   },
   data() {
     return {
       selected: 3,
@@ -107,6 +113,11 @@ export default {
       latlng: []
     };
   },
+  watch: {
+    mapData(){//propsで受けとる値が変化したらここが実行される
+      this.searchShops(this.mapData)
+    }
+  },
   methods: {
     searchShops(coord) {
       //親、経由mapから座標もらう
@@ -115,7 +126,7 @@ export default {
         this.selected = null;
       }
       const params = {
-        keyid: "87e8fcaa213d390af012cb0a726249f6",
+        keyid: process.env.VUE_APP_GNAVI,//.envから取得
         freeword: this.freeword,
         hit_per_page: 20, //検索結果の表示数
         lunch: this.lunch ? 1 : 0, //ランチ
@@ -136,14 +147,14 @@ export default {
           console.log('axios')
           console.log(response);
           this.shops = response.data.rest;
-          this.$emit("coordSet", this.shops); //親に渡す(App.vue)$emit
+          this.$emit("coordData", this.shops); //親に渡す$emit(渡すときの名前, 渡すもの)
           this.freeword = "";
         })
         .catch(err => {
           console.log(err);
         });
     },
-    click: function() {
+    click () {
       //最初の一回だけ非表示once
       this.show = !this.show;
     }

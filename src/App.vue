@@ -5,24 +5,15 @@
       <router-link to="/gnavi">Gnavi</router-link>|
       <router-link to="/gmap">Gmap</router-link>
     </div>
-    <!-- メソッドにv-bindして上げるデータを入れる -->
-    <!-- 子に送るデータ 子はpropsで受け取る ref=""を使うと親から子のメソッドを$refsで呼べる -->
-    <gmap ref="marker" @coord="coordinate">
+    <!-- v-bind:渡すときの名前="渡すもの" -->
+    <gmap @coord="coordinate" :coord="coord">
       <!-- ここでGmapからmapDataの受け取り -->
     </gmap>
-    <!-- 子からもらった↓のをcoordSetで処理 -->
-    <!-- refでgnaviへ -->
-    <gnavi ref="coord" @coordSet="coordSet">
-      <!--  -->
+    <!--子から$emitでもらいここで受け取る -->
+    <gnavi @coordData="coordSet" :mapData="mapData">
+    <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
     </gnavi>
-    <!-- gnavi タグで囲むと駄目 -->
-    <!-- <div v-for="(latlng, index) in latlngs" :key="index"> -->
-    <!-- <p>
-        子からもたった緯度、経度情報
-        {{latlng.latitude}}
-        {{latlng.longitude}}
-    </p>-->
-    <!-- </div> -->
+
   </div>
 </template>
 
@@ -36,20 +27,21 @@ export default {
   },
   data() {
     return {
-      coords: [],
-      latlngs: []
+      // coords: [],
+      // latlngs: [],
+      mapData: null,//子からのデータを一回ここに入れる
+      coord: null,//子に渡すもの
+      
     };
   },
   methods: {
-    //店の情報
-    coordinate: function(mapData) {
-      //マップをクリックからの座標
-      console.log(mapData);
-      this.$refs.coord.searchShops(mapData);
+    //Gmapからの座標
+    coordinate (mapData) {
+      //子からもらった値の代入
+      this.mapData = mapData
     },
-    coordSet: function(data) {
-      console.log("CoodSet");
-      this.$refs.marker.setMarkers(data); //子のメソッド実行引数で値が送れる
+    coordSet (coordData) {
+      this.coord = coordData
     }
   }
 };
