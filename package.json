@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.14.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
+    "google-maps-api-loader": "^1.1.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },

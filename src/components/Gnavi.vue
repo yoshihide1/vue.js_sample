@@ -8,7 +8,7 @@
         </b-input-group-append>
       </b-input-group>
     </b-row>
-    <!-- ラジオボタンで検索範囲指定、freewordと一緒に使うには現在地取得？ -->
+
     <b-row>
       <b-col>
         <b-form-group>
@@ -53,7 +53,7 @@
       </b-col>
     </b-row>
 
-    <b-row>
+    <b-row align-h="center">
       <!-- indexをkeyにしないとエラーになる -->
       <div v-for="(shop, index) in shops" :key="index">
         <b-col>
@@ -82,12 +82,12 @@
 import axios from "axios";
 
 export default {
-  props:{
-      mapData:{
-        type: Object,
-        default: null
-      }
-   },
+  props: {
+    mapData: {
+      type: Object,
+      default: null
+    }
+  },
   data() {
     return {
       selected: 3,
@@ -114,8 +114,9 @@ export default {
     };
   },
   watch: {
-    mapData(){//propsで受けとる値が変化したらここが実行される
-      this.searchShops(this.mapData)
+    mapData() {
+      //propsで受けとる値が変化したらここが実行される
+      this.searchShops(this.mapData);
     }
   },
   methods: {
@@ -126,7 +127,7 @@ export default {
         this.selected = null;
       }
       const params = {
-        keyid: process.env.VUE_APP_GNAVI,//.envから取得
+        keyid: process.env.VUE_APP_GNAVI, //.envから取得
         freeword: this.freeword,
         hit_per_page: 20, //検索結果の表示数
         lunch: this.lunch ? 1 : 0, //ランチ
@@ -144,7 +145,7 @@ export default {
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
-          console.log('axios')
+          console.log("axios");
           console.log(response);
           this.shops = response.data.rest;
           this.$emit("coordData", this.shops); //親に渡す$emit(渡すときの名前, 渡すもの)
@@ -153,10 +154,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    click () {
-      //最初の一回だけ非表示once
-      this.show = !this.show;
     }
   }
 };

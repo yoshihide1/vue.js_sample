@@ -20,7 +20,7 @@ Vue.use(VueRouter)
     path: '/gmap',
     name: 'Gmap',
     component: Gmap
-  }
+  },
 ]
 
 const router = new VueRouter({

@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">HOME</router-link>|
       <router-link to="/gnavi">Gnavi</router-link>|
-      <router-link to="/gmap">Gmap</router-link>
+      <router-link to="/gmap">Gmap</router-link>||
     </div>
     <!-- v-bind:渡すときの名前="渡すもの" -->
     <gmap @coord="coordinate" :coord="coord">
@@ -11,9 +11,8 @@
     </gmap>
     <!--子から$emitでもらいここで受け取る -->
     <gnavi @coordData="coordSet" :mapData="mapData">
-    <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
+      <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
     </gnavi>
-
   </div>
 </template>
 
@@ -27,21 +26,17 @@ export default {
   },
   data() {
     return {
-      // coords: [],
-      // latlngs: [],
-      mapData: null,//子からのデータを一回ここに入れる
-      coord: null,//子に渡すもの
-      
+      mapData: null, //子からのデータを一回ここに入れる
+      coord: null //子に渡すもの
     };
   },
   methods: {
-    //Gmapからの座標
-    coordinate (mapData) {
-      //子からもらった値の代入
-      this.mapData = mapData
+    //子からもらった値の代入
+    coordinate(mapData) {
+      this.mapData = mapData;
     },
-    coordSet (coordData) {
-      this.coord = coordData
+    coordSet(coordData) {
+      this.coord = coordData;
     }
   }
 };
