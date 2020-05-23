@@ -1,23 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">HOME</router-link>|
-      <router-link to="/gnavi">Gnavi</router-link>|
-      <router-link to="/gmap">Gmap</router-link>||
+    <!-- <div id="nav">
+      <router-link to="/signin">SignIn </router-link>|
+      <router-link to="/signup">SignUp </router-link>|
+      <router-link to="/sign">Sign </router-link>|
+    </div> -->
+   
+    <router-view />
+
+
+     <button @click="draw">!!!!!テストmap表示!!!!!</button>
+    <div v-if="show">
+
+      <!-- v-bind:渡すときの名前="渡すもの" -->
+      <gmap @coord="coordinate" :coord="coord" :geoLatlng="geoLatlng">
+        <!-- ここでGmapからmapDataの受け取り -->
+      </gmap>
+      <b-button variant="outline-success" class="geolocation" @click="geolocation">現在地取得</b-button>
+      <!--子から$emitでもらいここで受け取る -->
+      <gnavi @coordData="coordSet" :mapData="mapData" :geoLatlng="geoLatlng">
+        <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
+      </gnavi>
+      <b-button variant="outline-danger" @click="signOut(); draw()">サインアウト</b-button>
     </div>
-    <!-- v-bind:渡すときの名前="渡すもの" -->
-    <gmap @coord="coordinate" :coord="coord" :geoLatlng="geoLatlng">
-      <!-- ここでGmapからmapDataの受け取り -->
-    </gmap>
-    <b-button variant="outline-success" class="geolocation" @click="geolocation">現在地取得</b-button>
-    <!--子から$emitでもらいここで受け取る -->
-    <gnavi @coordData="coordSet" :mapData="mapData" :geoLatlng="geoLatlng">
-      <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
-    </gnavi>
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 import gnavi from "@/components/Gnavi";
 import gmap from "@/components/Gmap";
 export default {
@@ -27,6 +37,8 @@ export default {
   },
   data() {
     return {
+
+      show: false,
       mapData: null, //子からのデータを一回ここに入れる
       coord: null, //子に渡すもの
       geoLatlng: null
@@ -50,6 +62,18 @@ export default {
     },
     coordSet(coordData) {
       this.coord = coordData;
+    },
+    draw() {
+      console.log("show")
+      this.show = !this.show;
+    },
+    signOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push("/sign");
+        });
     }
   }
 };

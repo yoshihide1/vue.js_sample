@@ -6,6 +6,7 @@
 
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
+// import MarkerClusterer from "js-marker-clusterer"
 export default {
   props: {
     coord: {
@@ -34,7 +35,8 @@ export default {
       longitude: [],
       latlng: [],
       infoWindows: [],
-      currentInfoWindow: ""
+      currentInfoWindow: "",
+      // markerCluster: []
     };
   },
   watch: {
@@ -79,7 +81,7 @@ export default {
         const infoWindow = new this.google.maps.InfoWindow({
           position: this.latlng,
           pixelOffset: offset,
-          content: "<div><h3>" + data[i].name + "</h3></div>"
+          content: "<div><h4>" + data[i].name + "</h4></div>"
         });
         marker.addListener("click", () => {
           if (this.currentInfoWindow) {
@@ -92,6 +94,7 @@ export default {
         this.markers.push(marker);
         this.infoWindows.push(infoWindow);
       }
+      // this.markerCluster new MarkerClusterer(this.map, this.markers);
     },
     mapCoord() {
       //マップクリックで座標取得

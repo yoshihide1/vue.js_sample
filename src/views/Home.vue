@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <Gnavi></Gnavi>
+              <router-view></router-view>
+
+    Home
   </div>
 </template>
 
@@ -11,8 +13,6 @@
 export default {
   name: 'Home',
   components: {
-    Gnavi,
-    googlemap
   }
 }
 </script>
