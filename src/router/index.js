@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import App from '../App.vue'
+import App from '../App.vue'
 // import Gmap from '../components/Gmap'
 // import Gnavi from '../components/Gnavi'
-import Sign from '../components/sign.vue'
-import Signup from '../components/Signup'
-import Signin from '../components/Signin'
+import Sign from '../components/sign'
+// import Signup from '../components/Signup'
+// import Signin from '../components/Signin'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -17,13 +17,13 @@ const router = new VueRouter({
   routes: [//link元App.vue
     {
       path: '*',
-      redirect: 'sign'
+      redirect: '/sign'
     },
-    // {
-    //   path: '/',
-    //   name: 'App',
-    //   component: App
-    // },
+    {
+      path: '/',
+      name: 'App',
+      component: App
+    },
     // {
     //   path: '/gnavi',
     //   name: 'Gnavi',
@@ -35,17 +35,17 @@ const router = new VueRouter({
     //   component: Gmap
     // },
     
-    {
-      path: '/signup',
-      name: 'Signup',
-      component: Signup
-    },
-    {
+    // {
+    //   path: '/signup',
+    //   name: 'Signup',
+    //   component: Signup
+    // },
+    // {
 
-      path: '/signin',
-      name: 'Signin',
-      component: Signin
-    },
+    //   path: '/signin',
+    //   name: 'Signin',
+    //   component: Signin
+    // },
     {
       path: '/sign',
       name: 'Sign',

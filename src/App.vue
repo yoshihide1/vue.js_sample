@@ -4,14 +4,12 @@
       <router-link to="/signin">SignIn </router-link>|
       <router-link to="/signup">SignUp </router-link>|
       <router-link to="/sign">Sign </router-link>|
-    </div> -->
-   
-    <router-view />
+    </div>-->
 
-
-     <button @click="draw">!!!!!テストmap表示!!!!!</button>
-    <div v-if="show">
-
+    <!-- <router-view /> -->
+    <!-- sign.vueから認証後に受け取り切替処理 -->
+    <signs v-if="show" @signs="draw"></signs>
+    <div v-if="show2">
       <!-- v-bind:渡すときの名前="渡すもの" -->
       <gmap @coord="coordinate" :coord="coord" :geoLatlng="geoLatlng">
         <!-- ここでGmapからmapDataの受け取り -->
@@ -21,7 +19,7 @@
       <gnavi @coordData="coordSet" :mapData="mapData" :geoLatlng="geoLatlng">
         <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
       </gnavi>
-      <b-button variant="outline-danger" @click="signOut(); draw()">サインアウト</b-button>
+      <b-button class="mb-3" variant="outline-danger" @click="signOut(); draw()">サインアウト</b-button>
     </div>
   </div>
 </template>
@@ -30,19 +28,26 @@
 import firebase from "firebase";
 import gnavi from "@/components/Gnavi";
 import gmap from "@/components/Gmap";
+import signs from "@/components/sign";
 export default {
   components: {
     gnavi,
-    gmap
+    gmap,
+    signs
   },
   data() {
     return {
-
-      show: false,
+      show: true,
+      show2: false,
       mapData: null, //子からのデータを一回ここに入れる
       coord: null, //子に渡すもの
       geoLatlng: null
     };
+  },
+  watch: {
+    show() {
+      this.show2 = !this.show2;
+    }
   },
   methods: {
     geolocation() {
@@ -64,7 +69,7 @@ export default {
       this.coord = coordData;
     },
     draw() {
-      console.log("show")
+      console.log("show");
       this.show = !this.show;
     },
     signOut() {
