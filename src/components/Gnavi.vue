@@ -1,6 +1,9 @@
 <template>
   <b-container>
-      <gmap></gmap>
+    <menuList></menuList>
+    <!-- coord=マップクリックの座標。geoLatlng=現在地取得の座標 -->
+    <gmap :shopList="shops" @coord="searchShops" @geoLatlng="searchShops"></gmap>
+
     <b-row>
       <b-input-group prepend="freeword" class="mt-3">
         <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
@@ -58,7 +61,6 @@
       <!-- indexをkeyにしないとエラーになる -->
       <div v-for="(shop, index) in shops" :key="index">
         <b-col>
-          <!-- v-bind === : -->
           <b-card
             :title="shop.name"
             :img-src="shop.image_url.shop_image1"
@@ -73,8 +75,11 @@
               <b-form-textarea id="textarea-rows" class="p-0" rows="4" :placeholder="shop.opentime"></b-form-textarea>
             </b-card-text>
           </b-card>
-        </b-col>
+        </b-col>f
       </div>
+    </b-row>
+    <b-row align-h="center">
+      <signOut></signOut>
     </b-row>
   </b-container>
 </template>
@@ -82,22 +87,14 @@
 <script>
 import axios from "axios";
 import gmap from "@/components/Gmap";
+import menuList from "@/components/Menu";
+import signOut from "@/components/SignOut";
 
 export default {
   components: {
-    gmap
-  },
-  props: {
-    mapData: {
-      //クリックした場所の座標
-      type: Object,
-      default: null
-    },
-    geoLatlng: {
-      //現在地の座標
-      // type: Object,//入れるとエラーがでる
-      default: null
-    }
+    gmap,
+    menuList,
+    signOut
   },
   data() {
     return {
@@ -110,7 +107,6 @@ export default {
         { text: "2000m", value: 4 },
         { text: "3000m", value: 5 }
       ],
-      show: false, //要素の表示、非表示
       freeword: "",
       lunch: 0, //ランチ
       no_smoking: 0, //禁煙席あり
@@ -123,15 +119,6 @@ export default {
       shops: [],
       latlng: []
     };
-  },
-  watch: {
-    mapData() {
-      //propsで受けとる値が変化したらここが実行される
-      this.searchShops(this.mapData);
-    },
-    geoLatlng() {
-      this.searchShops(this.geoLatlng);
-    }
   },
   methods: {
     searchShops(coord) {
@@ -160,12 +147,10 @@ export default {
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
-          console.log("axios");
-          console.log(response);
           this.shops = response.data.rest;
-          this.$emit("coordData", this.shops); //親に渡す$emit(渡すときの名前, 渡すもの)
           this.freeword = "";
-          this.selected = 3
+          this.selected = 3;
+          console.log(this.shops);
         })
         .catch(err => {
           console.log(err);

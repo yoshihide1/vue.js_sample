@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from '../App.vue'
-// import Gmap from '../components/Gmap'
-// import Gnavi from '../components/Gnavi'
-import Sign from '../components/sign'
-// import Signup from '../components/Signup'
-// import Signin from '../components/Signin'
+import Gnavi from '../components/Gnavi'
+import Weather from '../components/Weather'
+import Rakuten from '../components/Rakuten'
+import Sign from '../components/Sign'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -24,28 +23,21 @@ const router = new VueRouter({
       name: 'App',
       component: App
     },
-    // {
-    //   path: '/gnavi',
-    //   name: 'Gnavi',
-    //   component: Gnavi
-    // },
-    // {
-    //   path: '/gmap',
-    //   name: 'Gmap',
-    //   component: Gmap
-    // },
-    
-    // {
-    //   path: '/signup',
-    //   name: 'Signup',
-    //   component: Signup
-    // },
-    // {
-
-    //   path: '/signin',
-    //   name: 'Signin',
-    //   component: Signin
-    // },
+    {
+      path: '/gnavi',
+      name: 'Gnavi',
+      component: Gnavi
+    },
+    {
+      path: '/weather',
+      name: 'Weather',
+      component: Weather
+    },
+    {
+      path: '/rakuten',
+      name: 'Rakuten',
+      component: Rakuten
+    },
     {
       path: '/sign',
       name: 'Sign',

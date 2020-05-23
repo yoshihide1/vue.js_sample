@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="map" ref="googleMap" @click="mapCoord"></div>
+    <b-container>
+      <b-row align-h="center">
+        <div class="map" ref="googleMap" @click="mapCoord"></div>
+        <b-button variant="outline-success" class="geolocation" @click="geoLocation">現在地取得</b-button>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -9,16 +14,17 @@ import GoogleMapsApiLoader from "google-maps-api-loader";
 // import MarkerClusterer from "js-marker-clusterer"
 export default {
   props: {
-    coord: {
-      //お店の座標
-      type: Array,
-      deafult: []
-    },
-    geoLatlng: {
-      //現在地
-      default: null
+    shopList: {
+      default: []
     }
   },
+  watch: {
+    shopList() {
+      //Gnaviから
+      this.setMarkers(this.shopList);
+    }
+  },
+
   data() {
     return {
       map: null,
@@ -34,20 +40,11 @@ export default {
       latitude: [],
       longitude: [],
       latlng: [],
+      geoLatlng: null,
       infoWindows: [],
-      currentInfoWindow: "",
+      currentInfoWindow: ""
       // markerCluster: []
     };
-  },
-  watch: {
-    coord() {
-      //propsで受けとる値が変化したらここが実行される
-      this.setMarkers(this.coord);
-    },
-    geoLatlng() {
-      //現在地取得からそこへZoom
-      this.mapZoom(this.geoLatlng);
-    }
   },
 
   async mounted() {
@@ -102,7 +99,7 @@ export default {
         const mapData = {
           latitude: e.latLng.lat(),
           longitude: e.latLng.lng()
-        }; //App.vueへ緯度、経度を送る
+        }; //Gnavi.vueへ緯度、経度を送る
         this.$emit("coord", mapData);
         this.mapZoom(mapData);
       });
@@ -116,11 +113,24 @@ export default {
       this.map.setZoom(15);
     },
     clearMarkers() {
-      //markerの削除（検索毎に）
+      //markerの削除
       for (let i in this.markers) {
         this.markers[i].setMap(null);
       }
-      this.markers = []; //ここで初期化しないと、ひたすら配列が長くなる
+      this.markers = [];
+    },
+    geoLocation() {
+      //現在地取得
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.success);
+      } else {
+        alert("端末が対応していません");
+      }
+    },
+    success(position) {
+      this.geoLatlng = position.coords;
+      this.mapZoom(this.geoLatlng);
+      this.$emit("geoLatlng", this.geoLatlng);
     }
   }
 };
