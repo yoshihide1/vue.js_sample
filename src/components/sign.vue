@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
@@ -116,9 +116,8 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.username, this.password)
         .then(user => {
-          alert("作成完了", user.email);
+          alert("新規登録完了", user.email);
           this.$emit('signs')
-          console.log("create")
           this.$router.push("/");
         })
         .catch(error => {

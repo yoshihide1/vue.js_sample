@@ -1,5 +1,6 @@
 <template>
   <b-container>
+      <gmap></gmap>
     <b-row>
       <b-input-group prepend="freeword" class="mt-3">
         <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
@@ -80,8 +81,12 @@
 
 <script>
 import axios from "axios";
+import gmap from "@/components/Gmap";
 
 export default {
+  components: {
+    gmap
+  },
   props: {
     mapData: {
       //クリックした場所の座標
@@ -160,6 +165,7 @@ export default {
           this.shops = response.data.rest;
           this.$emit("coordData", this.shops); //親に渡す$emit(渡すときの名前, 渡すもの)
           this.freeword = "";
+          this.selected = 3
         })
         .catch(err => {
           console.log(err);

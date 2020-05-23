@@ -1,54 +1,58 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
+    <div id="nav">
       <router-link to="/signin">SignIn </router-link>|
       <router-link to="/signup">SignUp </router-link>|
-      <router-link to="/sign">Sign </router-link>|
-    </div>-->
+      <router-link to="/gnavi">Sign </router-link>|
+    </div>
 
     <!-- <router-view /> -->
     <!-- sign.vueから認証後に受け取り切替処理 -->
-    <signs v-if="show" @signs="draw"></signs>
-    <div v-if="show2">
+    <!-- <signs v-if="show" @signs="draw"></signs> -->
+    <!-- <div v-if="show2"> -->
       <!-- v-bind:渡すときの名前="渡すもの" -->
+      <div v-show="show">
       <gmap @coord="coordinate" :coord="coord" :geoLatlng="geoLatlng">
         <!-- ここでGmapからmapDataの受け取り -->
       </gmap>
       <b-button variant="outline-success" class="geolocation" @click="geolocation">現在地取得</b-button>
       <!--子から$emitでもらいここで受け取る -->
+
       <gnavi @coordData="coordSet" :mapData="mapData" :geoLatlng="geoLatlng">
         <!--@子が送るときに付けた名前="処理を実行するメソッド"  -->
       </gnavi>
+      </div>
+      <router-view></router-view>
       <b-button class="mb-3" variant="outline-danger" @click="signOut(); draw()">サインアウト</b-button>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
 import firebase from "firebase";
 import gnavi from "@/components/Gnavi";
 import gmap from "@/components/Gmap";
-import signs from "@/components/sign";
+// import signs from "@/components/sign";
 export default {
   components: {
     gnavi,
     gmap,
-    signs
+    // signs
   },
   data() {
     return {
-      show: true,
+      show: false,
       show2: false,
       mapData: null, //子からのデータを一回ここに入れる
       coord: null, //子に渡すもの
       geoLatlng: null
     };
   },
-  watch: {
-    show() {
-      this.show2 = !this.show2;
-    }
-  },
+  // watch: {
+  //   show() {
+  //     this.show2 = !this.show2;
+  //   }
+  // },
   methods: {
     geolocation() {
       //現在地取得
@@ -68,10 +72,10 @@ export default {
     coordSet(coordData) {
       this.coord = coordData;
     },
-    draw() {
-      console.log("show");
-      this.show = !this.show;
-    },
+    // draw() {
+    //   console.log("show");
+    //   this.show = !this.show;
+    // },
     signOut() {
       firebase
         .auth()
