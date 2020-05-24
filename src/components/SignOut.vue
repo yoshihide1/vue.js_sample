@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <b-button @click="signOut" pill variant="outline-danger">サインアウト</b-button>
-  </div>
+  <b-container>
+    <b-button @click="signOut" variant="danger">サインアウト</b-button>
+  </b-container>
 </template>
 
 <script>

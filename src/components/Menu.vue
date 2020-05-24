@@ -2,6 +2,10 @@
   <div>
     <b-container>
       <b-row align-h="center">
+        <router-link to="/">
+          <b-button variant="outline-success">Home</b-button>
+        </router-link>
+
         <router-link to="/gnavi">
           <b-button variant="outline-success">Gnavi</b-button>
         </router-link>

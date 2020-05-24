@@ -104,7 +104,6 @@ export default {
         .signInWithEmailAndPassword(this.username, this.password)
         .then(() => {
           alert("サインイン完了");
-          this.$emit("signs");
           this.$router.push("/");
         })
         .catch(error => {
@@ -117,7 +116,6 @@ export default {
         .createUserWithEmailAndPassword(this.username, this.password)
         .then(user => {
           alert("新規登録完了", user.email);
-          this.$emit("signs");
           this.$router.push("/");
         })
         .catch(error => {

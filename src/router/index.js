@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import App from '../App.vue'
+// import App from '../App.vue'
+import Home from '../components/Home'
 import Gnavi from '../components/Gnavi'
 import Weather from '../components/Weather'
 import Rakuten from '../components/Rakuten'
@@ -20,31 +21,35 @@ const router = new VueRouter({
     },
     {
       path: '/',
-      name: 'App',
-      component: App
+      name: 'Home',
+      component: Home,
+      meta: { requiresAuth: true}
+      //metaフィールド認証されてないと入れない
     },
     {
       path: '/gnavi',
       name: 'Gnavi',
-      component: Gnavi
+      component: Gnavi,
+      meta: { requiresAuth: true}
     },
     {
       path: '/weather',
       name: 'Weather',
-      component: Weather
+      component: Weather,
+      meta: { requiresAuth: true}
     },
     {
       path: '/rakuten',
       name: 'Rakuten',
-      component: Rakuten
+      component: Rakuten,
+      meta: { requiresAuth: true}
     },
     {
       path: '/sign',
       name: 'Sign',
       component: Sign
     }
-      ]
-
+  ]
 })
 
 router.beforeEach((to, from, next) => {
@@ -64,6 +69,7 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
 
 
 export default router
