@@ -7,8 +7,8 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import * as firebase from "firebase";
-// import "firebase/auth";
-// import "firebase/firestore"
+import "firebase/auth";
+import "firebase/firestore"
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 // Vue.use(Vuex)
