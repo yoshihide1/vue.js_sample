@@ -1,7 +1,7 @@
 <template>
   <div>
     <menuList></menuList>
-    <h1>ここは天気情報</h1>
+    <h1>マイページ</h1>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import menuList from "@/components/Menu";
 export default {
   components: {
-    menuList,
+    menuList
   }
 };
 </script>

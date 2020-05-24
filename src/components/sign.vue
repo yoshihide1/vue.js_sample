@@ -94,8 +94,8 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
-    };
+      password: "",
+    }
   },
   methods: {
     signIn() {
@@ -114,8 +114,11 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.username, this.password)
-        .then(user => {
-          alert("新規登録完了", user.email);
+        .then((result) => {
+          alert("新規登録完了");
+         
+          console.log(result.user.uid)
+          console.log(result.user.email)
           this.$router.push("/");
         })
         .catch(error => {

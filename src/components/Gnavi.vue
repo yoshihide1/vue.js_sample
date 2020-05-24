@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="bv-example-row">
     <menuList></menuList>
     <!-- coord=マップクリックの座標。geoLatlng=現在地取得の座標 -->
     <gmap :shopList="shops" @coord="searchShops" @geoLatlng="searchShops"></gmap>
@@ -17,10 +17,8 @@
       <b-col>
         <b-form-group>
           <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
-          <div>
-            <label>検索範囲(半径)</label>
-            <strong>{{ selected }}</strong>
-          </div>
+          <label>検索範囲(半径)</label>
+          <strong>{{ selected }}</strong>
         </b-form-group>
       </b-col>
     </b-row>
@@ -78,9 +76,6 @@
         </b-col>f
       </div>
     </b-row>
-    <b-row align-h="center">
-      <signOut></signOut>
-    </b-row>
   </b-container>
 </template>
 
@@ -88,13 +83,11 @@
 import axios from "axios";
 import gmap from "@/components/Gmap";
 import menuList from "@/components/Menu";
-import signOut from "@/components/SignOut";
 
 export default {
   components: {
     gmap,
     menuList,
-    signOut
   },
   data() {
     return {

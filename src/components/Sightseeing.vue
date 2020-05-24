@@ -1,18 +1,20 @@
 <template>
   <div>
     <menuList></menuList>
-    <h1>ここは天気情報</h1>
+    <h1>観光情報</h1>
   </div>
 </template>
 
 <script>
-import menuList from "@/components/Menu";
+import menuList from '@/components/Menu'
 export default {
   components: {
-    menuList,
+    menuList
   }
-};
+
+}
 </script>
 
 <style>
+
 </style>

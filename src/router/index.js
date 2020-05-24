@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import App from '../App.vue'
 import Home from '../components/Home'
 import Gnavi from '../components/Gnavi'
 import Weather from '../components/Weather'
-import Rakuten from '../components/Rakuten'
+import Travel from '../components/Travel'
+import Sightseeing from '../components/Sightseeing'
+import MyPage from '../components/MyPage'
 import Sign from '../components/Sign'
 import firebase from 'firebase'
 
@@ -18,6 +19,12 @@ const router = new VueRouter({
     {
       path: '*',
       redirect: '/sign'
+    },
+    {
+      path: '/mypage',
+      name: 'MyPage',
+      component: MyPage,
+      meta: { requiresAuth: true}
     },
     {
       path: '/',
@@ -39,9 +46,15 @@ const router = new VueRouter({
       meta: { requiresAuth: true}
     },
     {
-      path: '/rakuten',
-      name: 'Rakuten',
-      component: Rakuten,
+      path: '/travel',
+      name: 'Travel',
+      component: Travel,
+      meta: { requiresAuth: true}
+    },
+    {
+      path: '/sightseeing',
+      name: 'Sightseeing',
+      component: Sightseeing,
       meta: { requiresAuth: true}
     },
     {
