@@ -57,6 +57,7 @@
 
 <script>
 import firebase from "firebase";
+import "firebase/firestore";
 export default {
   name: "Sign",
   computed: {
@@ -95,7 +96,8 @@ export default {
     return {
       username: "",
       password: "",
-    }
+      db: firebase.firestore()
+    };
   },
   methods: {
     signIn() {
@@ -114,15 +116,28 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.username, this.password)
-        .then((result) => {
+        .then(result => {
           alert("新規登録完了");
-         
-          console.log(result.user.uid)
-          console.log(result.user.email)
+          this.userDataPush(result);
           this.$router.push("/");
         })
         .catch(error => {
           alert(error.message);
+        });
+    },
+    userDataPush(data) {
+      const uid = data.user.uid
+      const email = data.user.email
+      this.db
+        .collection("users").doc(uid)
+        .set({
+          email: email
+        })
+        .then(() => {
+          console.log("dbOK");
+        })
+        .catch(() => {
+          console.log("error");
         });
     }
   }

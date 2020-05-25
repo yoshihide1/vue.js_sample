@@ -68,12 +68,13 @@
             style="max-width: 20rem;"
           >
             <b-card-text>
+              <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
               <p>{{ shop.tel }}</p>
               <p>{{ shop.address }}</p>
               <b-form-textarea id="textarea-rows" class="p-0" rows="4" :placeholder="shop.opentime"></b-form-textarea>
             </b-card-text>
           </b-card>
-        </b-col>f
+        </b-col>
       </div>
     </b-row>
   </b-container>
@@ -84,10 +85,13 @@ import axios from "axios";
 import gmap from "@/components/Gmap";
 import menuList from "@/components/Menu";
 
+import firebase from "firebase";
+import "firebase/firestore";
+
 export default {
   components: {
     gmap,
-    menuList,
+    menuList
   },
   data() {
     return {
@@ -110,10 +114,33 @@ export default {
       wifi: 0, //
       range: 3, //緯度、経度からの検索範囲
       shops: [],
-      latlng: []
+      db: firebase.firestore(),
+      uid: firebase.auth().currentUser.uid
     };
   },
   methods: {
+    starSet(index) {
+      //お気に入り
+      const shop = this.shops[index];
+      console.log(shop.name);
+      this.db
+        .collection("star")
+        .add({
+          category: "食事",
+          name: shop.name,
+          address: shop.address,
+          tel: shop.tel,
+          image: shop.image_url.shop_image1,
+          opentime: shop.opentime,
+          uid: this.uid
+        })
+        .then(() => {
+          console.log("お気に入り登録完了");
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    },
     searchShops(coord) {
       console.log(coord);
       //親、経由mapから座標もらう
@@ -133,7 +160,7 @@ export default {
         kids_menu: this.kids_menu ? 1 : 0, //キッズメニュー
         wifi: this.wifi ? 1 : 0,
         range: this.selected,
-        latitude: coord.latitude, //App.vueから受け取り
+        latitude: coord.latitude, //Gmapから
         longitude: coord.longitude
       };
 
@@ -143,7 +170,6 @@ export default {
           this.shops = response.data.rest;
           this.freeword = "";
           this.selected = 3;
-          console.log(this.shops);
         })
         .catch(err => {
           console.log(err);

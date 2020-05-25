@@ -6,7 +6,7 @@ import Weather from '../components/Weather'
 import Travel from '../components/Travel'
 import Sightseeing from '../components/Sightseeing'
 import MyPage from '../components/MyPage'
-import Sign from '../components/Sign'
+import Sign from '../components/sign'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
