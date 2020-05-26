@@ -51,6 +51,12 @@ export default {
       longitude: 139.69167
     };
   },
+  created() {
+    this.getWeather();
+  },
+  watch: {
+    $route: "getWeather"
+  },
   methods: {
     coordinate(geoLatlng) {
       this.latitude = geoLatlng.latitude;
@@ -77,12 +83,12 @@ export default {
     setWeather() {
       let max = [];
       let min = [];
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 9; i++) {
         max.push(this.weatherData[i].main.temp_max);
         min.push(this.weatherData[i].main.temp_min);
       }
       this.temp = parseInt(this.weatherData[0].main.temp);
-      //27時間の中での最高気温と最低気温
+      //24時間の中での最高気温と最低気温
       this.tempMax = parseInt(max.reduce((a, b) => (a > b ? a : b)));
       this.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)));
       this.humidity = this.weatherData[0].main.humidity; //湿度
@@ -92,7 +98,4 @@ export default {
 </script>
 
 <style>
-#gmap {
-  height: 200px;
-}
 </style>
