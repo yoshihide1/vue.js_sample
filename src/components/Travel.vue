@@ -2,7 +2,6 @@
   <div>
     <menuList></menuList>
     <h1>楽天トラベル</h1>
-    <button @click="check">UID</button>
   </div>
 </template>
 
@@ -21,12 +20,6 @@ export default {
     }
   },
   methods: {
-    check() {//test用ユーザーuid取得
-    console.log(this.uid)
-      // console.log(firebase.auth().currentUser.uid)
-      // if (firebase.auth().currentUser !== null) 
-      //   console.log("user id: " + firebase.auth().currentUser.uid);
-    }
   }
 
 }
@@ -35,8 +28,3 @@ export default {
 <style>
 
 </style>
-1wd59H8ebYWaOkDpkFW7
- EN88ReJaEKf5ypKLFhhS
- SsPGpl46QYQ7qsC3EsmR
- jR3jO0f0JE9BJhcsGGKM
- xXaqC6gK4tBrPXrKlsRj

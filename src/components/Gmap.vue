@@ -1,14 +1,14 @@
 <template>
   <div>
+    <div class="map" ref="googleMap" @click="mapCoord"></div>
     <b-container>
       <b-row align-h="center">
-        <div class="map" ref="googleMap" @click="mapCoord"></div>
         <b-button variant="outline-success" class="geolocation mt-2" @click="geoLocation">現在地取得</b-button>
       </b-row>
     </b-container>
   </div>
 </template>
-
+f
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
 // import MarkerClusterer from "js-marker-clusterer"

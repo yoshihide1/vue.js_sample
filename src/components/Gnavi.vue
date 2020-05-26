@@ -1,83 +1,90 @@
 <template>
-  <b-container class="bv-example-row">
+  <div>
     <menuList></menuList>
     <!-- coord=マップクリックの座標。geoLatlng=現在地取得の座標 -->
     <gmap :shopList="shops" @coord="searchShops" @geoLatlng="searchShops"></gmap>
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-input-group prepend="freeword" class="mt-3">
+          <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
+          <b-input-group-append>
+            <b-button variant="outline-success" v-on:click="searchShops">検索</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-row>
 
-    <b-row>
-      <b-input-group prepend="freeword" class="mt-3">
-        <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
-        <b-input-group-append>
-          <b-button variant="outline-success" v-on:click="searchShops">検索</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-row>
-
-    <b-row>
-      <b-col>
-        <b-form-group>
-          <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
-          <label>検索範囲(半径)</label>
-          <strong>{{ selected }}</strong>
-        </b-form-group>
-      </b-col>
-    </b-row>
-
-    <b-row>
-      <b-col>
-        <b-form-checkbox v-model="no_smoking">禁煙席</b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox v-model="lunch">ランチ</b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox v-model="parking">駐車場</b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox v-model="private_room">個室</b-form-checkbox>
-      </b-col>
-    </b-row>
-
-    <b-row>
-      <b-col>
-        <b-form-checkbox v-model="card">カード利用</b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox v-model="kids_menu">キッズメニュー</b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox v-model="wifi">WiFi</b-form-checkbox>
-      </b-col>
-    </b-row>
-
-    <b-row align-h="center">
-      <!-- indexをkeyにしないとエラーになる -->
-      <div v-for="(shop, index) in shops" :key="index">
+      <b-row>
         <b-col>
-          <b-card
-            :title="shop.name"
-            :img-src="shop.image_url.shop_image1"
-            :img-alt="shop.name"
-            img-top
-            tag="article"
-            style="max-width: 20rem;"
-          >
-            <b-card-text>
-              <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
-              <p>{{ shop.tel }}</p>
-              <p>{{ shop.address }}</p>
-              <b-form-textarea id="textarea-rows" class="p-0" rows="4" :placeholder="shop.opentime"></b-form-textarea>
-            </b-card-text>
-          </b-card>
+          <b-form-group>
+            <label class="mt-2">
+              検索範囲(半径)
+              <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
+            </label>
+          </b-form-group>
         </b-col>
-      </div>
-    </b-row>
-  </b-container>
+      </b-row>
+
+      <b-row>
+        <b-col>
+          <b-form-checkbox v-model="no_smoking">禁煙席</b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox v-model="lunch">ランチ</b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox v-model="parking">駐車場</b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox v-model="private_room">個室</b-form-checkbox>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col>
+          <b-form-checkbox v-model="card">カード利用</b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox v-model="kids_menu">キッズメニュー</b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox v-model="wifi">WiFi</b-form-checkbox>
+        </b-col>
+      </b-row>
+
+      <b-row align-h="center">
+        <!-- indexをkeyにしないとエラーになる -->
+        <div v-for="(shop, index) in shops" :key="index">
+          <b-col>
+            <b-card
+              :title="shop.name"
+              :img-src="shop.image_url.shop_image1"
+              :img-alt="shop.name"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+            >
+              <b-card-text>
+                <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
+                <p>{{ shop.tel }}</p>
+                <p>{{ shop.address }}</p>
+                <b-form-textarea
+                  id="textarea-rows"
+                  class="p-0"
+                  rows="4"
+                  :placeholder="shop.opentime"
+                ></b-form-textarea>
+              </b-card-text>
+            </b-card>
+          </b-col>
+        </div>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>

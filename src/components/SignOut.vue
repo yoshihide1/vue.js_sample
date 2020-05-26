@@ -1,6 +1,8 @@
 <template>
   <b-container>
-    <b-button @click="signOut" variant="danger">サインアウト</b-button>
+    <b-row align-h="center" class="my-2">
+      <b-button @click="signOut" variant="danger">サインアウト</b-button>
+    </b-row>
   </b-container>
 </template>
 

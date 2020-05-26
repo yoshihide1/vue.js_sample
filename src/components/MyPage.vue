@@ -1,9 +1,15 @@
 <template>
   <div>
     <menuList></menuList>
-    <h1>マイページ</h1>
-    <button @click="getData">データ取得</button>
-    <button @click="deleteData">削除</button>
+    <b-container class="bv-example-row">
+      <b-row class="my-3" align-h="center">
+        <h1>マイページ</h1>
+      </b-row>
+      <b-row align-h="center">
+        <b-button variant="secondary" @click="deleteData(), deleteAlert()">選択した物を削除</b-button>
+      </b-row>
+      <b-alert v-model="alert" show variant="warning">削除しました</b-alert>
+    </b-container>
     <div v-for="(shop, index) in userData" :key="index">
       <b-card-group deck>
         <b-card border-variant="success" :header="shop.name" align="center">
@@ -11,11 +17,7 @@
             <p>住所:{{shop.address}}</p>
             <p>電話:{{shop.tel}}</p>
             <p>営業時間:{{shop.opentime}}</p>
-            <button @click="deleteData">
-              削除
-              <input type="checkbox" :value="index" v-model="select" />
-            </button>
-            <p>{{select}}</p>
+            <input type="checkbox" :value="index" v-model="select" />
           </b-card-text>
         </b-card>
       </b-card-group>
@@ -28,11 +30,13 @@ import firebase from "firebase";
 import "firebase/firestore";
 import menuList from "@/components/Menu";
 export default {
+  name: "MyPage",
   components: {
     menuList
   },
   data() {
     return {
+      alert: false,
       select: [],
       name: "",
       shopUrl: null,
@@ -43,9 +47,19 @@ export default {
       docId: []
     };
   },
+  created() {
+    this.getData();
+  },
+  watch: {
+    //route変更で実行
+    $route: "getData"
+  },
   methods: {
-    test(index) {
-      console.log(index);
+    deleteAlert() {
+      this.alert = !this.alert;
+      setTimeout(() => {
+        this.alert = !this.alert;
+      }, 1000);
     },
     getData() {
       this.db
@@ -65,16 +79,21 @@ export default {
     },
     deleteData() {
       console.log(this.docId);
-      this.db
-        .collection("star")
-        .doc(this.docId[this.select])
-        .delete()
-        .then(() => {
-          console.log("削除");
-        })
-        .catch(() => {
-          console.log("error");
-        });
+      this.select.forEach(i => {
+        this.db
+          .collection("star")
+          .doc(this.docId[i])
+          .delete()
+          .then(() => {
+            this.userData = [];
+            this.getData();
+            console.log([i]);
+            console.log("削除");
+          })
+          .catch(() => {
+            console.log("error");
+          });
+      });
     }
   }
 };
