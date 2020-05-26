@@ -15,7 +15,7 @@ import GoogleMapsApiLoader from "google-maps-api-loader";
 export default {
   props: {
     shopList: {
-      default: []
+      default: () => []
     }
   },
   watch: {
