@@ -16,12 +16,18 @@ export default {
   props: {
     shopList: {
       default: () => []
+    },
+    hotelList: {
+      default: () => []
     }
   },
   watch: {
     shopList() {
       //Gnaviから
       this.setMarkers(this.shopList);
+    },
+    hotelList() {
+      this.setMarkers(this.hotelList)
     }
   },
 

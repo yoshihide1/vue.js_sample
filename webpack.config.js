@@ -7,6 +7,7 @@ const config = {
         VUE_APP_Google: JSON.stringify(process.env.VUE_APP_Google),
         VUE_APP_GNAVI: JSON.stringify(process.env.VUE_APP_GNAVI),
         VUE_APP_WEATHER: JSON.stringify(process.env.VUE_APP_WEATHER),
+        VUE_APP_RAKUTEN: JSON.stringify(process.env.VUE_APP_RAKUTEN),
         //ここから下firebase
         VUE_APP_apiKey: JSON.stringify(process.env.VUE_APP_apiKey),
         VUE_APP_authDomain: JSON.stringify(process.env.VUE_APP_authDomain),
