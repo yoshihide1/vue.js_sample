@@ -91,7 +91,7 @@
 import axios from "axios";
 import gmap from "@/components/Gmap";
 import menuList from "@/components/Menu";
-
+import { mapState } from "vuex";
 import firebase from "firebase";
 import "firebase/firestore";
 
@@ -120,10 +120,18 @@ export default {
       kids_menu: 0, //キッズメニュー
       wifi: 0, //
       range: 3, //緯度、経度からの検索範囲
-      shops: [],
+      // shops: [],
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid
     };
+  },
+  computed: {
+    ...mapState(["latLng", "shops"])
+  },
+  watch: {
+    latLng() {
+      this.searchShops();
+    }
   },
   methods: {
     starSet(index) {
@@ -148,11 +156,8 @@ export default {
           console.log("error");
         });
     },
-    searchShops(coord) {
-      console.log(coord);
-      //親、経由mapから座標もらう
+    searchShops() {
       if (this.freeword != "") {
-        //freeword検索時にrangeを入れない為
         this.selected = null;
       }
       const params = {
@@ -167,14 +172,15 @@ export default {
         kids_menu: this.kids_menu ? 1 : 0, //キッズメニュー
         wifi: this.wifi ? 1 : 0,
         range: this.selected,
-        latitude: coord.latitude, //Gmapから
-        longitude: coord.longitude
+        latitude: this.latLng.latitude, //stoer
+        longitude: this.latLng.longitude
       };
 
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
-          this.shops = response.data.rest;
+          const shops = response.data.rest;
+          this.$store.commit("shopsData", shops);
           this.freeword = "";
           this.selected = 3;
         })

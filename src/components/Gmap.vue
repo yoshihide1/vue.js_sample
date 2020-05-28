@@ -1,16 +1,12 @@
 <template>
   <div>
     <div class="map" ref="googleMap" @click="mapCoord"></div>
-    <b-container>
-      <b-row align-h="center">
-        <b-button variant="outline-success" class="geolocation mt-2" @click="geoLocation">現在地取得</b-button>
-      </b-row>
-    </b-container>
   </div>
 </template>
 f
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
+import { mapState } from "vuex";
 // import MarkerClusterer from "js-marker-clusterer"
 export default {
   props: {
@@ -27,8 +23,11 @@ export default {
       this.setMarkers(this.shopList);
     },
     hotelList() {
-      this.setMarkers(this.hotelList)
+      this.setMarkers(this.hotelList);
     }
+  },
+  computed: {
+    ...mapState(["latLng"])
   },
 
   data() {
@@ -37,11 +36,12 @@ export default {
       google: null,
       mapConfig: {
         center: {
-          lat: 35.68944,
-          lng: 139.69167
+          lat: 34.662778,
+          lng: 135.572867
         },
-        zoom: 8
+        zoom: 7
       },
+      marker: null,
       markers: [],
       latitude: [],
       longitude: [],
@@ -62,7 +62,6 @@ export default {
 
   methods: {
     initializeMap() {
-      //初期化の時はLoaderのthis.googleを使うそれ以外は基本的にここで代入したthis.map
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
     },
 
@@ -75,7 +74,7 @@ export default {
           this.latitude,
           this.longitude
         );
-        const marker = new this.google.maps.Marker({
+        this.marker = new this.google.maps.Marker({
           map: this.map,
           position: this.latlng,
           animation: this.google.maps.Animation.DROP
@@ -86,15 +85,14 @@ export default {
           pixelOffset: offset,
           content: "<div><h4>" + data[i].name + "</h4></div>"
         });
-        marker.addListener("click", () => {
+        this.marker.addListener("click", () => {
           if (this.currentInfoWindow) {
-            //infoWindowが開かれていたら
             this.currentInfoWindow.close();
           }
           infoWindow.open(this.map);
           this.currentInfoWindow = infoWindow;
         });
-        this.markers.push(marker);
+        this.markers.push(this.marker);
         this.infoWindows.push(infoWindow);
       }
       // this.markerCluster new MarkerClusterer(this.map, this.markers);
@@ -105,38 +103,24 @@ export default {
         const mapData = {
           latitude: e.latLng.lat(),
           longitude: e.latLng.lng()
-        }; //Gnavi.vueへ緯度、経度を送る
-        this.$emit("coord", mapData);
-        this.mapZoom(mapData);
+        };
+        this.$store.commit("geoLatLng", mapData);
+        this.mapZoom();
       });
     },
-    mapZoom(mapData) {
+    mapZoom() {
       const latlng = new this.google.maps.LatLng(
-        mapData.latitude,
-        mapData.longitude
+        this.latLng.latitude,
+        this.latLng.longitude
       );
       this.map.setCenter(latlng);
       this.map.setZoom(15);
     },
     clearMarkers() {
-      //markerの削除
       for (let i in this.markers) {
         this.markers[i].setMap(null);
       }
       this.markers = [];
-    },
-    geoLocation() {
-      //現在地取得
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.success);
-      } else {
-        alert("端末が対応していません");
-      }
-    },
-    success(position) {
-      this.geoLatlng = position.coords;
-      this.mapZoom(this.geoLatlng);
-      this.$emit("geoLatlng", this.geoLatlng);
     }
   }
 };

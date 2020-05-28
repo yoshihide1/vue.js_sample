@@ -9,13 +9,23 @@ import MyPage from '../components/MyPage'
 import Sign from '../components/sign'
 import firebase from 'firebase'
 
-Vue.use(VueRouter)
+import Menu from '../components/Menu'
+import Sample from '../components/sample'
 
+Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [//link元App.vue
+    {
+      path: '/sample',
+      component: Sample
+    },
+    {//最後に消す
+      path: '/menu',
+      component: Menu
+    },
     {
       path: '*',
       redirect: '/sign'

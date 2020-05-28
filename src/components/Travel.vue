@@ -1,10 +1,9 @@
 <template>
   <div>
     <menuList></menuList>
-      <h1>トラベル</h1>
-    <gmap :hotelList="hotelList" @geoLatlng="getData" @coord="getData"></gmap>
+    <gmap></gmap>
     <b-container>
-      <div v-for="(hotel, index) in hotelList" :key="index">
+      <div v-for="(hotel, index) in hotels" :key="index">
         <div>
           <b-row align-h="center">
             <b-button v-b-toggle="'collapse-' + index" variant="primary" class="mt-2 button-width">
@@ -90,27 +89,33 @@ import firebase from "firebase";
 import "firebase/firestore";
 import menuList from "@/components/Menu";
 import gmap from "@/components/Gmap";
+import { mapState } from "vuex";
 export default {
   components: {
     menuList,
     gmap
   },
+  computed: {
+    ...mapState(["hotels", "latLng"])
+  },
   data() {
     return {
       uid: firebase.auth().currentUser.uid,
-      hotelList: [],
-      hotels: []
+      hotelData: [],
+      hotelList: []
     };
   },
+  watch: {
+    latLng() {
+      this.getData();
+    }
+  },
   methods: {
-    getData(coord) {
-      console.log(coord);
+    getData() {
       const params = {
         applicationId: process.env.VUE_APP_RAKUTEN,
-        // latitude: 34.71121659661603,
-        // longitude: 135.51119455072615,
-        latitude: coord.latitude,
-        longitude: coord.longitude,
+        latitude: this.latLng.latitude, //store
+        longitude: this.latLng.longitude,
         largeClassCode: "japan",
         datumType: 1, //測地系のタイプ
         serchRadius: 3 //検索範囲0.1~3.0まで(km)
@@ -121,15 +126,16 @@ export default {
           { params }
         )
         .then(response => {
-          this.hotelList = [];
-          this.hotels = response.data.hotels;
-          this.setData(this.hotels);
+          this.hotelData = [];
+          this.hotelList = response.data.hotels;
+          this.setData();
         });
     },
     setData() {
-      for (let i in this.hotels) {
-        this.hotelList.push(this.hotels[i].hotel[0].hotelBasicInfo);
+      for (let i in this.hotelList) {
+        this.hotelData.push(this.hotelList[i].hotel[0].hotelBasicInfo);
       }
+      this.$store.commit("hotelsData", this.hotelData);
     }
   }
 };

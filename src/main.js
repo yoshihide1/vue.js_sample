@@ -1,5 +1,5 @@
 import Vue from 'vue'
-// import Vuex from 'Vuex'
+import store from './store/store'
 import App from './App.vue'
 import router from './router'
 
@@ -11,7 +11,6 @@ import "firebase/auth";
 import "firebase/firestore"
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
-// Vue.use(Vuex)
 
   const firebaseConfig = {
     apiKey: process.env.VUE_APP_apiKey,
@@ -28,7 +27,7 @@ Vue.config.productionTip = false
 
 // const store = new Vuex.store({})
 new Vue({
-  // store,
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')
