@@ -7,27 +7,16 @@ f
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState } from "vuex";
-// import MarkerClusterer from "js-marker-clusterer"
 export default {
-  props: {
-    shopList: {
-      default: () => []
-    },
-    hotelList: {
-      default: () => []
-    }
-  },
   watch: {
-    shopList() {
-      //Gnaviから
-      this.setMarkers(this.shopList);
-    },
-    hotelList() {
-      this.setMarkers(this.hotelList);
+    myMarker() {
+      console.log("marker");
+      this.setMarkers(this.myMarker);
+      console.log(this.myMarker);
     }
   },
   computed: {
-    ...mapState(["latLng"])
+    ...mapState(["latLng", "myMarker", "shops", "hotels"])
   },
 
   data() {
@@ -46,10 +35,8 @@ export default {
       latitude: [],
       longitude: [],
       latlng: [],
-      geoLatlng: null,
       infoWindows: [],
       currentInfoWindow: ""
-      // markerCluster: []
     };
   },
 
@@ -66,8 +53,24 @@ export default {
     },
 
     setMarkers(data) {
-      this.clearMarkers();
+      console.log(data);
+      let icon;
+      let content = "<div></div>";
       for (let i in data) {
+        switch (data[i].id) {
+          case 1:
+            icon = "/gmap/mapicon1.png";
+            break;
+          case 2:
+            icon = "/gmap/mapicon2.png";
+            break;
+          case 3:
+            icon = "/gmap/mapicon3.png";
+            break;
+          default:
+            icon = "/gmap/mapicon5.png";
+            break;
+        }
         this.latitude = data[i].latitude;
         this.longitude = data[i].longitude;
         this.latlng = new this.google.maps.LatLng(
@@ -77,13 +80,17 @@ export default {
         this.marker = new this.google.maps.Marker({
           map: this.map,
           position: this.latlng,
-          animation: this.google.maps.Animation.DROP
+          animation: this.google.maps.Animation.DROP,
+          icon: {
+            url: icon,
+            scaledSize: new this.google.maps.Size(40, 40)
+          }
         });
         const offset = new this.google.maps.Size(0, -10);
         const infoWindow = new this.google.maps.InfoWindow({
           position: this.latlng,
           pixelOffset: offset,
-          content: "<div><h4>" + data[i].name + "</h4></div>"
+          content: content
         });
         this.marker.addListener("click", () => {
           if (this.currentInfoWindow) {
@@ -95,7 +102,6 @@ export default {
         this.markers.push(this.marker);
         this.infoWindows.push(infoWindow);
       }
-      // this.markerCluster new MarkerClusterer(this.map, this.markers);
     },
     mapCoord() {
       //マップクリックで座標取得

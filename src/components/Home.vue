@@ -1,5 +1,6 @@
 <template>
   <b-container>
+    
     <b-row align-h="center">
       <router-link to="/mypage">
         <b-col class="my-2">
@@ -38,13 +39,22 @@
     <b-row>
       <signOut></signOut>
     </b-row>
+    <!-- <gmap></gmap>
+    <gnavi></gnavi>
+    <travel></travel> -->
   </b-container>
 </template>
 
 <script>
+// import gmap from "@/components/Gmap"
+// import gnavi from "@/components/Gnavi"
+// import travel from "@/components/Travel"
 import signOut from "@/components/SignOut";
 export default {
   components: {
+    // gmap,
+    // gnavi,
+    // travel,
     signOut
   }
 };

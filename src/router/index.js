@@ -8,9 +8,10 @@ import Sightseeing from '../components/Sightseeing'
 import MyPage from '../components/MyPage'
 import Sign from '../components/sign'
 import firebase from 'firebase'
-
 import Menu from '../components/Menu'
-import Sample from '../components/sample'
+
+// import test from '../components/test'
+
 
 Vue.use(VueRouter)
 
@@ -18,10 +19,10 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [//link元App.vue
-    {
-      path: '/sample',
-      component: Sample
-    },
+    // {
+    //   path: '/test',
+    //   component: test
+    // },
     {//最後に消す
       path: '/menu',
       component: Menu

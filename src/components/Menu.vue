@@ -1,7 +1,10 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#" class="ml-1">Oltower <b-button variant="outline-success" class="geolocation ml-1" @click="geoLocation">現在地取得</b-button></b-navbar-brand>
+      <b-navbar-brand href="#" class="ml-1">
+        Oltower
+        <b-button variant="outline-success" class="geolocation ml-1" @click="geoLocation">現在地取得</b-button>
+      </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -32,7 +35,6 @@
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-         
           <b-nav-item-dropdown right class="mr-5">
             <template v-slot:button-content>
               <em>User</em>
@@ -59,11 +61,10 @@ export default {
     signOut
   },
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
-      geoLocation() {
+    geoLocation() {
       //現在地取得
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.success);
@@ -72,8 +73,9 @@ export default {
       }
     },
     success(position) {
-       const geoLatlng = position.coords;
-      this.$store.commit('geoLatLng', geoLatlng)
+      const geoLatlng = position.coords;
+      this.$store.commit("geoLatLng", geoLatlng);
+      this.$store.commit("marker", geoLatlng);
     }
   }
 };

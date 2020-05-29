@@ -1,8 +1,6 @@
 <template>
   <div>
     <menuList></menuList>
-    <p>{{latLng.latitude}}</p>
-    <p>{{latLng.longitude}}</p>
     <b-container class="bv-example-row">
       <b-row align-h="center">
         <h4>現在の気温</h4>

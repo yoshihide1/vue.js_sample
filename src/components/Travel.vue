@@ -8,6 +8,7 @@
           <b-row align-h="center">
             <b-button v-b-toggle="'collapse-' + index" variant="primary" class="mt-2 button-width">
               <span class="title-text">{{ hotel.hotelName }}/{{ hotel.address1 }}</span>
+              <button @click="hotelLatLng(hotel.latitude, hotel.longitude)">マーカー</button>
             </b-button>
             <b-collapse :id="'collapse-' + index " class="mt-2">
               <b-card>
@@ -22,6 +23,8 @@
                   <b-img :src="hotel.hotelImageUrl" fluid alt="外観"></b-img>
                   <b-img :src="hotel.roomImageUrl" fluid alt="室内"></b-img>
                 </b-row>
+                <p>{{ hotel.latitude }}</p>
+                <p>{{ hotel.longitude }}</p>
                 <b-row align-h="center">
                   <b-button
                     v-b-toggle="'collapse-' + index + '-inner'"
@@ -100,6 +103,7 @@ export default {
   },
   data() {
     return {
+      check: [],
       uid: firebase.auth().currentUser.uid,
       hotelData: [],
       hotelList: []
@@ -136,6 +140,15 @@ export default {
         this.hotelData.push(this.hotelList[i].hotel[0].hotelBasicInfo);
       }
       this.$store.commit("hotelsData", this.hotelData);
+    },
+    hotelLatLng(latitude, longitude) {
+      console.log(latitude, longitude);
+      const latLng = {
+        latitude: latitude,
+        longitude: longitude,
+        id: 2
+      };
+      this.$store.commit("marker", latLng);
     }
   }
 };

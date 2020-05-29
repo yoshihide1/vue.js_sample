@@ -1,8 +1,7 @@
 <template>
   <div>
     <menuList></menuList>
-    <!-- coord=マップクリックの座標。geoLatlng=現在地取得の座標 -->
-    <gmap :shopList="shops" @coord="searchShops" @geoLatlng="searchShops"></gmap>
+    <gmap></gmap>
     <b-container class="bv-example-row">
       <b-row>
         <b-input-group prepend="freeword" class="mt-3">
@@ -57,7 +56,6 @@
       </b-row>
 
       <b-row align-h="center">
-        <!-- indexをkeyにしないとエラーになる -->
         <div v-for="(shop, index) in shops" :key="index">
           <b-col>
             <b-card
@@ -70,6 +68,7 @@
             >
               <b-card-text>
                 <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
+                <button @click="shopLatLng(shop.latitude, shop.longitude)">マーカー</button>
                 <p>{{ shop.tel }}</p>
                 <p>{{ shop.address }}</p>
                 <b-form-textarea
@@ -120,7 +119,6 @@ export default {
       kids_menu: 0, //キッズメニュー
       wifi: 0, //
       range: 3, //緯度、経度からの検索範囲
-      // shops: [],
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid
     };
@@ -163,7 +161,7 @@ export default {
       const params = {
         keyid: process.env.VUE_APP_GNAVI, //.envから取得
         freeword: this.freeword,
-        hit_per_page: 20, //検索結果の表示数
+        hit_per_page: 30, //検索結果の表示数
         lunch: this.lunch ? 1 : 0, //ランチ
         no_smoking: this.no_smoking ? 1 : 0, //禁煙席あり
         card: this.card ? 1 : 0, //カード利用
@@ -187,6 +185,14 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    shopLatLng(latitude, longitude) {
+      const latLng = {
+        latitude: latitude,
+        longitude: longitude,
+        id: 1
+      };
+      this.$store.commit("marker", latLng);
     }
   }
 };
