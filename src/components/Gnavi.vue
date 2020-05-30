@@ -3,14 +3,14 @@
     <menuList></menuList>
     <gmap></gmap>
     <b-container class="bv-example-row">
-      <b-row>
+      <!-- <b-row>
         <b-input-group prepend="freeword" class="mt-3">
           <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
           <b-input-group-append>
             <b-button variant="outline-success" v-on:click="searchShops">検索</b-button>
           </b-input-group-append>
         </b-input-group>
-      </b-row>
+      </b-row> -->
 
       <b-row>
         <b-col>
@@ -23,7 +23,7 @@
         </b-col>
       </b-row>
 
-      <b-row>
+      <!-- <b-row>
         <b-col>
           <b-form-checkbox v-model="no_smoking">禁煙席</b-form-checkbox>
         </b-col>
@@ -53,7 +53,7 @@
         <b-col>
           <b-form-checkbox v-model="wifi">WiFi</b-form-checkbox>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <b-row align-h="center">
         <div v-for="(shop, index) in shops" :key="index">
@@ -193,7 +193,7 @@ export default {
         longitude: shop.longitude,
         id: 1
       };
-      this.$store.commit("marker", latLng);
+      this.$store.commit("newMarker", latLng);
     }
   }
 };

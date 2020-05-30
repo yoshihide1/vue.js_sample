@@ -17,7 +17,7 @@ export default new Vuex.Store({
     tempMin: 0,
     humidity: 0,
     shops: [],
-    hotels: []
+    hotels: [],
   },
 
   mutations: {
@@ -47,14 +47,21 @@ export default new Vuex.Store({
       state.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)))
       state.humidity = payload[0].main.humidity
     },
-    marker(state, payload) {
+    newMarker(state, payload) {
       console.log("marker mutation")
       state.myMarker.push(payload)
+    },
+    deleteMarker(state, payload) {
+      console.log("markerDelete")
+      state.myMarker = payload
     }
   },
   getters: {
-  },
+    filterMarker: (state) => (name) => {
+      return state.myMarker.filter(marker => marker.name !== name)
+    }
 
+  },
   actions: {
   }
 

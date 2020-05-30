@@ -133,6 +133,9 @@ export default {
           this.hotelData = [];
           this.hotelList = response.data.hotels;
           this.setData();
+        })
+        .catch(() => {
+          alert("近くにお店がありません");
         });
     },
     setData() {
@@ -148,7 +151,7 @@ export default {
         longitude: hotel.longitude,
         id: 2
       };
-      this.$store.commit("marker", latLng);
+      this.$store.commit("newMarker", latLng);
     }
   }
 };
