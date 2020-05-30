@@ -1,13 +1,18 @@
 <template>
   <div>
-    <div class="map" ref="googleMap" @click="mapCoord"></div>
+    <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
+    <weather></weather>
   </div>
 </template>
 f
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState, mapGetters } from "vuex";
+import weather from "@/components/Weather";
 export default {
+  components: {
+    weather
+  },
   watch: {
     myMarker() {
       console.log("marker");
@@ -42,20 +47,26 @@ export default {
       apiKey: process.env.VUE_APP_GOOGLE
     });
     this.initializeMap();
+    window.addEventListener("resize", this.updateDevice);
+    this.updateDevice();
   },
 
   methods: {
     initializeMap() {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
     },
+    updateDevice() {
+      const height = window.innerHeight;
+      document.getElementById("gmap").style.height = height + "px";
+    },
 
     setMarkers(latLngData) {
       console.log("setMarker");
       this.clearMarkers();
       let icon;
-     
+
       // for (let i in data) {
-      latLngData.forEach((data) => {
+      latLngData.forEach(data => {
         switch (data.id) {
           case 1: //飲食
             icon = "/gmap/mapicon1.png";
@@ -75,7 +86,7 @@ export default {
             content = `<p> <button id="infoButton">マーカー削除</button>現在地<p>`;
             break;
         }
-         let content = `<p>
+        let content = `<p>
             <button id="infoButton">マーカー削除</button>
             ${data.name}</p>`;
         this.latitude = data.latitude;
@@ -151,7 +162,7 @@ export default {
 </script>
 
 <style>
-.map {
+#gmap {
   width: 100%;
   height: 500px;
 }
