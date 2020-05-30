@@ -80,7 +80,7 @@ export default {
         id: 5
       }
       this.$store.commit("geoLatLng", latLng);
-      this.$store.commit("marker", latLng);
+      this.$store.commit("newMarker", latLng);
     }
   }
 };

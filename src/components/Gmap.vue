@@ -53,11 +53,9 @@ export default {
       console.log("setMarker");
       this.clearMarkers();
       let icon;
-      let content = `<p>
-            <button id="infoButton">マーカー削除</button>
-            ${data.name}</p>`;
+     
       // for (let i in data) {
-      latLngData.forEach((data, index) => {
+      latLngData.forEach((data) => {
         switch (data.id) {
           case 1: //飲食
             icon = "/gmap/mapicon1.png";
@@ -77,6 +75,9 @@ export default {
             content = `<p> <button id="infoButton">マーカー削除</button>現在地<p>`;
             break;
         }
+         let content = `<p>
+            <button id="infoButton">マーカー削除</button>
+            ${data.name}</p>`;
         this.latitude = data.latitude;
         this.longitude = data.longitude;
         const latLng = new this.google.maps.LatLng(
