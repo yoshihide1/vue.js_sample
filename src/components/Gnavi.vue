@@ -68,7 +68,7 @@
             >
               <b-card-text>
                 <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
-                <button @click="shopLatLng(shop.latitude, shop.longitude)">マーカー</button>
+                <button @click="shopLatLng(shop)">マーカー</button>
                 <p>{{ shop.tel }}</p>
                 <p>{{ shop.address }}</p>
                 <b-form-textarea
@@ -186,10 +186,11 @@ export default {
           console.log(err);
         });
     },
-    shopLatLng(latitude, longitude) {
+    shopLatLng(shop) {
       const latLng = {
-        latitude: latitude,
-        longitude: longitude,
+        name: shop.name,
+        latitude: shop.latitude,
+        longitude: shop.longitude,
         id: 1
       };
       this.$store.commit("marker", latLng);

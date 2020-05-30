@@ -48,6 +48,7 @@ export default new Vuex.Store({
       state.humidity = payload[0].main.humidity
     },
     marker(state, payload) {
+      console.log("marker mutation")
       state.myMarker.push(payload)
     }
   },

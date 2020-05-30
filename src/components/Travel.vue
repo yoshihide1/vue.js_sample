@@ -8,7 +8,7 @@
           <b-row align-h="center">
             <b-button v-b-toggle="'collapse-' + index" variant="primary" class="mt-2 button-width">
               <span class="title-text">{{ hotel.hotelName }}/{{ hotel.address1 }}</span>
-              <button @click="hotelLatLng(hotel.latitude, hotel.longitude)">マーカー</button>
+              <button @click="hotelLatLng(hotel)">マーカー</button>
             </b-button>
             <b-collapse :id="'collapse-' + index " class="mt-2">
               <b-card>
@@ -141,11 +141,11 @@ export default {
       }
       this.$store.commit("hotelsData", this.hotelData);
     },
-    hotelLatLng(latitude, longitude) {
-      console.log(latitude, longitude);
+    hotelLatLng(hotel) {
       const latLng = {
-        latitude: latitude,
-        longitude: longitude,
+        name: hotel.hotelName,
+        latitude: hotel.latitude,
+        longitude: hotel.longitude,
         id: 2
       };
       this.$store.commit("marker", latLng);

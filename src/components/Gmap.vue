@@ -11,8 +11,8 @@ export default {
   watch: {
     myMarker() {
       console.log("marker");
-      this.setMarkers(this.myMarker);
       console.log(this.myMarker);
+      this.setMarkers(this.myMarker);
     }
   },
   computed: {
@@ -30,11 +30,9 @@ export default {
         },
         zoom: 7
       },
-      marker: null,
       markers: [],
       latitude: [],
       longitude: [],
-      latlng: [],
       infoWindows: [],
       currentInfoWindow: ""
     };
@@ -52,34 +50,42 @@ export default {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
     },
 
-    setMarkers(data) {
-      console.log(data);
+    setMarkers(latLngdata) {
+      console.log(latLngdata);
       let icon;
-      let content = "<div></div>";
-      for (let i in data) {
-        switch (data[i].id) {
+      console.log(this.shops[0]);
+      let content;
+      // for (let i in data) {
+      latLngdata.forEach(data => {
+        switch (data.id) {
           case 1:
             icon = "/gmap/mapicon1.png";
+            content = `<p>${data.name}</p>`;
             break;
           case 2:
             icon = "/gmap/mapicon2.png";
+            content = `<p>${data.name}</p>`;
+
             break;
           case 3:
             icon = "/gmap/mapicon3.png";
+            content = "<p>観光</p>";
+
             break;
           default:
             icon = "/gmap/mapicon5.png";
+            content = "<p>現在地<p>";
             break;
         }
-        this.latitude = data[i].latitude;
-        this.longitude = data[i].longitude;
-        this.latlng = new this.google.maps.LatLng(
+        this.latitude = data.latitude;
+        this.longitude = data.longitude;
+        const latLng = new this.google.maps.LatLng(
           this.latitude,
           this.longitude
         );
-        this.marker = new this.google.maps.Marker({
+        const marker = new this.google.maps.Marker({
           map: this.map,
-          position: this.latlng,
+          position: latLng,
           animation: this.google.maps.Animation.DROP,
           icon: {
             url: icon,
@@ -88,20 +94,21 @@ export default {
         });
         const offset = new this.google.maps.Size(0, -10);
         const infoWindow = new this.google.maps.InfoWindow({
-          position: this.latlng,
+          position: latLng,
           pixelOffset: offset,
           content: content
         });
-        this.marker.addListener("click", () => {
+        marker.addListener("click", () => {
           if (this.currentInfoWindow) {
             this.currentInfoWindow.close();
           }
           infoWindow.open(this.map);
           this.currentInfoWindow = infoWindow;
         });
-        this.markers.push(this.marker);
+        this.mapZoom();
         this.infoWindows.push(infoWindow);
-      }
+        this.markers.push(marker);
+      });
     },
     mapCoord() {
       //マップクリックで座標取得

@@ -74,8 +74,13 @@ export default {
     },
     success(position) {
       const geoLatlng = position.coords;
-      this.$store.commit("geoLatLng", geoLatlng);
-      this.$store.commit("marker", geoLatlng);
+      const latLng = {
+        latitude: geoLatlng.latitude,
+        longitude: geoLatlng.longitude,
+        id: 5
+      }
+      this.$store.commit("geoLatLng", latLng);
+      this.$store.commit("marker", latLng);
     }
   }
 };
