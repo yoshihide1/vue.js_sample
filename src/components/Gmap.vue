@@ -8,6 +8,7 @@
     <div v-for="(marker, index) in myMarker" :key="index">
       <p>{{ marker.name }}</p>
     </div>
+    <div id="msg"></div>
   </div>
 </template>
 
@@ -188,9 +189,27 @@ export default {
         preserveViewport: true
       });
       direction.route(request, (result, status) => {
+        let totalTime = 0;
+        let totalK = 0;
+        let oneTime = 0;
+        let oneK = 0;
         if (status == this.google.maps.DirectionsStatus.OK) {
           render.setDirections(result);
+
+          let data = result.routes[0].legs[0];
+          console.log(data);
+          let totalData = result.routes[0].legs;
+          console.log(totalData);
+          oneTime = data.duration.text; //時間
+          oneK = data.distance.text; //距離
+
+          for (let i in totalData) {
+            totalTime += totalData[i].duration.value / 60;
+            totalK += totalData[i].distance.value / 1000;
+          }
         }
+        console.log("時間:" + oneTime + "距離" + oneK);
+        console.log("時間:" + totalTime + "距離" + totalK);
       });
     }
   }
