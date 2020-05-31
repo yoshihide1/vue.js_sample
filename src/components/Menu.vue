@@ -84,7 +84,7 @@ export default {
   position: fixed;
   width: 100%;
   z-index: 100;
-  /* height: 50px; */
+  /* height: 55px; */
   /* padding: 0 15px; */
 }
 </style>

@@ -2,9 +2,15 @@
   <div>
     <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
     <weather></weather>
+    <p>
+      <button @click="requestMap(myMarker)">ルート検索</button>
+    </p>
+    <div v-for="(marker, index) in myMarker" :key="index">
+      <p>{{ marker.name }}</p>
+    </div>
   </div>
 </template>
-f
+
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState, mapGetters } from "vuex";
@@ -38,7 +44,8 @@ export default {
       markers: [],
       latitude: [],
       longitude: [],
-      currentInfoWindow: ""
+      currentInfoWindow: "",
+      waypoints: []
     };
   },
 
@@ -65,8 +72,9 @@ export default {
       this.clearMarkers();
       let icon;
 
-      // for (let i in data) {
       latLngData.forEach(data => {
+        let content = `<button id="infoButton">マーカー削除</button>
+            <p>${data.name}</p>`;
         switch (data.id) {
           case 1: //飲食
             icon = "/gmap/mapicon1.png";
@@ -83,12 +91,9 @@ export default {
 
           default:
             icon = "/gmap/mapicon5.png";
-            content = `<p> <button id="infoButton">マーカー削除</button>現在地<p>`;
+            content = ` <button id="infoButton">マーカー削除</button><p>現在地<p>`;
             break;
         }
-        let content = `<p>
-            <button id="infoButton">マーカー削除</button>
-            ${data.name}</p>`;
         this.latitude = data.latitude;
         this.longitude = data.longitude;
         const latLng = new this.google.maps.LatLng(
@@ -156,6 +161,37 @@ export default {
         this.markers[i].setMap(null);
       }
       this.markers = [];
+    },
+
+    requestMap(latLngData) {
+      latLngData.forEach(data => {
+        let points = {
+          location: new this.google.maps.LatLng(data.latitude, data.longitude)
+        };
+        this.waypoints.push(points);
+      });
+      let request = {
+        origin: new this.google.maps.LatLng(
+          this.latLng.latitude,
+          this.latLng.longitude
+        ), // 出発地
+        destination: new this.google.maps.LatLng(
+          this.latLng.latitude,
+          this.latLng.longitude
+        ), //仮！！ 目的地
+        waypoints: this.waypoints,
+        travelMode: this.google.maps.DirectionsTravelMode.DRIVING // 交通手段
+      };
+      const direction = new this.google.maps.DirectionsService();
+      const render = new this.google.maps.DirectionsRenderer({
+        map: this.map,
+        preserveViewport: true
+      });
+      direction.route(request, (result, status) => {
+        if (status == this.google.maps.DirectionsStatus.OK) {
+          render.setDirections(result);
+        }
+      });
     }
   }
 };
