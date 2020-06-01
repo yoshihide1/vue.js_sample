@@ -2,10 +2,12 @@
   <div>
     <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand href="#" class="ml-1">Oltower</b-navbar-brand>
-      <b-button variant="outline-light" class="geolocation" @click="geoLocation">現在地取得</b-button>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
+          <b-nav-item>
+            <b-button variant="outline-light" class="geolocation" @click="geoLocation">現在地取得</b-button>
+          </b-nav-item>
           <b-nav-item>
             <router-link to="/">
               <b-button variant="outline-light">Home</b-button>
@@ -26,9 +28,19 @@
               <b-button variant="outline-light">Sightseeing</b-button>
             </router-link>
           </b-nav-item>
+          <b-nav-item>
+            <h4>
+              <b-badge variant="success">TotalTime：{{ time }}分</b-badge>
+            </h4>
+          </b-nav-item>
+          <b-nav-item>
+            <h4>
+              <b-badge variant="success">TotalDistance：{{ distance }}㎞</b-badge>
+            </h4>
+          </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right class="mr-5">
+          <b-nav-item-dropdown right class="mr-1">
             <template v-slot:button-content>
               <em>User</em>
             </template>
@@ -49,9 +61,13 @@
 
 <script>
 import signOut from "@/components/SignOut";
+import { mapState } from "vuex";
 export default {
   components: {
     signOut
+  },
+  computed: {
+    ...mapState(["time", "distance"])
   },
   data() {
     return {};

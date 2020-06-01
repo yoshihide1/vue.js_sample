@@ -41,6 +41,7 @@ export default {
   },
   watch: {
     latLng() {
+      console.log(this.latLng)
       this.getWeather();
     }
   },

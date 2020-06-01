@@ -10,7 +10,7 @@
             <b-button variant="outline-success" v-on:click="searchShops">検索</b-button>
           </b-input-group-append>
         </b-input-group>
-      </b-row> -->
+      </b-row>-->
 
       <b-row>
         <b-col>
@@ -22,38 +22,6 @@
           </b-form-group>
         </b-col>
       </b-row>
-
-      <!-- <b-row>
-        <b-col>
-          <b-form-checkbox v-model="no_smoking">禁煙席</b-form-checkbox>
-        </b-col>
-
-        <b-col>
-          <b-form-checkbox v-model="lunch">ランチ</b-form-checkbox>
-        </b-col>
-
-        <b-col>
-          <b-form-checkbox v-model="parking">駐車場</b-form-checkbox>
-        </b-col>
-
-        <b-col>
-          <b-form-checkbox v-model="private_room">個室</b-form-checkbox>
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col>
-          <b-form-checkbox v-model="card">カード利用</b-form-checkbox>
-        </b-col>
-
-        <b-col>
-          <b-form-checkbox v-model="kids_menu">キッズメニュー</b-form-checkbox>
-        </b-col>
-
-        <b-col>
-          <b-form-checkbox v-model="wifi">WiFi</b-form-checkbox>
-        </b-col>
-      </b-row> -->
 
       <b-row align-h="center">
         <div v-for="(shop, index) in shops" :key="index">
@@ -111,23 +79,16 @@ export default {
         { text: "3000m", value: 5 }
       ],
       freeword: "",
-      lunch: 0, //ランチ
-      no_smoking: 0, //禁煙席あり
-      card: 0, //カード利用
-      private_room: 0, //個室
-      parking: 0, //駐車場
-      kids_menu: 0, //キッズメニュー
-      wifi: 0, //
       range: 3, //緯度、経度からの検索範囲
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid
     };
   },
   computed: {
-    ...mapState(["latLng", "shops"])
+    ...mapState(["latLngC", "shops"])
   },
   watch: {
-    latLng() {
+    latLngC() {
       this.searchShops();
     }
   },
@@ -162,16 +123,9 @@ export default {
         keyid: process.env.VUE_APP_GNAVI, //.envから取得
         freeword: this.freeword,
         hit_per_page: 30, //検索結果の表示数
-        lunch: this.lunch ? 1 : 0, //ランチ
-        no_smoking: this.no_smoking ? 1 : 0, //禁煙席あり
-        card: this.card ? 1 : 0, //カード利用
-        private_room: this.private_room ? 1 : 0, //個室
-        parking: this.parking ? 1 : 0, //駐車場
-        kids_menu: this.kids_menu ? 1 : 0, //キッズメニュー
-        wifi: this.wifi ? 1 : 0,
         range: this.selected,
-        latitude: this.latLng.latitude, //stoer
-        longitude: this.latLng.longitude
+        latitude: this.latLngC.latitude, //stoer
+        longitude: this.latLngC.longitude
       };
 
       axios
@@ -182,18 +136,18 @@ export default {
           this.freeword = "";
           this.selected = 3;
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          alert("近くに飲食店がありません");
         });
     },
     shopLatLng(shop) {
-      const latLng = {
+      const data = {
         name: shop.name,
         latitude: shop.latitude,
         longitude: shop.longitude,
         id: 1
       };
-      this.$store.commit("newMarker", latLng);
+      this.$store.commit("newMarker", data);
     }
   }
 };

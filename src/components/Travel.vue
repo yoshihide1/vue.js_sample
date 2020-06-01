@@ -99,7 +99,7 @@ export default {
     gmap
   },
   computed: {
-    ...mapState(["hotels", "latLng"])
+    ...mapState(["hotels", "latLngC"])
   },
   data() {
     return {
@@ -110,7 +110,7 @@ export default {
     };
   },
   watch: {
-    latLng() {
+    latLngC() {
       this.getData();
     }
   },
@@ -118,8 +118,8 @@ export default {
     getData() {
       const params = {
         applicationId: process.env.VUE_APP_RAKUTEN,
-        latitude: this.latLng.latitude, //store
-        longitude: this.latLng.longitude,
+        latitude: this.latLngC.latitude, //store
+        longitude: this.latLngC.longitude,
         largeClassCode: "japan",
         datumType: 1, //測地系のタイプ
         serchRadius: 3 //検索範囲0.1~3.0まで(km)
@@ -145,13 +145,13 @@ export default {
       this.$store.commit("hotelsData", this.hotelData);
     },
     hotelLatLng(hotel) {
-      const latLng = {
+      const data = {
         name: hotel.hotelName,
         latitude: hotel.latitude,
         longitude: hotel.longitude,
         id: 2
       };
-      this.$store.commit("newMarker", latLng);
+      this.$store.commit("newMarker", data);
     }
   }
 };

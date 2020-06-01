@@ -2,13 +2,18 @@
   <div>
     <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
     <weather></weather>
-    <p>
-      <button @click="requestMap(myMarker)">ルート検索</button>
-    </p>
-    <div v-for="(marker, index) in myMarker" :key="index">
-      <p>{{ marker.name }}</p>
-    </div>
-    <div id="msg"></div>
+    <b-container>
+      <b-row>
+        <p>
+          <button @click="requestMap(myMarker)">ルート検索</button>
+        </p>
+        有料道路除外<input type="checkbox" v-model="avoidTolls">
+        <div v-for="(marker, index) in myMarker" :key="index">
+          <p>{{ marker.name }}</p>
+        </div>
+      </b-row>
+    </b-container>
+    <button @click="heatMap">heatMapTest</button>
   </div>
 </template>
 
@@ -23,11 +28,12 @@ export default {
   watch: {
     myMarker() {
       console.log("marker");
+      console.log(this.myMarker)
       this.setMarkers(this.myMarker);
     }
   },
   computed: {
-    ...mapState(["latLng", "myMarker"]),
+    ...mapState(["latLng", "myMarker", "latLngC"]),
     ...mapGetters(["filterMarker"])
   },
 
@@ -46,13 +52,15 @@ export default {
       latitude: [],
       longitude: [],
       currentInfoWindow: "",
-      waypoints: []
+      waypoints: [],
+      avoidTolls: false
     };
   },
 
   async mounted() {
     this.google = await GoogleMapsApiLoader({
-      apiKey: process.env.VUE_APP_GOOGLE
+      apiKey: process.env.VUE_APP_GOOGLE + 
+      "&libraries=visualization"      
     });
     this.initializeMap();
     window.addEventListener("resize", this.updateDevice);
@@ -72,7 +80,6 @@ export default {
       console.log("setMarker");
       this.clearMarkers();
       let icon;
-
       latLngData.forEach(data => {
         let content = `<button id="infoButton">マーカー削除</button>
             <p>${data.name}</p>`;
@@ -97,6 +104,7 @@ export default {
         }
         this.latitude = data.latitude;
         this.longitude = data.longitude;
+
         const latLng = new this.google.maps.LatLng(
           this.latitude,
           this.longitude
@@ -130,11 +138,8 @@ export default {
               marker.setMap(null);
               this.currentInfoWindow.close();
               this.$store.commit("deleteMarker", this.filterMarker(data.name));
-              console.log(this.myMarker);
             });
         });
-        this.mapZoom();
-        // this.infoWindows.push(infoWindow);
         this.markers.push(marker);
       });
     },
@@ -145,17 +150,17 @@ export default {
           latitude: e.latLng.lat(),
           longitude: e.latLng.lng()
         };
-        this.$store.commit("geoLatLng", mapData);
-        this.mapZoom();
+        this.$store.commit("clickLatLng", mapData);
+        this.mapZoom(10);
       });
     },
-    mapZoom() {
-      const latlng = new this.google.maps.LatLng(
-        this.latLng.latitude,
-        this.latLng.longitude
+    mapZoom(zoom) {
+      let latlng = new this.google.maps.LatLng(
+        this.latLngC.latitude,
+        this.latLngC.longitude
       );
       this.map.setCenter(latlng);
-      this.map.setZoom(13);
+      this.map.setZoom(zoom);
     },
     clearMarkers() {
       for (let i in this.markers) {
@@ -177,41 +182,56 @@ export default {
           this.latLng.longitude
         ), // 出発地
         destination: new this.google.maps.LatLng(
-          this.latLng.latitude,
-          this.latLng.longitude
-        ), //仮！！ 目的地
+          latLngData.slice(-1)[0].latitude,
+          latLngData.slice(-1)[0].longitude,
+          console.log(latLngData.slice(-1)[0].latitude),
+          console.log(latLngData.slice(-1)[0].longitude)
+        ), 
         waypoints: this.waypoints,
-        travelMode: this.google.maps.DirectionsTravelMode.DRIVING // 交通手段
+        travelMode: this.google.maps.DirectionsTravelMode.DRIVING, // 交通手段
+        optimizeWaypoints: true,//rootの最適化(最短ルートに並べ替え)
+        avoidTolls: this.avoidTolls //有料道路の除外
       };
       const direction = new this.google.maps.DirectionsService();
-      const render = new this.google.maps.DirectionsRenderer({
+      const render = new this.google.maps.DirectionsRenderer(
+        {
         map: this.map,
-        preserveViewport: true
-      });
+        preserveViewport: true,
+        suppressMarkers: true//ルート用のマーカー
+      }
+      );
       direction.route(request, (result, status) => {
         let totalTime = 0;
-        let totalK = 0;
-        let oneTime = 0;
-        let oneK = 0;
+        let totalDistance = 0;
         if (status == this.google.maps.DirectionsStatus.OK) {
           render.setDirections(result);
 
-          let data = result.routes[0].legs[0];
-          console.log(data);
           let totalData = result.routes[0].legs;
-          console.log(totalData);
-          oneTime = data.duration.text; //時間
-          oneK = data.distance.text; //距離
 
           for (let i in totalData) {
             totalTime += totalData[i].duration.value / 60;
-            totalK += totalData[i].distance.value / 1000;
+            totalDistance += totalData[i].distance.value / 1000;
           }
+          totalTime = totalTime.toFixed(0);
+          totalDistance = totalDistance.toFixed(1);
+          this.$store.commit("time", totalTime);
+          this.$store.commit("distance", totalDistance);
         }
-        console.log("時間:" + oneTime + "距離" + oneK);
-        console.log("時間:" + totalTime + "距離" + totalK);
+        this.mapZoom(8)
+        console.log("時間:" + totalTime + "分、距離" + totalDistance + "km");
       });
-    }
+    },
+    heatMap() {
+      let heatmapData = [//仮
+  new this.google.maps.LatLng(this.latitude, this.longitude),
+       ]
+      //  var sanFrancisco = new this.google.maps.LatLng(37.774546, -122.433523);
+       
+      let heatmap = new this.google.maps.visualization.HeatmapLayer({
+         data: heatmapData
+       })
+       heatmap.setMap(this.map)
+       }
   }
 };
 </script>
