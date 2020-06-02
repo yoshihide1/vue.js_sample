@@ -80,10 +80,6 @@ export default new Vuex.Store({
     filterMarker: (state) => (name) => {
       return state.myMarker.filter(marker => marker.name !== name)
     },
-    // endPoint: (state) => (name) => {
-    //   return state.
-    // }
-
   },
   actions: {
   }

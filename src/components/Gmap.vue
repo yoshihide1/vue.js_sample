@@ -6,8 +6,9 @@
       <b-row>
         <p>
           <button @click="requestMap(myMarker)">ルート検索</button>
-        </p>
-        有料道路除外<input type="checkbox" v-model="avoidTolls">
+        </p>有料道路除外
+        <input type="checkbox" v-model="avoidTolls" />
+        {{avoidTolls}}
         <div v-for="(marker, index) in myMarker" :key="index">
           <p>{{ marker.name }}</p>
         </div>
@@ -28,13 +29,13 @@ export default {
   watch: {
     myMarker() {
       console.log("marker");
-      console.log(this.myMarker)
+      console.log(this.myMarker);
       this.setMarkers(this.myMarker);
     }
   },
   computed: {
     ...mapState(["latLng", "myMarker", "latLngC"]),
-    ...mapGetters(["filterMarker"])
+    ...mapGetters(["filterMarker", "pointMarker"])
   },
 
   data() {
@@ -52,15 +53,15 @@ export default {
       latitude: [],
       longitude: [],
       currentInfoWindow: "",
-      waypoints: [],
-      avoidTolls: false
+      wayPoints: [],
+      avoidTolls: false,
+      render: null
     };
   },
 
   async mounted() {
     this.google = await GoogleMapsApiLoader({
-      apiKey: process.env.VUE_APP_GOOGLE + 
-      "&libraries=visualization"      
+      apiKey: process.env.VUE_APP_GOOGLE + "&libraries=visualization"
     });
     this.initializeMap();
     window.addEventListener("resize", this.updateDevice);
@@ -168,13 +169,25 @@ export default {
       }
       this.markers = [];
     },
+    clearRender() {
+      if (this.render !== null) {
+        return this.render.setMap(null);
+      }
+    },
 
-    requestMap(latLngData) {
-      latLngData.forEach(data => {
+    requestMap() {
+      this.clearRender();
+      const direction = new this.google.maps.DirectionsService();
+      this.render = new this.google.maps.DirectionsRenderer({
+        map: this.map,
+        suppressMarkers: true, //ルート用のマーカー削除
+        draggable: true
+      });
+      this.myMarker.forEach(data => {
         let points = {
           location: new this.google.maps.LatLng(data.latitude, data.longitude)
         };
-        this.waypoints.push(points);
+        this.wayPoints.push(points);
       });
       let request = {
         origin: new this.google.maps.LatLng(
@@ -182,29 +195,20 @@ export default {
           this.latLng.longitude
         ), // 出発地
         destination: new this.google.maps.LatLng(
-          latLngData.slice(-1)[0].latitude,
-          latLngData.slice(-1)[0].longitude,
-          console.log(latLngData.slice(-1)[0].latitude),
-          console.log(latLngData.slice(-1)[0].longitude)
-        ), 
-        waypoints: this.waypoints,
+          this.myMarker.slice(-1)[0].latitude,
+          this.myMarker.slice(-1)[0].longitude
+        ),
+        waypoints: this.wayPoints,
         travelMode: this.google.maps.DirectionsTravelMode.DRIVING, // 交通手段
-        optimizeWaypoints: true,//rootの最適化(最短ルートに並べ替え)
+        optimizeWaypoints: true, //rootの最適化(最短ルートに並べ替え)
         avoidTolls: this.avoidTolls //有料道路の除外
       };
-      const direction = new this.google.maps.DirectionsService();
-      const render = new this.google.maps.DirectionsRenderer(
-        {
-        map: this.map,
-        preserveViewport: true,
-        suppressMarkers: true//ルート用のマーカー
-      }
-      );
+
       direction.route(request, (result, status) => {
         let totalTime = 0;
         let totalDistance = 0;
         if (status == this.google.maps.DirectionsStatus.OK) {
-          render.setDirections(result);
+          this.render.setDirections(result);
 
           let totalData = result.routes[0].legs;
 
@@ -216,22 +220,28 @@ export default {
           totalDistance = totalDistance.toFixed(1);
           this.$store.commit("time", totalTime);
           this.$store.commit("distance", totalDistance);
+          this.wayPoints = [];
         }
-        this.mapZoom(8)
+        this.mapZoom(8);
         console.log("時間:" + totalTime + "分、距離" + totalDistance + "km");
+        console.log(this.render);
       });
     },
     heatMap() {
-      let heatmapData = [//仮
-  new this.google.maps.LatLng(this.latitude, this.longitude),
-       ]
+      let heatmapData = [
+        //仮
+        {
+          location: new this.google.maps.LatLng(this.latitude, this.longitude),
+          weight: 8
+        }
+      ];
       //  var sanFrancisco = new this.google.maps.LatLng(37.774546, -122.433523);
-       
+
       let heatmap = new this.google.maps.visualization.HeatmapLayer({
-         data: heatmapData
-       })
-       heatmap.setMap(this.map)
-       }
+        data: heatmapData
+      });
+      heatmap.setMap(this.map);
+    }
   }
 };
 </script>
