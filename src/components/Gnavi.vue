@@ -12,7 +12,7 @@
         </b-input-group>
       </b-row>-->
 
-      <b-row>
+      <!-- <b-row>
         <b-col>
           <b-form-group>
             <label class="mt-2">
@@ -21,12 +21,15 @@
             </label>
           </b-form-group>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <b-row align-h="center">
         <div v-for="(shop, index) in shops" :key="index">
           <b-col>
             <b-card
+              bg-variant="secondary"
+              border-variant="success"
+              text-variant="white"
               :title="shop.name"
               :img-src="shop.image_url.shop_image1"
               :img-alt="shop.name"
@@ -35,8 +38,10 @@
               style="max-width: 20rem;"
             >
               <b-card-text>
-                <b-button variant="success" @click="starSet(index)">マイページ登録</b-button>
-                <button @click="shopLatLng(shop)">マーカー</button>
+                <b-button-group>
+                  <b-button id="button-group" variant="secondary" @click="starSet(index)">マイページ登録</b-button>
+                  <b-button id="button-group" variant="secondary" @click="shopLatLng(shop)">マーカーを置く</b-button>
+                </b-button-group>
                 <p>{{ shop.tel }}</p>
                 <p>{{ shop.address }}</p>
                 <b-form-textarea
@@ -69,7 +74,7 @@ export default {
   },
   data() {
     return {
-      selected: 3,
+      selected: 5,
       options: [
         //ぐるなびrange
         { text: "300m", value: 1 },
@@ -79,7 +84,7 @@ export default {
         { text: "3000m", value: 5 }
       ],
       freeword: "",
-      range: 3, //緯度、経度からの検索範囲
+      range: 5, //緯度、経度からの検索範囲
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid
     };
@@ -153,4 +158,7 @@ export default {
 };
 </script>
 <style>
+#button-group {
+  border: 1px solid white;
+}
 </style>

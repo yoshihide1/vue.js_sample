@@ -22,7 +22,6 @@ export default new Vuex.Store({
     hotels: [],
     time: 0,
     distance: 0,
-
     test: null
 
   },
@@ -74,7 +73,7 @@ export default new Vuex.Store({
     },
     distance(state, payload) {
       state.distance = payload
-    }
+    },
   },
   getters: {
     filterMarker: (state) => (name) => {

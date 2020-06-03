@@ -1,24 +1,24 @@
 <template>
   <b-container class="bv-example-row">
-    <b-row>
-      <b-col cols="3">
+    <b-row class="mt-3" align-h="around">
+      <b-col cols="2">
         <h3>
           <b-badge variant="secondary">Now {{ temp }}℃</b-badge>
         </h3>
       </b-col>
-      <b-col cols="3">
+      <b-col cols="2">
         <h3>
           <b-badge variant="danger">Max {{ tempMax }}℃</b-badge>
         </h3>
       </b-col>
-      <b-col cols="3">
+      <b-col cols="2">
         <h3>
           <b-badge variant="primary">Min {{ tempMin }}℃</b-badge>
         </h3>
       </b-col>
-      <b-col cols="3">
+      <b-col cols="2">
         <h3>
-          <b-badge variant="info">Humt {{ humidity }}％</b-badge>
+          <b-badge variant="info">Hum {{ humidity }}％</b-badge>
         </h3>
       </b-col>
     </b-row>
