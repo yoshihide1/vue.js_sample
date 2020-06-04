@@ -3,31 +3,13 @@
     <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
     <weather></weather>
     <b-container>
-      <p>
-        <!-- 有料道路除外 -->
-        <!-- <input type="checkbox" v-model="avoidTolls" /> -->
-        <b-button
-          class="mt-3"
-          block
-          variant="success"
-          @click="requestMap(myMarker), scrollTop()"
-        >ルート検索</b-button>
-      </p>
-      <p>
-        <b-button class="mt-3" block variant="success" @click="getPlace">Place</b-button>
-      </p>
-      <select v-model="selected">
-        <option value>選択してください</option>
-        <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
-      </select>
-      <p>{{selected}}</p>
-
       <b-row>
         <div v-for="(marker, index) in myMarker" :key="index">
           <p>{{ marker.name }}</p>
         </div>
       </b-row>
     </b-container>
+    <GmapSearch :map="map" :google="google"></GmapSearch>
   </div>
 </template>
 
@@ -35,9 +17,11 @@
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState, mapGetters } from "vuex";
 import weather from "@/components/Weather";
+import GmapSearch from "@/components/GmapSearch";
 export default {
   components: {
-    weather
+    weather,
+    GmapSearch
   },
   watch: {
     myMarker() {
@@ -62,25 +46,10 @@ export default {
         },
         zoom: 7
       },
-      selected: "",
-      options: [
-        { id: 1, eName: "amusement_park", jName: "遊び場" },
-        { id: 2, eName: "aquarium", jName: "水族館" },
-        { id: 3, eName: "zoo", jName: "動物園" },
-        { id: 4, eName: "art_gallery", jName: "美術館" },
-        { id: 5, eName: "campground", jName: "キャンプ場" },
-        { id: 6, eName: "museum", jName: "博物館" },
-        { id: 7, eName: "shopping_mall", jName: "ショッピングモール" },
-        { id: 8, eName: "place_of_worship", jName: "神社、寺" }
-      ],
       markers: [],
       latitude: [],
       longitude: [],
-      currentInfoWindow: "",
-      wayPoints: [],
-      avoidTolls: false,
-      render: null,
-      plays: []
+      currentInfoWindow: ""
     };
   },
 
@@ -95,32 +64,6 @@ export default {
   },
 
   methods: {
-    getPlace() {
-      //仮
-      const service = new this.google.maps.places.PlacesService(this.map);
-      service.nearbySearch(
-        {
-          location: new this.google.maps.LatLng(34.662778, 135.572867),
-          radius: 10000,
-          languege: "jp",
-
-          type: this.selected
-        },
-        function(results, status) {
-          if (status == "OK") {
-            results.forEach(data => {
-              console.log(data);
-              this.plays = data;
-            });
-          } else {
-            alert("失敗");
-          }
-        }
-      );
-    },
-    scrollTop() {
-      scrollTo(0, 0);
-    },
     initializeMap() {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
     },
@@ -220,64 +163,6 @@ export default {
         this.markers[i].setMap(null);
       }
       this.markers = [];
-    },
-    clearRender() {
-      if (this.render !== null) {
-        return this.render.setMap(null);
-      }
-    },
-
-    requestMap() {
-      this.clearRender();
-      const direction = new this.google.maps.DirectionsService();
-      this.render = new this.google.maps.DirectionsRenderer({
-        map: this.map,
-        suppressMarkers: true, //デフォルトのルート用マーカー削除
-        draggable: true
-      });
-      this.myMarker.forEach(data => {
-        let points = {
-          location: new this.google.maps.LatLng(data.latitude, data.longitude)
-        };
-        this.wayPoints.push(points);
-      });
-      let request = {
-        origin: new this.google.maps.LatLng(
-          this.latLng.latitude,
-          this.latLng.longitude
-        ), // 出発地
-        destination: new this.google.maps.LatLng(
-          this.myMarker.slice(-1)[0].latitude,
-          this.myMarker.slice(-1)[0].longitude
-        ),
-        waypoints: this.wayPoints,
-        travelMode: this.google.maps.DirectionsTravelMode.DRIVING, // 交通手段
-        optimizeWaypoints: true, //rootの最適化(最短ルートに並べ替え)
-        avoidTolls: this.avoidTolls //有料道路の除外
-      };
-
-      direction.route(request, (result, status) => {
-        let totalTime = 0;
-        let totalDistance = 0;
-        if (status == this.google.maps.DirectionsStatus.OK) {
-          this.render.setDirections(result);
-
-          let totalData = result.routes[0].legs;
-
-          for (let i in totalData) {
-            totalTime += totalData[i].duration.value / 60;
-            totalDistance += totalData[i].distance.value / 1000;
-          }
-          totalTime = totalTime.toFixed(0);
-          totalDistance = totalDistance.toFixed(1);
-          this.$store.commit("time", totalTime);
-          this.$store.commit("distance", totalDistance);
-          this.wayPoints = [];
-        }
-        this.mapZoom(8);
-        console.log("時間:" + totalTime + "分、距離" + totalDistance + "km");
-        console.log(this.render);
-      });
     },
     heatMap() {
       //仮

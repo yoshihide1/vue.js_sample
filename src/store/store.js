@@ -22,7 +22,7 @@ export default new Vuex.Store({
     hotels: [],
     time: 0,
     distance: 0,
-    test: null
+
 
   },
 

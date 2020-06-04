@@ -139,7 +139,7 @@ export default {
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
           this.freeword = "";
-          this.selected = 3;
+          this.selected = 5;
         })
         .catch(() => {
           alert("近くに飲食店がありません");
