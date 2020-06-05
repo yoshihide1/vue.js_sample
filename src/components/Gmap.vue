@@ -1,28 +1,21 @@
 <template>
   <div>
     <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
-    <weather></weather>
     <b-container>
       <b-row>
         <div v-for="(marker, index) in myMarker" :key="index">
-          <p>{{ marker.name }}</p>
+          <p id="waypoints">{{ index }}:{{ marker.name }}>></p>
         </div>
       </b-row>
     </b-container>
-    <GmapSearch :map="map" :google="google"></GmapSearch>
   </div>
 </template>
 
 <script>
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState, mapGetters } from "vuex";
-import weather from "@/components/Weather";
-import GmapSearch from "@/components/GmapSearch";
 export default {
-  components: {
-    weather,
-    GmapSearch
-  },
+  name: "Gmap",
   watch: {
     myMarker() {
       console.log("marker");
@@ -55,10 +48,10 @@ export default {
 
   async mounted() {
     this.google = await GoogleMapsApiLoader({
-      apiKey:
-        process.env.VUE_APP_GOOGLE + "&libraries=visualization&libraries=places"
+      // apiKey: process.env.VUE_APP_GOOGLE + "&libraries=visualization&libraries=places"
     });
     this.initializeMap();
+    this.$store.commit("google", this.google);
     window.addEventListener("resize", this.updateDevice);
     this.updateDevice();
   },
@@ -66,6 +59,7 @@ export default {
   methods: {
     initializeMap() {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
+      this.$store.commit("map", this.map);
     },
     updateDevice() {
       const height = window.innerHeight;
@@ -163,28 +157,16 @@ export default {
         this.markers[i].setMap(null);
       }
       this.markers = [];
-    },
-    heatMap() {
-      //仮
-      let heatmapData = [
-        {
-          location: new this.google.maps.LatLng(this.latitude, this.longitude),
-          weight: 8
-        }
-      ];
-
-      let heatmap = new this.google.maps.visualization.HeatmapLayer({
-        data: heatmapData
-      });
-      heatmap.setMap(this.map);
     }
   }
 };
 </script>
-
 <style>
 #gmap {
   width: 100%;
   height: 500px;
+}
+#waypoints {
+  color: whitesmoke;
 }
 </style>

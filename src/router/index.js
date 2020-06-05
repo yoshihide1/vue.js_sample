@@ -8,7 +8,7 @@ import Sightseeing from '../components/Sightseeing'
 import MyPage from '../components/MyPage'
 import Sign from '../components/sign'
 import firebase from 'firebase'
-import Menu from '../components/Menu'
+// import Menu from '../components/Menu'
 
 // import test from '../components/test'
 
@@ -19,14 +19,6 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [//link元App.vue
-    // {
-    //   path: '/test',
-    //   component: test
-    // },
-    {//最後に消す
-      path: '/menu',
-      component: Menu
-    },
     {
       path: '*',
       redirect: '/sign'
@@ -35,38 +27,38 @@ const router = new VueRouter({
       path: '/mypage',
       name: 'MyPage',
       component: MyPage,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/',
       name: 'Home',
       component: Home,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
       //metaフィールド認証されてないと入れない
     },
     {
       path: '/gnavi',
       name: 'Gnavi',
       component: Gnavi,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/weather',
       name: 'Weather',
       component: Weather,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/travel',
       name: 'Travel',
       component: Travel,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/sightseeing',
       name: 'Sightseeing',
       component: Sightseeing,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/sign',

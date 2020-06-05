@@ -22,11 +22,19 @@ export default new Vuex.Store({
     hotels: [],
     time: 0,
     distance: 0,
+    google: null,
+    map: null
 
 
   },
 
   mutations: {
+    google(state, payload) {
+      state.google = payload
+    },
+    map(state, payload) {
+      state.map = payload
+    },
     geoLatLng(state, payload) {//現在地
       console.log("geoLatLng mutation")
       state.latLng = payload

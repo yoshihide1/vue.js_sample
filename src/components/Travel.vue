@@ -1,8 +1,9 @@
 <template>
   <div>
-    <menuList></menuList>
-    <gmap></gmap>
     <b-container>
+      <b-row align-h="center">
+        <h3>宿</h3>
+      </b-row>
       <div v-for="(hotel, index) in hotels" :key="index">
         <div>
           <b-row align-h="center">
@@ -90,16 +91,10 @@
 import axios from "axios";
 import firebase from "firebase";
 import "firebase/firestore";
-import menuList from "@/components/Menu";
-import gmap from "@/components/Gmap";
 import { mapState } from "vuex";
 export default {
-  components: {
-    menuList,
-    gmap
-  },
   computed: {
-    ...mapState(["hotels", "latLngC"])
+    ...mapState(["hotels", "latLngC", "latLng"])
   },
   data() {
     return {
@@ -111,15 +106,18 @@ export default {
   },
   watch: {
     latLngC() {
-      this.getData();
+      this.searchHotels(this.latLngC);
+    },
+    latLng() {
+      this.searchHotels(this.latLng);
     }
   },
   methods: {
-    getData() {
+    searchHotels(latLng) {
       const params = {
         applicationId: process.env.VUE_APP_RAKUTEN,
-        latitude: this.latLngC.latitude, //store
-        longitude: this.latLngC.longitude,
+        latitude: latLng.latitude, //store
+        longitude: latLng.longitude,
         largeClassCode: "japan",
         datumType: 1, //測地系のタイプ
         serchRadius: 3 //検索範囲0.1~3.0まで(km)
@@ -135,7 +133,7 @@ export default {
           this.setData();
         })
         .catch(() => {
-          alert("近くにお店がありません");
+          alert("近くに宿がありません");
         });
     },
     setData() {

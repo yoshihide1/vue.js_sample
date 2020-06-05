@@ -1,6 +1,6 @@
 <template>
   <b-container class="bv-example-row">
-    <b-row class="mt-3" align-h="around">
+    <b-row class="mt-1" align-h="around">
       <b-col cols="2">
         <h3>
           <b-badge variant="secondary">Now {{ temp }}℃</b-badge>
@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     latLng() {
-      console.log(this.latLng)
+      console.log(this.latLng);
       this.getWeather();
     }
   },

@@ -1,18 +1,6 @@
 <template>
   <div>
-    <menuList></menuList>
-    <gmap></gmap>
-    <b-container class="bv-example-row">
-      <!-- <b-row>
-        <b-input-group prepend="freeword" class="mt-3">
-          <b-form-input type="text" v-model="freeword" placeholder="フリーワード"></b-form-input>
-          <b-input-group-append>
-            <b-button variant="outline-success" v-on:click="searchShops">検索</b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-row>-->
-
-      <!-- <b-row>
+    <!-- <b-row>
         <b-col>
           <b-form-group>
             <label class="mt-2">
@@ -21,26 +9,31 @@
             </label>
           </b-form-group>
         </b-col>
-      </b-row> -->
+    </b-row>-->
 
-      <b-row align-h="center">
-        <div v-for="(shop, index) in shops" :key="index">
-          <b-col>
+    <b-row id="title" class="py-2" align-h="center">
+      <h3>食事</h3>
+    </b-row>
+
+    <b-row align-h="center" id="shop-list">
+      <div v-for="(shop, index) in shops" :key="index">
+        <b-card-group>
+          <b-col class="mt-2">
             <b-card
               bg-variant="secondary"
-              border-variant="success"
+              border-variant="light"
               text-variant="white"
               :title="shop.name"
-              :img-src="shop.image_url.shop_image1"
+              :img-src="[ shop.image_url.shop_image1 ? shop.image_url.shop_image1 : 'images/no_image.jpg']"
               :img-alt="shop.name"
               img-top
               tag="article"
-              style="max-width: 20rem;"
+              style="max-width: 17rem;"
             >
               <b-card-text>
                 <b-button-group>
-                  <b-button id="button-group" variant="secondary" @click="starSet(index)">マイページ登録</b-button>
-                  <b-button id="button-group" variant="secondary" @click="shopLatLng(shop)">マーカーを置く</b-button>
+                  <b-button id="button-group" variant="secondary" @click="starSet(index)">マイページ</b-button>
+                  <b-button id="button-group" variant="secondary" @click="shopLatLng(shop)">マーカー</b-button>
                 </b-button-group>
                 <p>{{ shop.tel }}</p>
                 <p>{{ shop.address }}</p>
@@ -53,48 +46,45 @@
               </b-card-text>
             </b-card>
           </b-col>
-        </div>
-      </b-row>
-    </b-container>
+        </b-card-group>
+      </div>
+    </b-row>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import gmap from "@/components/Gmap";
-import menuList from "@/components/Menu";
 import { mapState } from "vuex";
 import firebase from "firebase";
 import "firebase/firestore";
 
 export default {
-  components: {
-    gmap,
-    menuList
-  },
   data() {
     return {
       selected: 5,
-      options: [
-        //ぐるなびrange
-        { text: "300m", value: 1 },
-        { text: "500m", value: 2 },
-        { text: "1000m", value: 3 },
-        { text: "2000m", value: 4 },
-        { text: "3000m", value: 5 }
-      ],
-      freeword: "",
-      range: 5, //緯度、経度からの検索範囲
+      // options: [
+      //   //ぐるなびrange
+      //   { text: "300m", value: 1 },
+      //   { text: "500m", value: 2 },
+      //   { text: "1000m", value: 3 },
+      //   { text: "2000m", value: 4 },
+      //   { text: "3000m", value: 5 }
+      // ],
+      // freeword: "",
+      // range: 5, //緯度、経度からの検索範囲
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid
     };
   },
   computed: {
-    ...mapState(["latLngC", "shops"])
+    ...mapState(["latLngC", "latLng", "shops"])
   },
   watch: {
     latLngC() {
-      this.searchShops();
+      this.searchShops(this.latLngC);
+    },
+    latLng() {
+      this.searchShops(this.latLng);
     }
   },
   methods: {
@@ -120,17 +110,13 @@ export default {
           console.log("error");
         });
     },
-    searchShops() {
-      if (this.freeword != "") {
-        this.selected = null;
-      }
+    searchShops(latLng) {
       const params = {
         keyid: process.env.VUE_APP_GNAVI, //.envから取得
-        freeword: this.freeword,
         hit_per_page: 30, //検索結果の表示数
         range: this.selected,
-        latitude: this.latLngC.latitude, //stoer
-        longitude: this.latLngC.longitude
+        latitude: latLng.latitude, //stoer
+        longitude: latLng.longitude
       };
 
       axios
@@ -138,7 +124,6 @@ export default {
         .then(response => {
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
-          this.freeword = "";
           this.selected = 5;
         })
         .catch(() => {
@@ -157,8 +142,15 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 #button-group {
   border: 1px solid white;
+}
+#shop-list {
+  background-color: #fd7121;
+}
+#title {
+  background-color: #76665f;
+  color: white;
 }
 </style>

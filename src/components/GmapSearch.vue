@@ -1,44 +1,34 @@
 <template>
   <div>
-    <p>
-      <!-- 有料道路除外 -->
-      <input type="checkbox" v-model="avoidTolls" />
+    <b-nav-item>
       <b-button
-        class="mt-3"
-        block
-        variant="success"
+        variant="outline-light"
         @click="requestMap(myMarker), scrollTop()"
+        v-transition
       >ルート検索</b-button>
-    </p>
-
-    <select v-model="selected">
-      <option value>選択してください</option>
-      <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
-    </select>
-    <b-button class="mt-3" block variant="success" @click="getPlace">Place</b-button>
+    </b-nav-item>
+    <!-- <b-nav-item>
+      <b-button variant="outline-light" @click="getPlace">Place</b-button>
+    </b-nav-item>
+    <b-nav-item>
+      <select v-model="selected">
+        <option value>選択してください</option>
+        <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
+      </select>
+    </b-nav-item>-->
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 export default {
   name: "GmapSearch",
-  props: {
-    map: {
-      type: Object,
-      default: null
-    },
-    google: {
-      type: Object,
-      default: null
-    }
-  },
   computed: {
-    ...mapState(["myMarker", "latLng"])
+    ...mapState(["myMarker", "latLng", "map", "google"])
   },
   watch: {},
   data() {
     return {
-      plays: null,
+      plays: [],
       render: null,
       wayPoints: [],
       avoidTolls: false,
@@ -50,13 +40,16 @@ export default {
         { id: 4, eName: "art_gallery", jName: "美術館" },
         { id: 5, eName: "campground", jName: "キャンプ場" },
         { id: 6, eName: "museum", jName: "博物館" },
-        { id: 7, eName: "shopping_mall", jName: "ショッピングモール" },
+        { id: 7, eName: "shopping_mall", jName: "ショッピングモール" }
       ]
     };
   },
   methods: {
     scrollTop() {
-      scrollTo(0, 0);
+      scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     },
 
     requestMap() {
@@ -124,14 +117,14 @@ export default {
         {
           location: new this.google.maps.LatLng(34.662778, 135.572867),
           radius: 10000,
-          languege: "ja",
+          // language: "ja",
           type: this.selected
         },
         (results, status) => {
           if (status == "OK") {
             results.forEach(data => {
-              console.log(data);
-              this.plays = data;
+              console.log(data.name);
+              this.plays.push(data);
             });
             console.log(this.plays);
           } else {
@@ -143,3 +136,9 @@ export default {
   }
 };
 </script>
+<style>
+.fontSize {
+  font-size: 1.3rem;
+  font-weight: bolder;
+}
+</style>

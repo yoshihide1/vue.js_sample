@@ -1,64 +1,85 @@
 <template>
-  <b-container>
-    
-    <b-row align-h="center">
-      <router-link to="/mypage">
-        <b-col class="my-2">
-          <b-button variant="success" size="lg">マイページ</b-button>
-        </b-col>
-      </router-link>
-    </b-row>
-    <b-row align-h="center">
-      <router-link to="/gnavi">
-        <b-col class="my-2">
-          <b-button class="px-5" variant="success" size="lg">食事</b-button>
-        </b-col>
-      </router-link>
-    </b-row>
-    <b-row align-h="center">
-      <router-link to="/travel">
-        <b-col class="my-2">
-          <b-button class="px-5" variant="success" size="lg">宿泊</b-button>
-        </b-col>
-      </router-link>
-    </b-row>
-    <b-row align-h="center">
-      <router-link to="/sightseeing">
-        <b-col class="my-2">
-          <b-button class="px-5" variant="success" size="lg">観光</b-button>
-        </b-col>
-      </router-link>
-    </b-row>
-    <b-row align-h="center">
-      <router-link to="/weather">
-        <b-col class="my-2">
-          <b-button class="px-5" variant="success" size="lg">天気</b-button>
-        </b-col>
-      </router-link>
-    </b-row>
-    <b-row>
-      <signOut></signOut>
-    </b-row>
-    <!-- <gmap></gmap>
-    <gnavi></gnavi>
-    <travel></travel> -->
-  </b-container>
+  <div>
+    <menuList></menuList>
+    <b-container fluid class="px-0">
+      <div class="home">
+        <gmap></gmap>
+        <weather class="mb-1"></weather>
+      </div>
+    </b-container>
+    <div>
+      <b-tabs content-class="mt-3" fill>
+        <b-tab title="食事" active>
+          <gnavi></gnavi>
+        </b-tab>
+        <b-tab title="宿泊">
+          <travel></travel>
+        </b-tab>
+        <b-tab title="ルート">
+          <p>ルート</p>
+        </b-tab>
+      </b-tabs>
+    </div>
+
+    <div class="scroll-top" v-show="position > 500" @click="scrollTop" v-transition>
+      <i class="fas fa-angle-double-up fa-lg"></i>
+    </div>
+  </div>
 </template>
 
 <script>
-// import gmap from "@/components/Gmap"
-// import gnavi from "@/components/Gnavi"
-// import travel from "@/components/Travel"
-import signOut from "@/components/SignOut";
+import menuList from "@/components/Menu";
+import gmap from "@/components/Gmap";
+import weather from "@/components/Weather";
+import gnavi from "@/components/Gnavi";
+import travel from "@/components/Travel";
 export default {
   components: {
-    // gmap,
-    // gnavi,
-    // travel,
-    signOut
+    menuList,
+    gmap,
+    weather,
+    gnavi,
+    travel
+  },
+  data() {
+    return {
+      position: null
+    };
+  },
+  mounted() {
+    document.onscroll = () => {
+      this.position =
+        document.documentElement.scrollTop || document.body.scrollTop;
+    };
+  },
+  methods: {
+    scrollTop() {
+      scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
   }
 };
 </script>
 
 <style>
+.home {
+  background-color: #303030;
+}
+.scroll-top {
+  animation: fadeIn 1s ease 0s 1 normal;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 5vw;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>

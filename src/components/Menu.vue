@@ -6,28 +6,14 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item>
+            <router-link to="/">
+              <b-button variant="outline-light" @click="scrollTop">Home</b-button>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item>
             <b-button variant="outline-light" class="geolocation" @click="geoLocation">現在地取得</b-button>
           </b-nav-item>
-          <b-nav-item>
-            <router-link to="/">
-              <b-button variant="outline-light">Home</b-button>
-            </router-link>
-          </b-nav-item>
-          <b-nav-item>
-            <router-link to="/gnavi">
-              <b-button variant="outline-light">Gnavi</b-button>
-            </router-link>
-          </b-nav-item>
-          <b-nav-item>
-            <router-link to="/travel">
-              <b-button variant="outline-light">Travel</b-button>
-            </router-link>
-          </b-nav-item>
-          <b-nav-item>
-            <router-link to="/sightseeing">
-              <b-button variant="outline-light">Sightseeing</b-button>
-            </router-link>
-          </b-nav-item>
+          <gmapSearch></gmapSearch>
           <b-nav-item>
             <h4>
               <b-badge variant="success">TotalTime：{{ time }}分</b-badge>
@@ -61,10 +47,12 @@
 
 <script>
 import signOut from "@/components/SignOut";
+import gmapSearch from "@/components/GmapSearch";
 import { mapState } from "vuex";
 export default {
   components: {
-    signOut
+    signOut,
+    gmapSearch
   },
   computed: {
     ...mapState(["time", "distance"])
@@ -73,6 +61,9 @@ export default {
     return {};
   },
   methods: {
+    scrollTop() {
+      scrollTo(0, 0);
+    },
     geoLocation() {
       //現在地取得
       if (navigator.geolocation) {
@@ -86,6 +77,7 @@ export default {
       const latLng = {
         latitude: geoLatlng.latitude,
         longitude: geoLatlng.longitude,
+        name: "現在地",
         id: 5
       };
       this.$store.commit("geoLatLng", latLng);
