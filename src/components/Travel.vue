@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="hotel-list">
     <b-container>
       <b-row align-h="center">
         <h3>宿</h3>
@@ -7,79 +7,96 @@
       <div v-for="(hotel, index) in hotels" :key="index">
         <div>
           <b-row align-h="center">
-            <b-button v-b-toggle="'collapse-' + index" variant="primary" class="mt-2 button-width">
-              <span class="title-text">{{ hotel.hotelName }}/{{ hotel.address1 }}</span>
-              <button @click="hotelLatLng(hotel)">マーカー</button>
-            </b-button>
-            <b-collapse :id="'collapse-' + index " class="mt-2">
-              <b-card>
-                <b-row>
-                  <b-form-rating
-                    :value="hotel.reviewAverage"
-                    show-value
-                    variant="warning"
-                    class="mb-2"
-                  ></b-form-rating>
-                  <p>{{ hotel.access }}</p>
-                  <b-img :src="hotel.hotelImageUrl" fluid alt="外観"></b-img>
-                  <b-img :src="hotel.roomImageUrl" fluid alt="室内"></b-img>
-                </b-row>
-                <p>{{ hotel.latitude }}</p>
-                <p>{{ hotel.longitude }}</p>
-                <b-row align-h="center">
-                  <b-button
-                    v-b-toggle="'collapse-' + index + '-inner'"
-                    size="sm"
-                    class="px-5 py-2 mt-2"
-                  >詳しく</b-button>
-                </b-row>
-                <b-collapse :id="'collapse-' + index + '-inner'" class="mt-2">
-                  <b-card>
-                    <p>
-                      <b-badge variant="success">
-                        <span class="font">住所</span>
-                      </b-badge>
-                      {{ hotel.address1 }} {{ hotel.address2 }}
-                    </p>
-                    <p>
-                      <b-badge variant="info">
-                        <span class="font">電話</span>
-                      </b-badge>
-                      {{ hotel.telephoneNo }}
-                    </p>
-                    <p>
-                      <b-badge variant="info">
-                        <span class="font">最安値</span>
-                      </b-badge>
-                      {{ hotel.hotelMinCharge }}(1部屋1泊あたり、税・サービス料込みの最安値の目安)
-                    </p>
-                    <p>
-                      <b-badge variant="info">
-                        <span class="font">駐車場</span>
-                      </b-badge>
-                      {{ hotel.parkingInformation }}
-                    </p>
-                    <p>
-                      <b-badge variant="info">
-                        <span class="font">最寄り駅</span>
-                      </b-badge>
-                      {{ hotel.nearestStation }}
-                    </p>
-                    <p>
-                      <span class="font">ホームページ</span>
-                      {{ hotel.hotelInformationUrl }}
-                    </p>
-                    <p>
-                      <span class="font">宿泊プラン</span>
-                      {{ hotel.planListUrl }}
-                    </p>
-                    <p>
-                      <span class="font"></span>
-                    </p>
-                  </b-card>
+            <b-col>
+              <b-card no-body class="mb-1">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                  <b-button block v-b-toggle="'accordion-' + index" variant="outline-secondary">
+                    <b-row>
+                      <b-col cols="3">
+                        <b-img :src="hotel.hotelThumbnailUrl" />
+                        <b-img :src="hotel.roomThumbnailUrl" />
+                      </b-col>
+                      <b-col>
+                        <span class="hotel-name">{{ hotel.hotelName }}</span>
+                        <p>
+                          <b-badge variant="danger">
+                            <span class="font">電話</span>
+                          </b-badge>
+                          {{ hotel.telephoneNo }}
+                        </p>
+                      </b-col>
+                    </b-row>
+                  </b-button>
+                </b-card-header>
+                <b-collapse :id="'accordion-' + index" accordion="my-accordion" role="tabpanel">
+                  <b-card-body>
+                    <b-card-text>
+                      <b-row>
+                        <b-form-rating
+                          :value="hotel.reviewAverage"
+                          show-value
+                          variant="warning"
+                          class="mb-2"
+                        ></b-form-rating>
+                        <p>{{ hotel.access }}</p>
+                      </b-row>
+                      <b-row align-h="center">
+                        <b-img :src="hotel.hotelImageUrl" fluid alt="外観"></b-img>
+                        <b-img :src="hotel.roomImageUrl" fluid alt="室内"></b-img>
+                      </b-row>
+                      <b-row align-h="center">
+                        <b-button size="md" class="px-5 py-2 mt-2" @click="hotelLatLng(hotel)">マーカー</b-button>
+                        <b-button
+                          v-b-toggle="'collapse-' + index + '-inner'"
+                          size="md"
+                          class="px-5 py-2 mt-2"
+                        >詳しく</b-button>
+                      </b-row>
+                      <b-collapse :id="'collapse-' + index + '-inner'" class="mt-2">
+                        <b-card>
+                          <p>
+                            <b-badge variant="success">
+                              <span class="font">住所</span>
+                            </b-badge>
+                            {{ hotel.address1 }} {{ hotel.address2 }}
+                          </p>
+
+                          <p>
+                            <b-badge variant="info">
+                              <span class="font">最安値</span>
+                            </b-badge>
+                            {{ hotel.hotelMinCharge }}(1部屋1泊あたり、税・サービス料込みの最安値の目安)
+                          </p>
+                          <p>
+                            <b-badge variant="info">
+                              <span class="font">駐車場</span>
+                            </b-badge>
+                            {{ hotel.parkingInformation }}
+                          </p>
+                          <p>
+                            <b-badge variant="info">
+                              <span class="font">最寄り駅</span>
+                            </b-badge>
+                            {{ hotel.nearestStation }}
+                          </p>
+                          <p>
+                            <span class="font">ホームページ</span>
+                            {{ hotel.hotelInformationUrl }}
+                          </p>
+                          <p>
+                            <span class="font">宿泊プラン</span>
+                            {{ hotel.planListUrl }}
+                          </p>
+                          <p>
+                            <span class="font"></span>
+                          </p>
+                        </b-card>
+                      </b-collapse>
+                    </b-card-text>
+                  </b-card-body>
                 </b-collapse>
               </b-card>
-            </b-collapse>
+            </b-col>
           </b-row>
         </div>
       </div>
@@ -156,10 +173,16 @@ export default {
 </script>
 
 <style>
+#hotel-list {
+  background-color: #a20d1a;
+}
 .font {
   font-size: 1rem;
 }
 .title-text {
   font-size: 1.3rem;
+}
+.hotel-name {
+  font-size: 1.5rem;
 }
 </style>
