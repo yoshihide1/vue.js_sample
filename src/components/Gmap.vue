@@ -4,7 +4,7 @@
     <b-container>
       <b-row>
         <div v-for="(marker, index) in myMarker" :key="index">
-          <p id="waypoints">{{ index }}:{{ marker.name }}>></p>
+          <p id="waypoints">{{ index+1 }}:{{ marker.name }}>></p>
         </div>
       </b-row>
     </b-container>
@@ -71,7 +71,7 @@ export default {
       this.clearMarkers();
       let icon;
       latLngData.forEach(data => {
-        let content = `<button id="infoButton">マーカー削除</button>
+        let content = `<b-button variant="danger" id="infoButton">マーカー削除</b-button>
             <p>${data.name}</p>`;
         switch (data.id) {
           case 1: //飲食

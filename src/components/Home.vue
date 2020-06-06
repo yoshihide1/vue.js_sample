@@ -16,12 +16,12 @@
           <travel></travel>
         </b-tab>
         <b-tab title="ルート">
-          <p>ルート</p>
+          <root></root>
         </b-tab>
       </b-tabs>
     </div>
 
-    <div class="scroll-top" v-show="position > 500" @click="scrollTop" v-transition>
+    <div class="scroll-top" v-show="position > 500" @click="scrollTop">
       <i class="fas fa-angle-double-up fa-lg"></i>
     </div>
   </div>
@@ -33,13 +33,15 @@ import gmap from "@/components/Gmap";
 import weather from "@/components/Weather";
 import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
+import root from "@/components/Root"
 export default {
   components: {
     menuList,
     gmap,
     weather,
     gnavi,
-    travel
+    travel,
+    root
   },
   data() {
     return {

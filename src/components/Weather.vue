@@ -37,20 +37,22 @@ export default {
     };
   },
   computed: {
-    ...mapState(["latLng", "temp", "tempMax", "tempMin", "humidity"])
+    ...mapState(["latLng", "latLngC", "temp", "tempMax", "tempMin", "humidity"])
   },
   watch: {
     latLng() {
-      console.log(this.latLng);
-      this.getWeather();
+      this.getWeather(this.latLng);
+    },
+    latLngC() {
+      this.getWeather(this.latLngC);
     }
   },
   methods: {
-    getWeather() {
+    getWeather(latLng) {
       console.log("mounted");
       const params = {
-        lat: this.latLng.latitude, //store
-        lon: this.latLng.longitude,
+        lat: latLng.latitude, //store
+        lon: latLng.longitude,
         APPID: process.env.VUE_APP_WEATHER,
         lang: "jp",
         units: "metric"

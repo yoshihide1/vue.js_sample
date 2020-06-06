@@ -70,7 +70,11 @@ export default new Vuex.Store({
     },
     newMarker(state, payload) {
       console.log("marker mutation")
-      state.myMarker.push(payload)
+      if (state.myMarker.length > 9) {
+        alert("最大１０件まで")
+      } else {
+        state.myMarker.push(payload)
+      }
     },
     deleteMarker(state, payload) {
       console.log("markerDelete")

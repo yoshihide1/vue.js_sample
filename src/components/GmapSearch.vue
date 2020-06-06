@@ -4,7 +4,6 @@
       <b-button
         variant="outline-light"
         @click="requestMap(myMarker), scrollTop()"
-        v-transition
       >ルート検索</b-button>
     </b-nav-item>
     <!-- <b-nav-item>
