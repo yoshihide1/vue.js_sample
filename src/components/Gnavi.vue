@@ -24,7 +24,7 @@
               border-variant="light"
               text-variant="white"
               :title="shop.name"
-              :img-src="[ shop.image_url.shop_image1 ? shop.image_url.shop_image1 : 'images/no_image.jpg']"
+              :img-src='shop.image_url.shop_image1 ? shop.image_url.shop_image1 : noImage'
               :img-alt="shop.name"
               img-top
               tag="article"
@@ -61,6 +61,7 @@ import "firebase/firestore";
 export default {
   data() {
     return {
+      noImage: "/images/no_image.jpg",
       selected: 5,
       // options: [
       //   //ぐるなびrange
@@ -122,6 +123,7 @@ export default {
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
+          console.log(response)
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
           this.selected = 5;

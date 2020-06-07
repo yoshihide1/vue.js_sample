@@ -18,8 +18,6 @@ export default {
   name: "Gmap",
   watch: {
     myMarker() {
-      console.log("marker");
-      console.log(this.myMarker);
       this.setMarkers(this.myMarker);
     }
   },
