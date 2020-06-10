@@ -11,6 +11,22 @@
           >
             <b-card-text>
               <b-form-group
+                id="fieldset-3"
+                label="displayName"
+                label-for="input-3"
+                :invalid-feedback="invalidFeedback"
+                :valid-feedback="validFeedback"
+              >
+                <b-form-input
+                  id="input-3"
+                  v-model="displayName"
+                  trim
+                  placeholder="表示される名前(全角,半角文字)"
+                  type="text"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
                 id="fieldset-1"
                 label="Email"
                 label-for="input-1"
@@ -20,7 +36,7 @@
               >
                 <b-form-input
                   id="input-1"
-                  v-model="username"
+                  v-model="email"
                   :state="state"
                   trim
                   placeholder="メールアドレス"
@@ -62,12 +78,12 @@ export default {
   name: "Sign",
   computed: {
     state() {
-      return this.username.length >= 8 ? true : false;
+      return this.email.length >= 8 ? true : false;
     },
     invalidFeedback() {
-      if (this.username.length > 7) {
+      if (this.email.length > 7) {
         return "";
-      } else if (this.username.length > 0) {
+      } else if (this.email.length > 0) {
         return "文字数が少なすぎます";
       } else {
         return "入力してください";
@@ -94,7 +110,8 @@ export default {
   },
   data() {
     return {
-      username: "",
+      displayName: "",
+      email: "",
       password: "",
       db: firebase.firestore()
     };
@@ -103,8 +120,14 @@ export default {
     signIn() {
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.username, this.password)
+        .signInWithEmailAndPassword(this.email, this.password)
         .then(() => {
+          firebase
+            .auth()
+            .currentUser.getIdToken(true)
+            .then(idToken => {
+              console.log(idToken);
+            });
           alert("サインイン完了");
           this.$router.push("/");
         })
@@ -115,7 +138,7 @@ export default {
     signUp() {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.username, this.password)
+        .createUserWithEmailAndPassword(this.email, this.password)
         .then(result => {
           alert("新規登録完了");
           this.userDataPush(result);
@@ -126,10 +149,11 @@ export default {
         });
     },
     userDataPush(data) {
-      const uid = data.user.uid
-      const email = data.user.email
+      const uid = data.user.uid;
+      const email = data.user.email;
       this.db
-        .collection("users").doc(uid)
+        .collection("users")
+        .doc(uid)
         .set({
           email: email
         })

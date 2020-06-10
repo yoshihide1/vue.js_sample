@@ -24,7 +24,7 @@
               border-variant="light"
               text-variant="white"
               :title="shop.name"
-              :img-src='shop.image_url.shop_image1 ? shop.image_url.shop_image1 : noImage'
+              :img-src="shop.image_url.shop_image1 ? shop.image_url.shop_image1 : noImage"
               :img-alt="shop.name"
               img-top
               tag="article"
@@ -91,6 +91,9 @@ export default {
   methods: {
     starSet(index) {
       //お気に入り
+      // firebase.auth().currentUser.getIdToken(true)
+      // .then((idToken) => {
+
       const shop = this.shops[index];
       console.log(shop.name);
       this.db
@@ -103,6 +106,7 @@ export default {
           image: shop.image_url.shop_image1,
           opentime: shop.opentime,
           uid: this.uid
+          // })
         })
         .then(() => {
           console.log("お気に入り登録完了");
@@ -123,7 +127,7 @@ export default {
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
-          console.log(response)
+          console.log(response);
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
           this.selected = 5;
