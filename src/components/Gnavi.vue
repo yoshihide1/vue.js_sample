@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="title">
     <!-- <b-row>
         <b-col>
           <b-form-group>
@@ -10,45 +10,46 @@
           </b-form-group>
         </b-col>
     </b-row>-->
+    <b-container fluid>
+      <b-row class="py-1" align-h="center">
+        <h3>食事</h3>
+      </b-row>
 
-    <b-row id="title" class="py-2" align-h="center">
-      <h3>食事</h3>
-    </b-row>
-
-    <b-row align-h="center" id="shop-list">
-      <div v-for="(shop, index) in shops" :key="index">
-        <b-card-group>
-          <b-col class="mt-2">
-            <b-card
-              bg-variant="secondary"
-              border-variant="light"
-              text-variant="white"
-              :title="shop.name"
-              :img-src="shop.image_url.shop_image1 ? shop.image_url.shop_image1 : noImage"
-              :img-alt="shop.name"
-              img-top
-              tag="article"
-              style="max-width: 17rem;"
-            >
-              <b-card-text>
-                <b-button-group>
-                  <b-button id="button-group" variant="secondary" @click="starSet(index)">マイページ</b-button>
-                  <b-button id="button-group" variant="secondary" @click="shopLatLng(shop)">マーカー</b-button>
-                </b-button-group>
-                <p>{{ shop.tel }}</p>
-                <p>{{ shop.address }}</p>
-                <b-form-textarea
-                  id="textarea-rows"
-                  class="p-0"
-                  rows="4"
-                  :placeholder="shop.opentime"
-                ></b-form-textarea>
-              </b-card-text>
-            </b-card>
-          </b-col>
-        </b-card-group>
-      </div>
-    </b-row>
+      <b-row align-h="center" id="shop-list">
+        <div v-for="(shop, index) in shops" :key="index">
+          <b-card-group>
+            <b-col class="mt-2">
+              <b-card
+                bg-variant="secondary"
+                border-variant="light"
+                text-variant="white"
+                :title="shop.name"
+                :img-src="shop.image_url.shop_image1 ? shop.image_url.shop_image1 : noImage"
+                :img-alt="shop.name"
+                img-top
+                tag="article"
+                style="max-width: 17rem;"
+              >
+                <b-card-text>
+                  <b-button-group>
+                    <b-button id="button-group" variant="secondary" @click="starSet(index)">マイページ</b-button>
+                    <b-button id="button-group" variant="secondary" @click="shopLatLng(shop)">マーカー</b-button>
+                  </b-button-group>
+                  <p>{{ shop.tel }}</p>
+                  <p>{{ shop.address }}</p>
+                  <b-form-textarea
+                    id="textarea-rows"
+                    class="p-0"
+                    rows="4"
+                    :placeholder="shop.opentime"
+                  ></b-form-textarea>
+                </b-card-text>
+              </b-card>
+            </b-col>
+          </b-card-group>
+        </div>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

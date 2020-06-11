@@ -1,20 +1,24 @@
 <template>
   <div>
-    <b-container>
+    <b-container class="bv-example-row" fluid>
       <b-row align-h="center">
-      <h3>ルート</h3>
+        <h3>ルート</h3>
       </b-row>
       <div v-for="(marker, index) in myMarker" :key="index">
-        <b-row class="mt-1">
-          <b-col cols="2">
-            <b-button block variant="outline-success" v-if="index !== 0" @click="upSort(index)">up</b-button>
+        <b-row align-h="center" class="mt-1 text-center" cols="3">
+          <b-col align-h="center">
+            <b-button-group>
+              <b-button variant="outline-success" v-if="index !== 0" @click="upSort(index)">up</b-button>
+              <b-button
+                variant="outline-success"
+                v-if="index !== myMarker.length-1"
+                @click="downSort(index)"
+              >down</b-button>
+            </b-button-group>
           </b-col>
-          <b-col cols="2">
-            <b-button block variant="outline-success" v-if="index !== myMarker.length-1" @click="downSort(index)">down</b-button>
-          </b-col>
-          <b-col>{{ index+1 }}:{{ marker.name }}</b-col>
-          <b-col cols="2">
-            <b-button block variant="outline-danger" @click="deleteRoot(index)">削除</b-button>
+          <b-col block>{{ index+1 }}:{{ marker.name }}</b-col>
+          <b-col>
+            <b-button variant="outline-danger" @click="deleteRoot(index)">delete</b-button>
           </b-col>
         </b-row>
       </div>

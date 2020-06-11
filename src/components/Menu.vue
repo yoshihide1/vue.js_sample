@@ -11,7 +11,8 @@
             </router-link>
           </b-nav-item>
           <b-nav-item>
-            <b-button variant="outline-light" class="geolocation" @click="geoLocation">現在地取得</b-button>
+            <b-button variant="outline-light" class="geolocation" @click="geoLocation"
+            @click.once="popup">現在地取得</b-button>
           </b-nav-item>
           <gmapSearch></gmapSearch>
           <b-nav-item>
@@ -58,7 +59,8 @@ export default {
     ...mapState(["time", "distance"])
   },
   data() {
-    return {};
+    return {
+    };
   },
   methods: {
     scrollTop() {
@@ -82,6 +84,9 @@ export default {
       };
       this.$store.commit("geoLatLng", latLng);
       this.$store.commit("newMarker", latLng);
+    },
+    popup() {
+      alert("検索結果は画面、マップ下に表示されます。")
     }
   }
 };
@@ -91,7 +96,7 @@ export default {
 #navbar {
   position: fixed;
   width: 100%;
-  z-index: 100;
+  z-index: 1;
   /* height: 55px; */
   /* padding: 0 15px; */
 }

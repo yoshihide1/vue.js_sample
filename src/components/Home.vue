@@ -1,14 +1,18 @@
 <template>
   <div>
-    <menuList></menuList>
     <b-container fluid class="px-0">
+      <menuList></menuList>
       <div class="home">
         <gmap></gmap>
-        <weather class="mb-1"></weather>
       </div>
     </b-container>
+    <b-container fluid class="home px-0">
+      <b-row class="text-center">
+        <weather></weather>
+      </b-row>
+    </b-container>
     <div>
-      <b-tabs content-class="mt-3" fill>
+      <b-tabs content-class="mt-2 mb-3" fill>
         <b-tab title="食事" active>
           <gnavi></gnavi>
         </b-tab>
@@ -33,7 +37,7 @@ import gmap from "@/components/Gmap";
 import weather from "@/components/Weather";
 import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
-import root from "@/components/Root"
+import root from "@/components/Root";
 export default {
   components: {
     menuList,
@@ -73,7 +77,7 @@ export default {
   animation: fadeIn 1s ease 0s 1 normal;
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 30px;
   font-size: 5vw;
 }
 @keyframes fadeIn {

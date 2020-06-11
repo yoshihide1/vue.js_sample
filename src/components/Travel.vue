@@ -1,7 +1,7 @@
 <template>
   <div id="hotel-list">
     <b-container>
-      <b-row align-h="center">
+      <b-row class="py-1" align-h="center">
         <h3>宿</h3>
       </b-row>
       <div v-for="(hotel, index) in hotels" :key="index">

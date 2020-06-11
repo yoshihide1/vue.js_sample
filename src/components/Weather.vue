@@ -1,25 +1,25 @@
 <template>
-  <b-container class="bv-example-row">
-    <b-row class="mt-1" align-h="around">
-      <b-col cols="2">
-        <h3>
-          <b-badge variant="secondary">Now {{ temp }}℃</b-badge>
-        </h3>
+  <b-container fluid>
+    <b-row cols="3" align-h="around" class="text-center">
+      <b-col>
+        <p class="weather">
+          <b-badge variant="danger" class="px-1">Max {{ tempMax }}℃</b-badge>
+        </p>
       </b-col>
-      <b-col cols="2">
-        <h3>
-          <b-badge variant="danger">Max {{ tempMax }}℃</b-badge>
-        </h3>
+      <b-col>
+        <p class="weather">
+          <b-badge variant="primary" class="px-1">Min {{ tempMin }}℃</b-badge>
+        </p>
       </b-col>
-      <b-col cols="2">
-        <h3>
-          <b-badge variant="primary">Min {{ tempMin }}℃</b-badge>
-        </h3>
+      <b-col>
+        <p class="weather">
+          <b-badge variant="info" class="px-1">Hum {{ humidity }}％</b-badge>
+        </p>
       </b-col>
-      <b-col cols="2">
-        <h3>
-          <b-badge variant="info">Hum {{ humidity }}％</b-badge>
-        </h3>
+      <b-col>
+        <p class="weather">
+          <b-badge variant="secondary" class="px-1">Now {{ temp }}℃</b-badge>
+        </p>
       </b-col>
     </b-row>
   </b-container>
@@ -28,7 +28,6 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-// import {mapMutations} from "vuex"
 export default {
   name: "Weather",
   data() {
@@ -69,4 +68,8 @@ export default {
 </script>
 
 <style>
+.weather {
+  font-size: 1.4rem;
+  /* width: 100%; */
+}
 </style>
