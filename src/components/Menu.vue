@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <b-container fluid class="px-0"> -->
     <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand href="#" class="ml-1">Oltower</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -11,8 +12,12 @@
             </router-link>
           </b-nav-item>
           <b-nav-item>
-            <b-button variant="outline-light" class="geolocation" @click="geoLocation"
-            @click.once="popup">現在地取得</b-button>
+            <b-button
+              variant="outline-light"
+              class="geolocation"
+              @click="geoLocation"
+              @click.once="popup"
+            >現在地取得</b-button>
           </b-nav-item>
           <gmapSearch></gmapSearch>
           <b-nav-item>
@@ -43,6 +48,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <!-- </b-container> -->
   </div>
 </template>
 
@@ -59,8 +65,7 @@ export default {
     ...mapState(["time", "distance"])
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     scrollTop() {
@@ -86,7 +91,7 @@ export default {
       this.$store.commit("newMarker", latLng);
     },
     popup() {
-      alert("検索結果は画面、マップ下に表示されます。")
+      alert("検索結果は画面、マップ下に表示されます。");
     }
   }
 };

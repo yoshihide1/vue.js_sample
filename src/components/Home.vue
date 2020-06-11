@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-container fluid class="px-0">
-      <menuList></menuList>
       <div class="home">
+      <menuList></menuList>
         <gmap></gmap>
       </div>
     </b-container>

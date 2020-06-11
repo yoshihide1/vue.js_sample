@@ -45,6 +45,7 @@
                         <b-img :src="hotel.roomImageUrl" fluid alt="室内"></b-img>
                       </b-row>
                       <b-row align-h="center">
+                        <b-button size="md" class="px-5 py-2 mt-2" @click="starSet(index)">MyPage</b-button>
                         <b-button size="md" class="px-5 py-2 mt-2" @click="hotelLatLng(hotel)">マーカー</b-button>
                         <b-button
                           v-b-toggle="'collapse-' + index + '-inner'"
@@ -116,6 +117,7 @@ export default {
   data() {
     return {
       check: [],
+      db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid,
       hotelData: [],
       hotelList: []
@@ -130,6 +132,26 @@ export default {
     }
   },
   methods: {
+    starSet(index) {
+      const hotel = this.hotels[index]
+      console.log(hotel.hotelName)
+      this.db
+      .collection("star")
+      .add({
+        category: "宿",
+        name: hotel.hotelName,
+        address: hotel.address1,
+        tel: hotel.telephoneNo,
+        image: hotel.hotelThumbnailUrl,
+        uid: this.uid
+      })
+      .then(() => {
+        console.log("宿マイページOK")
+      })
+      .catch(() => {
+        console.log("error")
+      })
+    },
     searchHotels(latLng) {
       const params = {
         applicationId: process.env.VUE_APP_RAKUTEN,

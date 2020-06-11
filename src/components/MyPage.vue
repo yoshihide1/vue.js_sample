@@ -1,8 +1,8 @@
 <template>
   <div>
-    <menuList></menuList>
-    <b-container class="bv-example-row">
-      <b-row class="my-3" align-h="center">
+    <b-container fluid class="px-0">
+      <menuList></menuList>
+      <b-row align-h="center">
         <h1>マイページ</h1>
       </b-row>
       <b-row align-h="center">

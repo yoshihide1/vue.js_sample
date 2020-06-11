@@ -28,10 +28,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-// const store = new Vuex.store({})
 new Vue({
   store,
   router,
-  // vuetify,
   render: h => h(App)
 }).$mount('#app')
