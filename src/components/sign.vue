@@ -61,8 +61,12 @@
                   type="password"
                 ></b-form-input>
               </b-form-group>
-              <b-button variant="outline-success" @click="signIn">Login</b-button>or
-              <b-button variant="outline-success" @click="signUp">Create</b-button>
+              <b-row align-h="center">
+                <b-button class="mr-2" variant="outline-success" @click="signIn">Login</b-button>
+                <i class="fas fa-arrows-alt-h fa-2x"></i>
+                <b-button class="ml-2" variant="outline-success" @click="signUp">Create</b-button>
+              </b-row>
+              <b-button class="mt-3" variant="outline-info" @click="easyLogin">簡単ログイン</b-button>
             </b-card-text>
           </b-card>
         </b-col>
@@ -73,12 +77,12 @@
 
 <script>
 import firebase from "firebase";
-import "firebase/firestore";
 export default {
   name: "Sign",
   computed: {
     state() {
-      return this.email.length >= 8 ? true : false;
+      const check = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+      return this.email.match(check) ? true : false;
     },
     invalidFeedback() {
       if (this.email.length > 7) {
@@ -113,11 +117,22 @@ export default {
       displayName: "",
       email: "",
       password: "",
-      db: firebase.firestore(),
       functions: firebase.functions()
     };
   },
   methods: {
+    easyLogin() {
+      firebase
+        .auth()
+        .signInAnonymously()
+        .then(() => {
+          alert("簡単ログイン");
+          this.$router.push("/");
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    },
     signIn() {
       firebase
         .auth()
@@ -126,8 +141,8 @@ export default {
           alert("サインイン完了");
           this.$router.push("/");
         })
-        .catch(error => {
-          alert(error.message);
+        .catch(() => {
+          alert("一致する登録情報がありません");
         });
     },
     signUp() {
@@ -139,8 +154,8 @@ export default {
           this.setUserData(result);
           this.$router.push("/");
         })
-        .catch(error => {
-          alert(error.message);
+        .catch(() => {
+          alert("入力に誤りがあるか、既に登録されています");
         });
     },
     setUserData(data) {
