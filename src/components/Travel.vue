@@ -118,7 +118,7 @@ export default {
     return {
       check: [],
       db: firebase.firestore(),
-      uid: firebase.auth().currentUser.uid,
+      functions: firebase.functions(),
       hotelData: [],
       hotelList: []
     };
@@ -133,24 +133,22 @@ export default {
   },
   methods: {
     starSet(index) {
-      const hotel = this.hotels[index]
-      console.log(hotel.hotelName)
-      this.db
-      .collection("star")
-      .add({
+      const hotel = this.hotels[index];
+      const star = this.functions.httpsCallable("star");
+      star({
         category: "宿",
         name: hotel.hotelName,
-        address: hotel.address1,
+        address: `${hotel.address1}${hotel.address2}`,
         tel: hotel.telephoneNo,
         image: hotel.hotelThumbnailUrl,
-        uid: this.uid
+        url: `施設詳細${hotel.hotelInformationUrl}宿泊プラン${hotel.planListUrl}`
       })
-      .then(() => {
-        console.log("宿マイページOK")
-      })
-      .catch(() => {
-        console.log("error")
-      })
+        .then(() => {
+          console.log("(宿)マイページ登録OK");
+        })
+        .catch(() => {
+          console.error("error");
+        });
     },
     searchHotels(latLng) {
       const params = {

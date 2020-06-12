@@ -73,9 +73,6 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth) {//userの認証確認
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        firebase.auth().currentUser.getIdToken().then((idToken) => {
-          console.log(idToken)
-        })
         next()
       } else {
         next({

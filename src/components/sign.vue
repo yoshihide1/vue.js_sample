@@ -113,7 +113,8 @@ export default {
       displayName: "",
       email: "",
       password: "",
-      db: firebase.firestore()
+      db: firebase.firestore(),
+      functions: firebase.functions()
     };
   },
   methods: {
@@ -122,12 +123,6 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(() => {
-          firebase
-            .auth()
-            .currentUser.getIdToken(true)
-            .then(idToken => {
-              console.log(idToken);
-            });
           alert("サインイン完了");
           this.$router.push("/");
         })
@@ -141,27 +136,25 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(result => {
           alert("新規登録完了");
-          this.userDataPush(result);
+          this.setUserData(result);
           this.$router.push("/");
         })
         .catch(error => {
           alert(error.message);
         });
     },
-    userDataPush(data) {
-      const uid = data.user.uid;
+    setUserData(data) {
       const email = data.user.email;
-      this.db
-        .collection("users")
-        .doc(uid)
-        .set({
-          email: email
-        })
+      const user = this.functions.httpsCallable("user");
+      user({
+        displayName: this.displayName,
+        email: email
+      })
         .then(() => {
-          console.log("dbOK");
+          console.log("ユーザー登録OK");
         })
         .catch(() => {
-          console.log("error");
+          console.error("error");
         });
     }
   }

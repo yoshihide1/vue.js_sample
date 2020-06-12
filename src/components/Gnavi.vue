@@ -58,7 +58,7 @@ import axios from "axios";
 import { mapState } from "vuex";
 import firebase from "firebase";
 import "firebase/firestore";
-
+// import { functions } from "firebase";
 export default {
   data() {
     return {
@@ -75,7 +75,7 @@ export default {
       // freeword: "",
       // range: 5, //緯度、経度からの検索範囲
       db: firebase.firestore(),
-      uid: firebase.auth().currentUser.uid
+      functions: firebase.functions()
     };
   },
   computed: {
@@ -91,29 +91,22 @@ export default {
   },
   methods: {
     starSet(index) {
-      //お気に入り
-      // firebase.auth().currentUser.getIdToken(true)
-      // .then((idToken) => {
-
+      //お気に入り登録
       const shop = this.shops[index];
-      console.log(shop.name);
-      this.db
-        .collection("star")
-        .add({
-          category: "食事",
-          name: shop.name,
-          address: shop.address,
-          tel: shop.tel,
-          image: shop.image_url.shop_image1,
-          opentime: shop.opentime,
-          uid: this.uid
-          // })
-        })
+      const star = this.functions.httpsCallable("star");
+      star({
+        category: "食事",
+        name: shop.name,
+        address: shop.address,
+        tel: shop.tel,
+        image: shop.image_url.shop_image1,
+        opentime: shop.opentime
+      })
         .then(() => {
-          console.log("お気に入り登録完了");
+          console.log("(食)マイページ登録OK");
         })
         .catch(() => {
-          console.log("error");
+          console.error("error");
         });
     },
     searchShops(latLng) {
