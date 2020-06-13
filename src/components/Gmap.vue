@@ -46,8 +46,8 @@ export default {
 
   async mounted() {
     this.google = await GoogleMapsApiLoader({
-      // apiKey:
-      //   process.env.VUE_APP_GOOGLE + "&libraries=visualization&libraries=places"
+      apiKey:
+        process.env.VUE_APP_GOOGLE + "&libraries=visualization&libraries=places"
     });
     this.initializeMap();
     this.$store.commit("google", this.google);

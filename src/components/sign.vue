@@ -114,7 +114,7 @@ export default {
   },
   data() {
     return {
-      displayName: "",
+      displayName: null,
       email: "",
       password: "",
       functions: firebase.functions()
@@ -150,6 +150,10 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(result => {
+          const userProfile = firebase.auth().currentUser;
+          userProfile.updateProfile({
+            displayName: this.displayName
+          });
           alert("新規登録完了");
           this.setUserData(result);
           this.$router.push("/");

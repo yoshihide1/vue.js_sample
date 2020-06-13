@@ -29,6 +29,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import menuList from "@/components/Menu";
+import { mapState } from "vuex";
 export default {
   name: "MyPage",
   components: {
@@ -38,21 +39,29 @@ export default {
     return {
       alert: false,
       select: [],
-      name: "",
       shopUrl: null,
       imageUrl: null,
       userData: [],
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid,
-      docId: []
+      displayName: firebase.auth().currentUser.displayName,
+      docId: [],
+      functions: firebase.functions()
     };
+  },
+  computed: {
+    ...mapState(["alternatives"])
   },
   created() {
     this.getData();
   },
   watch: {
     //route変更で実行
-    $route: "getData"
+    // $route: "getData",
+    alternatives() {
+      console.log("更新");
+      this.getData();
+    }
   },
   methods: {
     deleteAlert() {
@@ -62,6 +71,9 @@ export default {
       }, 1000);
     },
     getData() {
+      console.log("mypage");
+      this.userData = [];
+      this.docId = [];
       this.db
         .collection("star")
         .where("uid", "==", this.uid)

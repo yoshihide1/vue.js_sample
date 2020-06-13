@@ -108,20 +108,17 @@
 <script>
 import axios from "axios";
 import firebase from "firebase";
-import "firebase/firestore";
 import { mapState } from "vuex";
 export default {
-  computed: {
-    ...mapState(["hotels", "latLngC", "latLng"])
-  },
   data() {
     return {
-      check: [],
-      db: firebase.firestore(),
       functions: firebase.functions(),
       hotelData: [],
       hotelList: []
     };
+  },
+  computed: {
+    ...mapState(["hotels", "latLngC", "latLng"])
   },
   watch: {
     latLngC() {
@@ -135,16 +132,21 @@ export default {
     starSet(index) {
       const hotel = this.hotels[index];
       const star = this.functions.httpsCallable("star");
+      console.log(hotel);
       star({
+        id: 2,
         category: "宿",
         name: hotel.hotelName,
         address: `${hotel.address1}${hotel.address2}`,
         tel: hotel.telephoneNo,
         image: hotel.hotelThumbnailUrl,
-        url: `施設詳細${hotel.hotelInformationUrl}宿泊プラン${hotel.planListUrl}`
+        url: `施設詳細${hotel.hotelInformationUrl}宿泊プラン${hotel.planListUrl}`,
+        latitude: hotel.latitude,
+        longitude: hotel.longitude
       })
         .then(() => {
           console.log("(宿)マイページ登録OK");
+          this.$store.commit("myPage", hotel.hotelName);
         })
         .catch(() => {
           console.error("error");

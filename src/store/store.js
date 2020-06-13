@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
   state: {
+    userId: [],
     latLng: {
       latitude: 34.662778,
       longitude: 135.572867
@@ -23,12 +24,15 @@ export default new Vuex.Store({
     time: 0,
     distance: 0,
     google: null,
-    map: null
-
-
+    map: null,
+    alternatives: ""
   },
 
   mutations: {
+    myPage(state, name) {//myPageを更新させるため
+      console.log(`${name}追加`)
+      state.alternatives = name
+    },
     google(state, payload) {
       state.google = payload
     },

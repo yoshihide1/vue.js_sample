@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <b-container fluid class="px-0"> -->
-    <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark">
+    <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark" fill>
       <b-navbar-brand href="#" class="ml-1">Oltower</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -31,7 +31,7 @@
             </h4>
           </b-nav-item>
         </b-navbar-nav>
-        <b-navbar-nav class="ml-auto">
+        <!-- <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="mr-1">
             <template v-slot:button-content>
               <em>User</em>
@@ -45,7 +45,7 @@
               <signOut></signOut>
             </b-dropdown-item>
           </b-nav-item-dropdown>
-        </b-navbar-nav>
+        </b-navbar-nav> -->
       </b-collapse>
     </b-navbar>
     <!-- </b-container> -->
@@ -53,12 +53,12 @@
 </template>
 
 <script>
-import signOut from "@/components/SignOut";
+// import signOut from "@/components/SignOut";
 import gmapSearch from "@/components/GmapSearch";
 import { mapState } from "vuex";
 export default {
   components: {
-    signOut,
+    // signOut,
     gmapSearch
   },
   computed: {

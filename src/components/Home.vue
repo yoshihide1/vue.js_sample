@@ -2,7 +2,7 @@
   <div>
     <b-container fluid class="px-0">
       <div class="home">
-      <menuList></menuList>
+        <menuList></menuList>
         <gmap></gmap>
       </div>
     </b-container>
@@ -13,14 +13,18 @@
     </b-container>
     <div>
       <b-tabs content-class="mt-2 mb-3" fill>
-        <b-tab title="食事" active>
+        <b-tab title="食事">
           <gnavi></gnavi>
         </b-tab>
         <b-tab title="宿泊">
           <travel></travel>
         </b-tab>
+        <b-tab title="観光"></b-tab>
         <b-tab title="ルート">
           <root></root>
+        </b-tab>
+        <b-tab title="お気に入り">
+          <myPage></myPage>
         </b-tab>
       </b-tabs>
     </div>
@@ -38,6 +42,7 @@ import weather from "@/components/Weather";
 import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
 import root from "@/components/Root";
+import myPage from "@/components/MyPage";
 export default {
   components: {
     menuList,
@@ -45,7 +50,8 @@ export default {
     weather,
     gnavi,
     travel,
-    root
+    root,
+    myPage
   },
   data() {
     return {

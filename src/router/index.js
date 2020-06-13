@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home'
-import Gnavi from '../components/Gnavi'
-import Weather from '../components/Weather'
-import Travel from '../components/Travel'
-import Sightseeing from '../components/Sightseeing'
+// import Gnavi from '../components/Gnavi'
+// import Weather from '../components/Weather'
+// import Travel from '../components/Travel'
+// import Sightseeing from '../components/Sightseeing'
 import MyPage from '../components/MyPage'
 import Sign from '../components/sign'
 import firebase from 'firebase'
@@ -19,16 +19,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [//link元App.vue
-    {
-      path: '*',
-      redirect: '/sign'
-    },
-    {
-      path: '/mypage',
-      name: 'MyPage',
-      component: MyPage,
-      meta: { requiresAuth: true }
-    },
+    
     {
       path: '/',
       name: 'Home',
@@ -37,34 +28,44 @@ const router = new VueRouter({
       //metaフィールド認証されてないと入れない
     },
     {
-      path: '/gnavi',
-      name: 'Gnavi',
-      component: Gnavi,
+      path: '/mypage',
+      name: 'MyPage',
+      component: MyPage,
       meta: { requiresAuth: true }
     },
-    {
-      path: '/weather',
-      name: 'Weather',
-      component: Weather,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/travel',
-      name: 'Travel',
-      component: Travel,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/sightseeing',
-      name: 'Sightseeing',
-      component: Sightseeing,
-      meta: { requiresAuth: true }
-    },
+    // {
+    //   path: '/gnavi',
+    //   name: 'Gnavi',
+    //   component: Gnavi,
+    //   meta: { requiresAuth: true }
+    // },
+    // {
+    //   path: '/weather',
+    //   name: 'Weather',
+    //   component: Weather,
+    //   meta: { requiresAuth: true }
+    // },
+    // {
+    //   path: '/travel',
+    //   name: 'Travel',
+    //   component: Travel,
+    //   meta: { requiresAuth: true }
+    // },
+    // {
+    //   path: '/sightseeing',
+    //   name: 'Sightseeing',
+    //   component: Sightseeing,
+    //   meta: { requiresAuth: true }
+    // },
     {
       path: '/sign',
       name: 'Sign',
       component: Sign
-    }
+    },
+    {
+      path: '*',
+      redirect: '/sign'
+    },
   ]
 })
 

@@ -16,17 +16,6 @@ admin.initializeApp()
 // })
 
 //test用
-exports.sample = functions.https.onCall((data, context) => {
-  const text = data.text
-  const name = data.name || null
-  const email = data.email || null
-  const uid = context.auth.uid
-  const test1 = context.auth
-  
-  console.log(data)
-  console.log(context)
-  return {text, name, uid, email, test1, test2}
-})
 
 //ユーザー登録処理
 exports.user = functions.https.onCall(async (data, context) => {
@@ -51,8 +40,25 @@ exports.star = functions.https.onCall(async (data, context) => {
     image: data.image || null,
     opentime: data.opentime || null,
     url: data.url || null,
+    latitude: data.latitude || null,
+    longitude: data.longitude || null,
     uid: uid,
     timestamp: admin.firestore.FieldValue.serverTimestamp()
-    
   })
 })
+
+// exports.getStar = functions.https.onCall(async (data, context) => {
+//   const uid = context.auth.uid
+//   let getStar = []F
+//   const firestore = admin.firestore().collection('star')
+//   await firestore.where('uid', '==', uid)
+//     .get()
+//     .then(querySnapShot => {
+//       querySnapShot.forEach(doc => {
+//         console.log(doc.data())
+//         getStar.push(doc.data())
+//       })
+//       console.log(getStar)
+//       return getStar
+//     })
+// })
