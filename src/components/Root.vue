@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="root">
     <b-container class="bv-example-row" fluid>
       <b-row align-h="center">
         <h3>ルート</h3>
@@ -68,4 +68,7 @@ export default {
 </script>
 
 <style>
+#root {
+  color: white;
+}
 </style>

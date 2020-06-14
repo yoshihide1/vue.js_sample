@@ -19,6 +19,12 @@ export default {
   watch: {
     myMarker() {
       this.setMarkers(this.myMarker);
+    },
+    latLng() {
+      this.drawCircle(this.latLng);
+    },
+    latLngC() {
+      this.drawCircle(this.latLngC);
     }
   },
   computed: {
@@ -30,6 +36,8 @@ export default {
     return {
       map: null,
       google: null,
+      place: null,
+      circle: null,
       mapConfig: {
         center: {
           lat: 34.662778,
@@ -46,8 +54,8 @@ export default {
 
   async mounted() {
     this.google = await GoogleMapsApiLoader({
-      apiKey:
-        process.env.VUE_APP_GOOGLE + "&libraries=visualization&libraries=places"
+      apiKey: process.env.VUE_APP_GOOGLE,
+      libraries: ["places"]
     });
     this.initializeMap();
     this.$store.commit("google", this.google);
@@ -58,12 +66,45 @@ export default {
   methods: {
     initializeMap() {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
+      this.place = new this.google.maps.places.PlacesService(this.map);
       this.$store.commit("map", this.map);
+      this.$store.commit("place", this.place);
     },
     updateDevice() {
       const height = window.innerHeight;
       document.getElementById("gmap").style.height = height + "px";
     },
+    drawCircle(data) {
+      // this.clearCircle();
+      const latLng = new this.google.maps.LatLng(data.latitude, data.longitude);
+      let radiusAndColor = [
+        ["#FE2E2E", 2000],
+        ["#FFFF00", 3000],
+        ["#013ADF", 6000]
+      ];
+      let circleOption = {
+        center: latLng,
+        radius: null,
+        strokeColor: "FF0000",
+        strokeOpacity: 0.3,
+        strokeWeight: 1,
+        fillColor: null,
+        fillOpacity: 0.2
+      };
+      radiusAndColor.forEach(radius => {
+        circleOption.fillColor = radius[0];
+        circleOption.radius = radius[1];
+        this.circle = new this.google.maps.Circle(circleOption);
+        this.circle.setMap(this.map);
+      });
+      console.log(this.circle.length);
+    },
+
+    // clearCircle() {
+    //   if (this.circle !== null) {
+    //     return this.circle.setMap(null);
+    //   }
+    // },
 
     setMarkers(latLngData) {
       console.log("setMarker");
@@ -83,7 +124,6 @@ export default {
 
           case 3:
             icon = "/gmap/mapicon3.png";
-            content = "<p>観光</p>";
             break;
 
           default:
@@ -140,7 +180,7 @@ export default {
           longitude: e.latLng.lng()
         };
         this.$store.commit("clickLatLng", mapData);
-        this.mapZoom(10);
+        this.mapZoom(13);
       });
     },
     mapZoom(zoom) {

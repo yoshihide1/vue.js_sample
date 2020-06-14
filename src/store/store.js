@@ -8,10 +8,7 @@ export default new Vuex.Store({
 
   state: {
     userId: [],
-    latLng: {
-      latitude: 34.662778,
-      longitude: 135.572867
-    },
+    latLng: null,
     latLngC: null,
     myMarker: [],
     weather: [],
@@ -21,10 +18,13 @@ export default new Vuex.Store({
     humidity: 0,
     shops: [],
     hotels: [],
+    places: [],
+    photos: [],
     time: 0,
     distance: 0,
     google: null,
     map: null,
+    place: null,//PlaceAPI
     alternatives: ""
   },
 
@@ -33,27 +33,35 @@ export default new Vuex.Store({
       console.log(`${name}追加`)
       state.alternatives = name
     },
-    google(state, payload) {
-      state.google = payload
+    google(state, google) {
+      state.google = google
     },
-    map(state, payload) {
-      state.map = payload
+    map(state, googleMap) {
+      state.map = googleMap
     },
-    geoLatLng(state, payload) {//現在地
+    place(state, placeApi) {
+      state.place = placeApi
+    },
+    geoLatLng(state, latLng) {//現在地
       console.log("geoLatLng mutation")
-      state.latLng = payload
+      state.latLng = latLng
     },
-    clickLatLng(state, payload) {//クリック位置
+    clickLatLng(state, latLng) {//クリック位置
       console.log("click")
-      state.latLngC = payload
+      state.latLngC = latLng
     },
-    shopsData(state, payload) {
+    shopsData(state, shops) {
       console.log("shops mutation")
-      state.shops = payload
+      state.shops = shops
     },
-    hotelsData(state, payload) {
+    hotelsData(state, hotels) {
       console.log("hotels mutation")
-      state.hotels = payload
+      state.hotels = hotels
+    },
+    placeData(state, place) {
+      console.log(place)
+      console.log("places mutation")
+      state.places = place
     },
     weatherData(state, payload) {//天気
       console.log("weather mutation")

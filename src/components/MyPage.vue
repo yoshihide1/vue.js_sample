@@ -3,14 +3,14 @@
     <b-container fluid class="px-0">
       <menuList></menuList>
       <b-row align-h="center">
-        <h1>マイページ</h1>
+        <h3>お気に入り</h3>
       </b-row>
       <b-row align-h="center">
         <b-button variant="secondary" @click="deleteData(), deleteAlert()">選択した物を削除</b-button>
       </b-row>
       <b-alert v-model="alert" show variant="warning">削除しました</b-alert>
     </b-container>
-    <div v-for="(shop, index) in userData" :key="index">
+    <div class="my-list" v-for="(shop, index) in userData" :key="index">
       <b-card-group deck>
         <b-card border-variant="success" :header="shop.name" align="center">
           <b-card-text>
@@ -110,6 +110,5 @@ export default {
   }
 };
 </script>
-
-<style scoped>
+<style>
 </style>

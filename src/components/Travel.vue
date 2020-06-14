@@ -1,8 +1,8 @@
 <template>
-  <div id="hotel-list">
+  <div id="hotel">
     <b-container>
       <b-row class="py-1" align-h="center">
-        <h3>宿</h3>
+        <h3>宿拍</h3>
       </b-row>
       <div v-for="(hotel, index) in hotels" :key="index">
         <div>
@@ -195,8 +195,14 @@ export default {
 </script>
 
 <style>
+#hotel{
+  background-color: #332015;
+  color: white;
+}
 #hotel-list {
-  background-color: #a20d1a;
+  background-color: #ff6a0d;
+background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
+
 }
 .font {
   font-size: 1rem;

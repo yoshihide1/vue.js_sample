@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="container">
     <b-container fluid class="px-0">
       <div class="home">
         <menuList></menuList>
@@ -19,7 +19,9 @@
         <b-tab title="宿泊">
           <travel></travel>
         </b-tab>
-        <b-tab title="観光"></b-tab>
+        <b-tab title="観光">
+          <sightseeing></sightseeing>
+        </b-tab>
         <b-tab title="ルート">
           <root></root>
         </b-tab>
@@ -43,6 +45,7 @@ import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
 import root from "@/components/Root";
 import myPage from "@/components/MyPage";
+import sightseeing from "@/components/Sightseeing";
 export default {
   components: {
     menuList,
@@ -51,7 +54,8 @@ export default {
     gnavi,
     travel,
     root,
-    myPage
+    myPage,
+    sightseeing
   },
   data() {
     return {
@@ -76,8 +80,8 @@ export default {
 </script>
 
 <style>
-.home {
-  background-color: #303030;
+#container {
+  background-color: #332015;
 }
 .scroll-top {
   animation: fadeIn 1s ease 0s 1 normal;
@@ -93,5 +97,15 @@ export default {
   100% {
     opacity: 1;
   }
+}
+.nav-fill .nav-item {
+  color: white;
+  background-color: #ff6a0d;
+  background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
+  border: 1px solid #332015;
+  border-radius: 10%;
+}
+.nav-fill .nav-item a {
+  color: white;
 }
 </style>

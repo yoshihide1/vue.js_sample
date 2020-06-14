@@ -1,20 +1,8 @@
 <template>
   <div>
     <b-nav-item>
-      <b-button
-        variant="outline-light"
-        @click="requestMap(myMarker), scrollTop()"
-      >ルート検索</b-button>
+      <b-button variant="secondary" @click="requestMap(myMarker), scrollTop()">ルート検索</b-button>
     </b-nav-item>
-    <!-- <b-nav-item>
-      <b-button variant="outline-light" @click="getPlace">Place</b-button>
-    </b-nav-item>
-    <b-nav-item>
-      <select v-model="selected">
-        <option value>選択してください</option>
-        <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
-      </select>
-    </b-nav-item>-->
   </div>
 </template>
 <script>
@@ -24,23 +12,11 @@ export default {
   computed: {
     ...mapState(["myMarker", "latLng", "map", "google"])
   },
-  watch: {},
   data() {
     return {
-      plays: [],
       render: null,
       wayPoints: [],
-      avoidTolls: false,
-      selected: "",
-      options: [
-        { id: 1, eName: "amusement_park", jName: "遊び場" },
-        { id: 2, eName: "aquarium", jName: "水族館" },
-        { id: 3, eName: "zoo", jName: "動物園" },
-        { id: 4, eName: "art_gallery", jName: "美術館" },
-        { id: 5, eName: "campground", jName: "キャンプ場" },
-        { id: 6, eName: "museum", jName: "博物館" },
-        { id: 7, eName: "shopping_mall", jName: "ショッピングモール" }
-      ]
+      avoidTolls: false
     };
   },
   methods: {
@@ -57,7 +33,7 @@ export default {
       this.render = new this.google.maps.DirectionsRenderer({
         map: this.map,
         suppressMarkers: true, //デフォルトのルート用マーカー削除
-        draggable: true
+        draggable: false
       });
       this.myMarker.forEach(data => {
         let points = {
@@ -106,31 +82,6 @@ export default {
       if (this.render !== null) {
         return this.render.setMap(null);
       }
-    },
-
-    getPlace() {
-      console.log(this.plays);
-      //仮
-      const service = new this.google.maps.places.PlacesService(this.map);
-      service.nearbySearch(
-        {
-          location: new this.google.maps.LatLng(34.662778, 135.572867),
-          radius: 10000,
-          // language: "ja",
-          type: this.selected
-        },
-        (results, status) => {
-          if (status == "OK") {
-            results.forEach(data => {
-              console.log(data.name);
-              this.plays.push(data);
-            });
-            console.log(this.plays);
-          } else {
-            alert("失敗");
-          }
-        }
-      );
     }
   }
 };

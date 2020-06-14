@@ -8,12 +8,12 @@
         <b-navbar-nav>
           <b-nav-item>
             <router-link to="/">
-              <b-button variant="outline-light" @click="scrollTop">Home</b-button>
+              <b-button variant="secondary" @click="scrollTop">Home</b-button>
             </router-link>
           </b-nav-item>
           <b-nav-item>
             <b-button
-              variant="outline-light"
+              variant="secondary"
               class="geolocation"
               @click="geoLocation"
               @click.once="popup"
@@ -101,8 +101,8 @@ export default {
 #navbar {
   position: fixed;
   width: 100%;
-  z-index: 1;
-  /* height: 55px; */
+  z-index: 100;
+  height: 55px;
   /* padding: 0 15px; */
 }
 </style>

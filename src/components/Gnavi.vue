@@ -144,15 +144,17 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 #button-group {
   border: 1px solid white;
 }
 #shop-list {
-  background-color: #fd7121;
+  background-color: #ff6a0d;
+  background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
 }
 #title {
-  background-color: #76665f;
+  background-color: #332015;
+
   color: white;
 }
 </style>
