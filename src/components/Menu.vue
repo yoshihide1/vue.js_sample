@@ -45,7 +45,7 @@
               <signOut></signOut>
             </b-dropdown-item>
           </b-nav-item-dropdown>
-        </b-navbar-nav> -->
+        </b-navbar-nav>-->
       </b-collapse>
     </b-navbar>
     <!-- </b-container> -->
@@ -85,7 +85,7 @@ export default {
         latitude: geoLatlng.latitude,
         longitude: geoLatlng.longitude,
         name: "現在地",
-        id: 5
+        id: 5 //マーカーの識別の為
       };
       this.$store.commit("geoLatLng", latLng);
       this.$store.commit("newMarker", latLng);

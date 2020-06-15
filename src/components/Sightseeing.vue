@@ -68,6 +68,9 @@ export default {
     };
   },
   watch: {
+    selected() {
+      this.searchPlace(this.latLngC);
+    },
     latLng() {
       this.searchPlace(this.latLng);
     },
@@ -78,6 +81,7 @@ export default {
 
   methods: {
     starSet(index) {
+      //マイページ登録とfirestoreに保存
       const place = this.places[index];
       const star = this.functions.httpsCallable("star");
       console.log(place);
@@ -98,6 +102,7 @@ export default {
           console.error("error");
         });
     },
+    //PlaceApiでの検索
     searchPlace(latLng) {
       console.log(latLng);
       this.place.nearbySearch(
@@ -106,7 +111,7 @@ export default {
             latLng.latitude,
             latLng.longitude
           ),
-          type: this.selected, //選択出来るように
+          type: this.selected, //ジャンル
           radius: 6000
         },
         result => {
@@ -115,7 +120,7 @@ export default {
         }
       );
     },
-
+    //PlaceApiで取得したデータの座標を取得
     placeLatLng(place) {
       const data = {
         name: place.name,

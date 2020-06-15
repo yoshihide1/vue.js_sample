@@ -18,18 +18,23 @@ export default {
   name: "Gmap",
   watch: {
     myMarker() {
+      //myMarker = 選択した場所の緯度経度にマーカー設置
       this.setMarkers(this.myMarker);
     },
     latLng() {
+      //現在地取得から得た緯度経度にサークル設置
       this.drawCircle(this.latLng);
     },
     latLngC() {
+      //マップクリックから得た緯度経度にサークル設置
       this.drawCircle(this.latLngC);
     }
   },
   computed: {
+    //myMarker = 選んだ場所などを配列で保持している
     ...mapState(["latLng", "myMarker", "latLngC"]),
-    ...mapGetters(["filterMarker", "pointMarker"])
+    //選択したマーカーの削除
+    ...mapGetters(["filterMarker"])
   },
 
   data() {
@@ -53,6 +58,7 @@ export default {
   },
 
   async mounted() {
+    //GoogleMap
     this.google = await GoogleMapsApiLoader({
       apiKey: process.env.VUE_APP_GOOGLE,
       libraries: ["places"]
@@ -64,6 +70,7 @@ export default {
   },
 
   methods: {
+    //GoogleMapsApi.PlaceApiの初期化
     initializeMap() {
       this.map = new this.google.maps.Map(this.$refs.googleMap, this.mapConfig);
       this.place = new this.google.maps.places.PlacesService(this.map);
@@ -74,9 +81,14 @@ export default {
       const height = window.innerHeight;
       document.getElementById("gmap").style.height = height + "px";
     },
+    /**
+     * circleの表示
+     * @param 選択した場所の緯度経度
+     */
     drawCircle(data) {
       // this.clearCircle();
       const latLng = new this.google.maps.LatLng(data.latitude, data.longitude);
+      //circleの半径(ｍ表記)
       let radiusAndColor = [
         ["#FE2E2E", 2000],
         ["#FFFF00", 3000],
@@ -91,6 +103,7 @@ export default {
         fillColor: null,
         fillOpacity: 0.2
       };
+      //circleを三つ重ねて表示するための処理
       radiusAndColor.forEach(radius => {
         circleOption.fillColor = radius[0];
         circleOption.radius = radius[1];
@@ -105,7 +118,11 @@ export default {
     //     return this.circle.setMap(null);
     //   }
     // },
-
+    /**
+     * マーカーの設置
+     * @param 現在地の緯度経度、クリックした場所の緯度経度
+     * のいずれかが入る
+     */
     setMarkers(latLngData) {
       console.log("setMarker");
       this.clearMarkers();
@@ -113,7 +130,9 @@ export default {
       latLngData.forEach(data => {
         let content = `<b-button variant="danger" id="infoButton">マーカー削除</b-button>
             <p>${data.name}</p>`;
-        switch (data.id) {
+        switch (
+          data.id //マーカーの色分け
+        ) {
           case 1: //飲食
             icon = "/gmap/mapicon1.png";
             break;
@@ -122,7 +141,7 @@ export default {
             icon = "/gmap/mapicon2.png";
             break;
 
-          case 3:
+          case 3: //観光、遊び
             icon = "/gmap/mapicon3.png";
             break;
 
@@ -133,11 +152,12 @@ export default {
         }
         this.latitude = data.latitude;
         this.longitude = data.longitude;
-
+        //マーカー設置の為の緯度経度
         const latLng = new this.google.maps.LatLng(
           this.latitude,
           this.longitude
         );
+        //マーカーの生成
         const marker = new this.google.maps.Marker({
           map: this.map,
           position: latLng,
@@ -153,6 +173,7 @@ export default {
           pixelOffset: offset,
           content: content
         });
+        //infoWindowを複数表示させないための処理
         marker.addListener("click", () => {
           if (this.currentInfoWindow) {
             this.currentInfoWindow.close();
@@ -160,12 +181,17 @@ export default {
           infoWindow.open(this.map);
           this.currentInfoWindow = infoWindow;
         });
+        //infoWindow内でボタンを有効にするための処理
         infoWindow.addListener("domready", () => {
           document
             .getElementById("infoButton")
             .addEventListener("click", () => {
               marker.setMap(null);
               this.currentInfoWindow.close();
+              /**
+               * infoWindow内のボタンが押されたときにマーカーを
+               * 配列から削除する
+               */
               this.$store.commit("deleteMarker", this.filterMarker(data.name));
             });
         });

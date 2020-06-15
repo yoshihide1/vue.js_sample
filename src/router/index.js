@@ -10,7 +10,6 @@ import Sign from '../components/sign'
 import firebase from 'firebase'
 // import Menu from '../components/Menu'
 
-// import test from '../components/test'
 
 
 Vue.use(VueRouter)

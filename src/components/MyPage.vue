@@ -46,18 +46,17 @@ export default {
       uid: firebase.auth().currentUser.uid,
       displayName: firebase.auth().currentUser.displayName,
       docId: [],
-      functions: firebase.functions()
     };
   },
   computed: {
     ...mapState(["alternatives"])
   },
   created() {
+    //ページが開かれたときにお気に入りデータの取得
     this.getData();
   },
   watch: {
-    //route変更で実行
-    // $route: "getData",
+    //お気に入り登録された時に即座にページに反映させる
     alternatives() {
       console.log("更新");
       this.getData();
@@ -70,6 +69,7 @@ export default {
         this.alert = !this.alert;
       }, 1000);
     },
+    //お気に入りをfirestoreから取得
     getData() {
       console.log("mypage");
       this.userData = [];
@@ -89,21 +89,21 @@ export default {
           console.log("error");
         });
     },
+    //選んだ項目のindexを取得して一致するものを削除
     deleteData() {
-      console.log(this.docId);
-      this.select.forEach(i => {
+      this.select.forEach(index => {
         this.db
           .collection("star")
-          .doc(this.docId[i])
+          .doc(this.docId[index])
           .delete()
           .then(() => {
             this.userData = [];
             this.getData();
-            console.log([i]);
+            console.log([index]);
             console.log("削除");
           })
           .catch(() => {
-            console.log("error");
+            console.error("error");
           });
       });
     }

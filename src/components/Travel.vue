@@ -152,10 +152,11 @@ export default {
           console.error("error");
         });
     },
+    //宿泊施設の検索
     searchHotels(latLng) {
       const params = {
         applicationId: process.env.VUE_APP_RAKUTEN,
-        latitude: latLng.latitude, //store
+        latitude: latLng.latitude,
         longitude: latLng.longitude,
         largeClassCode: "japan",
         datumType: 1, //測地系のタイプ
@@ -186,7 +187,7 @@ export default {
         name: hotel.hotelName,
         latitude: hotel.latitude,
         longitude: hotel.longitude,
-        id: 2
+        id: 2 //マーカー識別の為
       };
       this.$store.commit("newMarker", data);
     }
@@ -195,14 +196,13 @@ export default {
 </script>
 
 <style>
-#hotel{
+#hotel {
   background-color: #332015;
   color: white;
 }
 #hotel-list {
   background-color: #ff6a0d;
-background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
-
+  background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
 }
 .font {
   font-size: 1rem;

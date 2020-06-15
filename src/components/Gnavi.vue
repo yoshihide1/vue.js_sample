@@ -88,12 +88,15 @@ export default {
   },
   methods: {
     starSet(index) {
-      //お気に入り登録
+      /**
+       * CloudFunctionsにリクエスト
+       * firestoreへ保存
+       */
       const shop = this.shops[index];
       const star = this.functions.httpsCallable("star");
       console.log(shop);
       star({
-        id: 1,
+        id: 1, //マーカーを分けるためのid
         category: "食事",
         name: shop.name,
         address: shop.address,
@@ -111,12 +114,13 @@ export default {
           console.error("error");
         });
     },
+    //飲食店の検索
     searchShops(latLng) {
       const params = {
-        keyid: process.env.VUE_APP_GNAVI, //.envから取得
-        hit_per_page: 30, //検索結果の表示数
+        keyid: process.env.VUE_APP_GNAVI,
+        hit_per_page: 30,
         range: this.selected,
-        latitude: latLng.latitude, //stoer
+        latitude: latLng.latitude,
         longitude: latLng.longitude
       };
 
@@ -132,6 +136,7 @@ export default {
           alert("近くに飲食店がありません");
         });
     },
+    //マーカーを設置する為の情報
     shopLatLng(shop) {
       const data = {
         name: shop.name,

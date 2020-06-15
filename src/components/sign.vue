@@ -151,6 +151,7 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(result => {
           const userProfile = firebase.auth().currentUser;
+          //displayNameの登録
           userProfile.updateProfile({
             displayName: this.displayName
           });
@@ -162,6 +163,7 @@ export default {
           alert("入力に誤りがあるか、既に登録されています");
         });
     },
+    //cloudFunctionsでfirestoreに登録
     setUserData(data) {
       const email = data.user.email;
       const user = this.functions.httpsCallable("user");

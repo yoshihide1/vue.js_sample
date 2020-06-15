@@ -50,15 +50,15 @@ export default new Vuex.Store({
       console.log("click")
       state.latLngC = latLng
     },
-    shopsData(state, shops) {
+    shopsData(state, shops) {//APIで取得したshopのデータ
       console.log("shops mutation")
       state.shops = shops
     },
-    hotelsData(state, hotels) {
+    hotelsData(state, hotels) {//APIで取得したhotelのデータ
       console.log("hotels mutation")
       state.hotels = hotels
     },
-    placeData(state, place) {
+    placeData(state, place) {//APIで取得したplaceのデータ
       console.log(place)
       console.log("places mutation")
       state.places = place
@@ -77,10 +77,7 @@ export default new Vuex.Store({
       state.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)))
       state.humidity = payload[0].main.humidity
     },
-    allWeatherData(state, payload) {
-      state.test = payload
-    },
-    newMarker(state, payload) {
+    newMarker(state, payload) {//ルート検索に使うマーカーの数の監視
       console.log("marker mutation")
       if (state.myMarker.length > 9) {
         alert("最大１０件まで")
@@ -92,14 +89,14 @@ export default new Vuex.Store({
       console.log("markerDelete")
       state.myMarker = payload
     },
-    time(state, payload) {
+    time(state, payload) {//トータルの時間
       state.time = payload
     },
-    distance(state, payload) {
+    distance(state, payload) {//トータルの移動距離
       state.distance = payload
     },
   },
-  getters: {
+  getters: {//選択したマーカーの削除
     filterMarker: (state) => (name) => {
       return state.myMarker.filter(marker => marker.name !== name)
     },

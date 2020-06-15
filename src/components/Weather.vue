@@ -47,10 +47,11 @@ export default {
     }
   },
   methods: {
+    //天気情報の取得
     getWeather(latLng) {
       console.log("mounted");
       const params = {
-        lat: latLng.latitude, //store
+        lat: latLng.latitude,
         lon: latLng.longitude,
         APPID: process.env.VUE_APP_WEATHER,
         lang: "jp",
