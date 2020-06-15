@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <b-row cols="3" align-h="around" class="text-center">
+    <b-row cols="3" align-h="around" class="text-center mx-0">
       <b-col>
         <p class="weather">
           <b-badge variant="danger" class="px-1">Max {{ tempMax }}℃</b-badge>
@@ -71,6 +71,6 @@ export default {
 <style>
 .weather {
   font-size: 1.4rem;
-  /* width: 100%; */
+  width: 100%;
 }
 </style>

@@ -81,6 +81,7 @@ export default {
 
 <style>
 #container {
+  overflow: hidden;/*余白を消す*/
   background-color: #332015;
 }
 .scroll-top {
