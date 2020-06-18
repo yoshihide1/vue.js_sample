@@ -39,8 +39,8 @@ export default new Vuex.Store({
     map(state, googleMap) {
       state.map = googleMap
     },
-    place(state, placeApi) {
-      state.place = placeApi
+    place(state, place) {
+      state.place = place
     },
     geoLatLng(state, latLng) {//現在地
       console.log("geoLatLng mutation")
@@ -63,20 +63,20 @@ export default new Vuex.Store({
       console.log("places mutation")
       state.places = place
     },
-    weatherData(state, payload) {//天気
-      console.log("weather mutation")
-      let max = [];
-      let min = [];
-      for (let i = 0; i < 9; i++) {
-        max.push(payload[i].main.temp_max);
-        min.push(payload[i].main.temp_min);
-      }
-      state.weather = payload
-      state.temp = parseInt(payload[0].main.temp)
-      state.tempMax = parseInt(max.reduce((a, b) => (a > b ? a : b)))
-      state.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)))
-      state.humidity = payload[0].main.humidity
-    },
+    // weatherData(state, payload) {//天気
+    //   console.log("weather mutation")
+    //   let max = [];
+    //   let min = [];
+    //   for (let i = 0; i < 9; i++) {
+    //     max.push(payload[i].main.temp_max);
+    //     min.push(payload[i].main.temp_min);
+    //   }
+    //   state.weather = payload
+    //   state.temp = parseInt(payload[0].main.temp)
+    //   state.tempMax = parseInt(max.reduce((a, b) => (a > b ? a : b)))
+    //   state.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)))
+    //   state.humidity = payload[0].main.humidity
+    // },
     newMarker(state, payload) {//ルート検索に使うマーカーの数の監視
       console.log("marker mutation")
       if (state.myMarker.length > 9) {

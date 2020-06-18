@@ -60,10 +60,14 @@ import axios from "axios";
 import { mapState } from "vuex";
 import firebase from "firebase";
 export default {
+  name: "Gnavi",
+
   data() {
     return {
       noImage: "/images/no_image.jpg",
       selected: 5,
+      functions: firebase.functions(),
+      error: ""
       // options: [
       //   //ぐるなびrange
       //   { text: "300m", value: 1 },
@@ -74,13 +78,13 @@ export default {
       // ],
       // freeword: "",
       // range: 5, //緯度、経度からの検索範囲
-      functions: firebase.functions(),
-      error: ""
     };
   },
+
   computed: {
     ...mapState(["latLngC", "latLng", "shops"])
   },
+
   watch: {
     latLngC() {
       this.searchShops(this.latLngC);
@@ -89,6 +93,7 @@ export default {
       this.searchShops(this.latLng);
     }
   },
+  
   methods: {
     starSet(index) {
       /**

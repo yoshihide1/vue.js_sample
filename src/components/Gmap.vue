@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
+    <div id="gmap" class="map" ref="googleMap"></div>
     <!-- <b-container>
       <b-row>
         <div v-for="(marker, index) in myMarker" :key="index">
           <p id="waypoints">{{ index+1 }}:{{ marker.name }}>></p>
         </div>
       </b-row>
-    </b-container> -->
+    </b-container>-->
   </div>
 </template>
 
@@ -16,26 +16,6 @@ import GoogleMapsApiLoader from "google-maps-api-loader";
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "Gmap",
-  watch: {
-    myMarker() {
-      //myMarker = 選択した場所の緯度経度にマーカー設置
-      this.setMarkers(this.myMarker);
-    },
-    latLng() {
-      //現在地取得から得た緯度経度にサークル設置
-      this.drawCircle(this.latLng);
-    },
-    latLngC() {
-      //マップクリックから得た緯度経度にサークル設置
-      this.drawCircle(this.latLngC);
-    }
-  },
-  computed: {
-    //myMarker = 選んだ場所などを配列で保持している
-    ...mapState(["latLng", "myMarker", "latLngC"]),
-    //選択したマーカーの削除
-    ...mapGetters(["filterMarker"])
-  },
 
   data() {
     return {
@@ -57,6 +37,28 @@ export default {
     };
   },
 
+  computed: {
+    //myMarker = 選んだ場所などを配列で保持している
+    ...mapState(["latLng", "myMarker", "latLngC"]),
+    //選択したマーカーの削除
+    ...mapGetters(["filterMarker"])
+  },
+
+  watch: {
+    myMarker() {
+      //myMarker = 選択した場所の緯度経度にマーカー設置
+      this.setMarkers(this.myMarker);
+    },
+    latLng() {
+      //現在地取得から得た緯度経度にサークル設置
+      this.drawCircle(this.latLng);
+    },
+    latLngC() {
+      //マップクリックから得た緯度経度にサークル設置
+      this.drawCircle(this.latLngC);
+    }
+  },
+
   async mounted() {
     //GoogleMap
     this.google = await GoogleMapsApiLoader({
@@ -67,6 +69,15 @@ export default {
     this.$store.commit("google", this.google);
     window.addEventListener("resize", this.updateDevice);
     this.updateDevice();
+    //マップクリックで座標取得
+    this.map.addListener("click", e => {
+      const mapData = {
+        latitude: e.latLng.lat(),
+        longitude: e.latLng.lng()
+      };
+      this.$store.commit("clickLatLng", mapData);
+      this.mapZoom(12);
+    });
   },
 
   methods: {
@@ -196,17 +207,6 @@ export default {
             });
         });
         this.markers.push(marker);
-      });
-    },
-    mapCoord() {
-      //マップクリックで座標取得
-      this.map.addListener("click", e => {
-        const mapData = {
-          latitude: e.latLng.lat(),
-          longitude: e.latLng.lng()
-        };
-        this.$store.commit("clickLatLng", mapData);
-        this.mapZoom(13);
       });
     },
     mapZoom(zoom) {

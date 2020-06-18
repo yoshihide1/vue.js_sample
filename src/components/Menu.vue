@@ -11,11 +11,7 @@
             </router-link>
           </b-nav-item>
           <b-nav-item>
-            <b-button
-              variant="secondary"
-              class="geolocation"
-              @click="geoLocation"
-            >現在地取得</b-button>
+            <b-button variant="secondary" class="geolocation" @click="geoLocation">現在地取得</b-button>
           </b-nav-item>
           <gmapSearch></gmapSearch>
           <b-nav-item>
@@ -54,16 +50,21 @@ import signOut from "@/components/SignOut";
 import gmapSearch from "@/components/GmapSearch";
 import { mapState } from "vuex";
 export default {
+  name: "Menu",
+
   components: {
     signOut,
     gmapSearch
   },
-  computed: {
-    ...mapState(["time", "distance"])
-  },
+
   data() {
     return {};
   },
+
+  computed: {
+    ...mapState(["time", "distance"])
+  },
+
   methods: {
     scrollTop() {
       scrollTo(0, 0);
@@ -86,7 +87,7 @@ export default {
       };
       this.$store.commit("geoLatLng", latLng);
       this.$store.commit("newMarker", latLng);
-    },
+    }
   }
 };
 </script>

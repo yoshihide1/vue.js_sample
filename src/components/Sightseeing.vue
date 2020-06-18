@@ -4,12 +4,11 @@
       <b-row class="py-1" align-h="center">
         <h3>遊び・観光</h3>
         <select v-model="selected" @change="searchPlace">
-          <option value>選択してください</option>
           <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
         </select>
       </b-row>
       <b-row class="py-1" align-h="center">
-        <p class="font-white">{{error}}</p>
+        <p class="font-white">{{ error }}</p>
       </b-row>
       <b-row align-h="center" id="shop-list">
         <div class="font-white" v-for="(place, index) in places" :key="index">
@@ -32,7 +31,7 @@
                     <b-button id="button-group" variant="secondary" @click="placeLatLng(place)">マーカー</b-button>
                   </b-button-group>
                   <p>住所{{ place.vicinity }}</p>
-                  <b-form-textarea id="textarea-rows" class="p-0" rows="4" placeholder="説明～？"></b-form-textarea>
+                  <!-- <b-form-textarea id="textarea-rows" class="p-0" rows="4" placeholder="説明～？"></b-form-textarea> -->
                 </b-card-text>
               </b-card>
             </b-col>
@@ -48,10 +47,7 @@ import { mapState } from "vuex";
 import firebase from "firebase";
 
 export default {
-  components: {},
-  computed: {
-    ...mapState(["places", "latLng", "latLngC", "map", "google", "place"])
-  },
+  name: "Sightseeing",
 
   data() {
     return {
@@ -70,6 +66,11 @@ export default {
       error: ""
     };
   },
+
+  computed: {
+    ...mapState(["places", "latLng", "latLngC", "map", "google", "place"])
+  },
+
   watch: {
     selected() {
       if (this.latLngC) {

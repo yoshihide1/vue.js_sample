@@ -30,15 +30,18 @@
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "root",
+
   data() {
     return {
       rootIndex: []
     };
   },
+
   computed: {
     ...mapState(["myMarker"]),
     ...mapGetters(["filterMarker"])
   },
+
   methods: {
     upSort(index) {
       this.rootIndex = index;

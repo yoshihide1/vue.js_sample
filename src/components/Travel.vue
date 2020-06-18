@@ -114,6 +114,8 @@ import axios from "axios";
 import firebase from "firebase";
 import { mapState } from "vuex";
 export default {
+  name: "Travel",
+
   data() {
     return {
       functions: firebase.functions(),
@@ -122,9 +124,11 @@ export default {
       error: ""
     };
   },
+
   computed: {
     ...mapState(["hotels", "latLngC", "latLng"])
   },
+
   watch: {
     latLngC() {
       this.searchHotels(this.latLngC);
@@ -133,6 +137,7 @@ export default {
       this.searchHotels(this.latLng);
     }
   },
+
   methods: {
     starSet(index) {
       const hotel = this.hotels[index];

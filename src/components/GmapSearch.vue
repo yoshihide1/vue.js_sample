@@ -9,9 +9,7 @@
 import { mapState } from "vuex";
 export default {
   name: "GmapSearch",
-  computed: {
-    ...mapState(["myMarker", "latLng", "map", "google"])
-  },
+  
   data() {
     return {
       render: null,
@@ -19,6 +17,11 @@ export default {
       avoidTolls: false
     };
   },
+  
+  computed: {
+    ...mapState(["myMarker", "latLng", "map", "google"])
+  },
+
   methods: {
     scrollTop() {
       scrollTo({

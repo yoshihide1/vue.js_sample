@@ -32,9 +32,11 @@ import menuList from "@/components/Menu";
 import { mapState } from "vuex";
 export default {
   name: "MyPage",
+
   components: {
     menuList
   },
+
   data() {
     return {
       alert: false,
@@ -45,16 +47,14 @@ export default {
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid,
       displayName: firebase.auth().currentUser.displayName,
-      docId: [],
+      docId: []
     };
   },
+
   computed: {
     ...mapState(["alternatives"])
   },
-  created() {
-    //ページが開かれたときにお気に入りデータの取得
-    this.getData();
-  },
+
   watch: {
     //お気に入り登録された時に即座にページに反映させる
     alternatives() {
@@ -62,6 +62,12 @@ export default {
       this.getData();
     }
   },
+
+  created() {
+    //ページが開かれたときにお気に入りデータの取得
+    this.getData();
+  },
+
   methods: {
     deleteAlert() {
       this.alert = !this.alert;
