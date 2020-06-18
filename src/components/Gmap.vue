@@ -1,13 +1,13 @@
 <template>
   <div>
     <div id="gmap" class="map" ref="googleMap" @click="mapCoord"></div>
-    <b-container>
+    <!-- <b-container>
       <b-row>
         <div v-for="(marker, index) in myMarker" :key="index">
           <p id="waypoints">{{ index+1 }}:{{ marker.name }}>></p>
         </div>
       </b-row>
-    </b-container>
+    </b-container> -->
   </div>
 </template>
 
@@ -79,7 +79,7 @@ export default {
     },
     updateDevice() {
       const height = window.innerHeight;
-      document.getElementById("gmap").style.height = height + "px";
+      document.getElementById("gmap").style.height = height - 40 + "px";
     },
     /**
      * circleの表示

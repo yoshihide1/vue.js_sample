@@ -6,11 +6,11 @@
         <gmap></gmap>
       </div>
     </b-container>
-    <b-container fluid class="home px-0">
+    <!-- <b-container fluid class="home px-0">
       <b-row class="text-center">
         <weather></weather>
       </b-row>
-    </b-container>
+    </b-container> -->
     <div>
       <b-tabs content-class="mt-2 mb-3" fill>
         <b-tab title="食事">
@@ -40,7 +40,7 @@
 <script>
 import menuList from "@/components/Menu";
 import gmap from "@/components/Gmap";
-import weather from "@/components/Weather";
+// import weather from "@/components/Weather";
 import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
 import root from "@/components/Root";
@@ -50,7 +50,7 @@ export default {
   components: {
     menuList,
     gmap,
-    weather,
+    // weather,
     gnavi,
     travel,
     root,
@@ -104,7 +104,7 @@ export default {
   background-color: #ff6a0d;
   background-image: linear-gradient(123deg, #ff6a0d 0%, #ec2e2e 100%);
   border: 1px solid #332015;
-  border-radius: 10%;
+  border-radius: 3%;
 }
 .nav-fill .nav-item a {
   color: white;

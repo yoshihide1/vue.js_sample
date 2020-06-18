@@ -7,10 +7,12 @@
           <option value>選択してください</option>
           <option v-for="option in options" :value="option.eName" :key="option.id">{{option.jName}}</option>
         </select>
-        <p>{{selected}}</p>
+      </b-row>
+      <b-row class="py-1" align-h="center">
+        <p class="font-white">{{error}}</p>
       </b-row>
       <b-row align-h="center" id="shop-list">
-        <div class="font-sample" v-for="(place, index) in places" :key="index">
+        <div class="font-white" v-for="(place, index) in places" :key="index">
           <b-card-group>
             <b-col class="mt-2">
               <b-card
@@ -64,17 +66,26 @@ export default {
         { id: 7, eName: "shopping_mall", jName: "ショッピングモール" }
       ],
       functions: firebase.functions(),
-      noImage: "/images/no_image.jpg"
+      noImage: "/images/no_image.jpg",
+      error: ""
     };
   },
   watch: {
     selected() {
-      this.searchPlace(this.latLngC);
+      if (this.latLngC) {
+        console.log("latLngC");
+        this.searchPlace(this.latLngC);
+      } else {
+        console.log("latLng");
+        this.searchPlace(this.latLng);
+      }
     },
     latLng() {
+      console.log(1);
       this.searchPlace(this.latLng);
     },
     latLngC() {
+      console.log(2);
       this.searchPlace(this.latLngC);
     }
   },
@@ -99,7 +110,7 @@ export default {
           this.$store.commit("myPage", place.name);
         })
         .catch(() => {
-          console.error("error");
+          console.log("error");
         });
     },
     //PlaceApiでの検索
@@ -116,7 +127,15 @@ export default {
         },
         result => {
           console.log(result);
-          this.$store.commit("placeData", result);
+          if (result.length > 0) {
+            console.log("if");
+            this.error = "";
+            this.$store.commit("placeData", result);
+          } else {
+            console.log("else");
+            this.error = `近くに${this.selected}は見つかりませんでした。`;
+            this.$store.commit("placeData", []);
+          }
         }
       );
     },
@@ -138,7 +157,7 @@ export default {
 h3 {
   color: white;
 }
-.font-sample {
+.font-white {
   color: white;
 }
 #button-group {

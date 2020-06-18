@@ -14,7 +14,9 @@
       <b-row class="py-1" align-h="center">
         <h3>食事</h3>
       </b-row>
-
+      <b-row class="py-1" align-h="center">
+        <p class="font-white">{{error}}</p>
+      </b-row>
       <b-row align-h="center" id="shop-list">
         <div v-for="(shop, index) in shops" :key="index">
           <b-card-group>
@@ -72,7 +74,8 @@ export default {
       // ],
       // freeword: "",
       // range: 5, //緯度、経度からの検索範囲
-      functions: firebase.functions()
+      functions: firebase.functions(),
+      error: ""
     };
   },
   computed: {
@@ -128,12 +131,16 @@ export default {
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
           console.log(response);
+          this.error = "";
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
           this.selected = 5;
         })
         .catch(() => {
-          alert("近くに飲食店がありません");
+          //前の履歴を消すため
+          const error = [];
+          this.error = "近くに飲食店がありません。";
+          this.$store.commit("shopsData", error);
         });
     },
     //マーカーを設置する為の情報

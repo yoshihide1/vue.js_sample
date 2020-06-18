@@ -2,8 +2,12 @@
   <div id="hotel">
     <b-container>
       <b-row class="py-1" align-h="center">
-        <h3>宿拍</h3>
+        <h3>宿泊</h3>
       </b-row>
+      <b-row class="py-1" align-h="center">
+        <p class="font-white">{{error}}</p>
+      </b-row>
+
       <div v-for="(hotel, index) in hotels" :key="index">
         <div>
           <b-row align-h="center">
@@ -114,7 +118,8 @@ export default {
     return {
       functions: firebase.functions(),
       hotelData: [],
-      hotelList: []
+      hotelList: [],
+      error: ""
     };
   },
   computed: {
@@ -168,12 +173,16 @@ export default {
           { params }
         )
         .then(response => {
+          this.error = "";
           this.hotelData = [];
           this.hotelList = response.data.hotels;
           this.setData();
         })
         .catch(() => {
-          alert("近くに宿がありません");
+          this.error = "近くに宿泊施設が見つかりませんでした。";
+          this.hotelData = [];
+          //前の検索結果を画面から消すため
+          this.$store.commit("hotelsData", this.hotelData);
         });
     },
     setData() {
@@ -198,7 +207,7 @@ export default {
 <style>
 #hotel {
   background-color: #332015;
-  color: white;
+  color: black;
 }
 #hotel-list {
   background-color: #ff6a0d;

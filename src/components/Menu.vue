@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <b-container fluid class="px-0"> -->
     <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark" fill>
       <b-navbar-brand href="#" class="ml-1">Oltower</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -16,7 +15,6 @@
               variant="secondary"
               class="geolocation"
               @click="geoLocation"
-              @click.once="popup"
             >現在地取得</b-button>
           </b-nav-item>
           <gmapSearch></gmapSearch>
@@ -31,7 +29,7 @@
             </h4>
           </b-nav-item>
         </b-navbar-nav>
-        <!-- <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="mr-1">
             <template v-slot:button-content>
               <em>User</em>
@@ -45,20 +43,19 @@
               <signOut></signOut>
             </b-dropdown-item>
           </b-nav-item-dropdown>
-        </b-navbar-nav>-->
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <!-- </b-container> -->
   </div>
 </template>
 
 <script>
-// import signOut from "@/components/SignOut";
+import signOut from "@/components/SignOut";
 import gmapSearch from "@/components/GmapSearch";
 import { mapState } from "vuex";
 export default {
   components: {
-    // signOut,
+    signOut,
     gmapSearch
   },
   computed: {
@@ -90,9 +87,6 @@ export default {
       this.$store.commit("geoLatLng", latLng);
       this.$store.commit("newMarker", latLng);
     },
-    popup() {
-      alert("検索結果は画面、マップ下に表示されます。");
-    }
   }
 };
 </script>
