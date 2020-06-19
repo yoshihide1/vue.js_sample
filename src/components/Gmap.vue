@@ -22,7 +22,7 @@ export default {
       map: null,
       google: null,
       place: null,
-      circle: null,
+      circle: [],
       mapConfig: {
         center: {
           lat: 34.662778,
@@ -97,7 +97,8 @@ export default {
      * @param 選択した場所の緯度経度
      */
     drawCircle(data) {
-      // this.clearCircle();
+      // this.circle = []
+      this.clearCircle();
       const latLng = new this.google.maps.LatLng(data.latitude, data.longitude);
       //circleの半径(ｍ表記)
       let radiusAndColor = [
@@ -118,17 +119,27 @@ export default {
       radiusAndColor.forEach(radius => {
         circleOption.fillColor = radius[0];
         circleOption.radius = radius[1];
-        this.circle = new this.google.maps.Circle(circleOption);
-        this.circle.setMap(this.map);
+        this.circle.push(new this.google.maps.Circle(circleOption));
       });
-      console.log(this.circle.length);
+      for (let i in this.circle) {
+        this.circle[i].setMap(this.map);
+      }
     },
 
-    // clearCircle() {
-    //   if (this.circle !== null) {
-    //     return this.circle.setMap(null);
-    //   }
-    // },
+    clearCircle() {
+      //circle削除
+      console.log(this.circle);
+      if (this.circle.length !== 0) {
+        for (let i in this.circle) {
+          //マップから削除
+          this.circle[i].setMap(null);
+        }
+        //最後に配列からも削除
+        this.circle = [];
+      } else {
+        return;
+      }
+    },
     /**
      * マーカーの設置
      * @param 現在地の緯度経度、クリックした場所の緯度経度

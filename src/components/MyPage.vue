@@ -1,23 +1,24 @@
 <template>
   <div>
     <b-container fluid class="px-0">
-      <menuList></menuList>
       <b-row align-h="center">
         <h3>お気に入り</h3>
       </b-row>
       <b-row align-h="center">
-        <b-button variant="secondary" @click="deleteData(), deleteAlert()">選択した物を削除</b-button>
+        <b-button variant="secondary" @click="deleteData">選択した物を削除</b-button>
       </b-row>
-      <b-alert v-model="alert" show variant="warning">削除しました</b-alert>
     </b-container>
-    <div class="my-list" v-for="(shop, index) in userData" :key="index">
+    <div class="my-list" v-for="(data, index) in userData" :key="index">
       <b-card-group deck>
-        <b-card border-variant="success" :header="shop.name" align="center">
+        <b-card border-variant="success" :header="data.name" align="center">
           <b-card-text>
-            <p>住所:{{shop.address}}</p>
-            <p>電話:{{shop.tel}}</p>
-            <p>営業時間:{{shop.opentime}}</p>
-            <input type="checkbox" :value="index" v-model="select" />
+            <p>住所:{{data.address}}</p>
+            <p>電話:{{data.tel}}</p>
+            <p>営業時間:{{data.opentime}}</p>
+            <b-button size="md" class="px-5 py-2 mt-2" @click="setMarker(data)">マーカー</b-button>
+            <p>
+              <input type="checkbox" :value="index" v-model="select" />
+            </p>
           </b-card-text>
         </b-card>
       </b-card-group>
@@ -28,14 +29,9 @@
 <script>
 import firebase from "firebase";
 import "firebase/firestore";
-import menuList from "@/components/Menu";
 import { mapState } from "vuex";
 export default {
   name: "MyPage",
-
-  components: {
-    menuList
-  },
 
   data() {
     return {
@@ -47,7 +43,8 @@ export default {
       db: firebase.firestore(),
       uid: firebase.auth().currentUser.uid,
       displayName: firebase.auth().currentUser.displayName,
-      docId: []
+      docId: [],
+      showDelete: false
     };
   },
 
@@ -69,11 +66,13 @@ export default {
   },
 
   methods: {
-    deleteAlert() {
-      this.alert = !this.alert;
-      setTimeout(() => {
-        this.alert = !this.alert;
-      }, 1000);
+    setMarker(data) {
+      const latLng = {
+        id: data.id,
+        latitude: data.latitude,
+        longitude: data.longitude
+      };
+      this.$store.commit("newMarker", latLng);
     },
     //お気に入りをfirestoreから取得
     getData() {
@@ -88,7 +87,6 @@ export default {
           querySnapshot.forEach(doc => {
             this.userData.push(doc.data());
             this.docId.push(doc.id);
-            console.log(this.docId);
           });
         })
         .catch(() => {
@@ -105,13 +103,13 @@ export default {
           .then(() => {
             this.userData = [];
             this.getData();
-            console.log([index]);
-            console.log("削除");
           })
           .catch(() => {
-            console.error("error");
+            console.log("error");
           });
       });
+      console.log("削除");
+      this.$store.commit("deleteAlert", this.select);
     }
   }
 };

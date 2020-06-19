@@ -1,5 +1,9 @@
 <template>
   <div id="container">
+    <div class="flash font-white" v-show="showMarker">マーカーを追加しました</div>
+    <div class="flash font-white" v-show="showMyPage">マイページに追加しました</div>
+    <div class="flash font-white" v-show="showDelete">削除しました</div>
+
     <b-container fluid class="px-0">
       <div class="home">
         <menuList></menuList>
@@ -10,7 +14,7 @@
       <b-row class="text-center">
         <weather></weather>
       </b-row>
-    </b-container> -->
+    </b-container>-->
     <div>
       <b-tabs content-class="mt-2 mb-3" fill>
         <b-tab title="食事">
@@ -46,6 +50,7 @@ import travel from "@/components/Travel";
 import root from "@/components/Root";
 import myPage from "@/components/MyPage";
 import sightseeing from "@/components/Sightseeing";
+import { mapState } from "vuex";
 export default {
   components: {
     menuList,
@@ -57,11 +62,37 @@ export default {
     myPage,
     sightseeing
   },
+
   data() {
     return {
-      position: null
+      position: null,
+      showMarker: false,
+      showMyPage: false,
+      showDelete: false
     };
   },
+
+  computed: {
+    //flashの表示用
+    ...mapState(["myMarker", "alternatives", "deleteAlert"])
+  },
+
+  watch: {
+    //flash処理
+    myMarker() {
+      this.showMarker = true;
+      this.clearAlert("marker");
+    },
+    alternatives() {
+      this.showMyPage = true;
+      this.clearAlert("myPage");
+    },
+    deleteAlert() {
+      this.showDelete = true;
+      this.clearAlert("delete");
+    }
+  },
+
   mounted() {
     document.onscroll = () => {
       this.position =
@@ -74,6 +105,21 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+    },
+    clearAlert(name) {
+      setTimeout(() => {
+        switch (name) {
+          case "marker":
+            this.showMarker = false;
+            break;
+          case "myPage":
+            this.showMyPage = false;
+            break;
+          case "delete":
+            this.showDelete = false;
+            break;
+        }
+      }, 2000);
     }
   }
 };
@@ -81,8 +127,18 @@ export default {
 
 <style>
 #container {
-  overflow: hidden;/*余白を消す*/
+  overflow: hidden; /*余白を消す*/
   background-color: #332015;
+}
+.flash {
+  z-index: 200;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  background-color: rgba(10, 10, 20, 0.5);
+  position: fixed;
+  font-weight: bold;
+  top: 55px;
 }
 .scroll-top {
   animation: fadeIn 1s ease 0s 1 normal;

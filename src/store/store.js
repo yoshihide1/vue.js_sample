@@ -25,7 +25,8 @@ export default new Vuex.Store({
     google: null,
     map: null,
     place: null,//PlaceAPI
-    alternatives: ""
+    alternatives: "",
+    deleteAlert: ""//alert用
   },
 
   mutations: {
@@ -95,6 +96,9 @@ export default new Vuex.Store({
     distance(state, payload) {//トータルの移動距離
       state.distance = payload
     },
+    deleteAlert(state, payload) {//削除用(仮)
+      state.deleteAlert = payload
+    }
   },
   getters: {//選択したマーカーの削除
     filterMarker: (state) => (name) => {

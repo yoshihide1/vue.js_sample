@@ -82,11 +82,9 @@ export default {
       }
     },
     latLng() {
-      console.log(1);
       this.searchPlace(this.latLng);
     },
     latLngC() {
-      console.log(2);
       this.searchPlace(this.latLngC);
     }
   },
@@ -96,7 +94,6 @@ export default {
       //マイページ登録とfirestoreに保存
       const place = this.places[index];
       const star = this.functions.httpsCallable("star");
-      console.log(place);
       star({
         id: 3,
         category: "遊び",

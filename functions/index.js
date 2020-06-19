@@ -33,6 +33,7 @@ exports.user = functions.https.onCall(async (data, context) => {
 exports.star = functions.https.onCall(async (data, context) => {
   const uid = context.auth.uid
   await admin.firestore().collection('star').add({
+    id: data.id,
     category: data.category,
     name: data.name,
     address: data.address || null,

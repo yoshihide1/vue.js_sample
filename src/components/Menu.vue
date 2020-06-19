@@ -31,11 +31,6 @@
               <em>User</em>
             </template>
             <b-dropdown-item>
-              <router-link to="/mypage">
-                <b-button variant="success">マイページ</b-button>
-              </router-link>
-            </b-dropdown-item>
-            <b-dropdown-item>
               <signOut></signOut>
             </b-dropdown-item>
           </b-nav-item-dropdown>
