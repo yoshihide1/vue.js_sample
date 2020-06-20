@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <div class="flash font-white" v-show="showMarker">マーカーを追加しました</div>
-    <div class="flash font-white" v-show="showMyPage">マイページに追加しました</div>
+    <div class="flash font-white" v-show="showMyPage">お気に入りに追加しました</div>
     <div class="flash font-white" v-show="showDelete">削除しました</div>
 
     <b-container fluid class="px-0">

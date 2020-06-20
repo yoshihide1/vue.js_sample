@@ -101,8 +101,12 @@ export default {
           .doc(this.docId[index])
           .delete()
           .then(() => {
+            this.select = []
             this.userData = [];
+            //時間を遅らせないと更新されていないため
+            setTimeout(() => {
             this.getData();
+            },1000)
           })
           .catch(() => {
             console.log("error");
