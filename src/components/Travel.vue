@@ -106,6 +106,11 @@
         </div>
       </div>
     </b-container>
+    <b-row align-h="center">
+      <small>
+        <a href="https://webservice.rakuten.co.jp/" target="_blank">Supported by Rakuten Developers</a>
+      </small>
+    </b-row>
   </div>
 </template>
 
@@ -159,7 +164,8 @@ export default {
           this.$store.commit("myPage", hotel.hotelName);
         })
         .catch(() => {
-          console.error("error");
+          console.log("error");
+          alert("登録に失敗しました");
         });
     },
     //宿泊施設の検索

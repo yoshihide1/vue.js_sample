@@ -1,15 +1,5 @@
 <template>
   <div id="title">
-    <!-- <b-row>
-        <b-col>
-          <b-form-group>
-            <label class="mt-2">
-              検索範囲(半径)
-              <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
-            </label>
-          </b-form-group>
-        </b-col>
-    </b-row>-->
     <b-container fluid>
       <b-row class="py-1" align-h="center">
         <h3>食事</h3>
@@ -51,6 +41,11 @@
           </b-card-group>
         </div>
       </b-row>
+      <b-row align-h="center">
+        <small>
+          <a class="font-white" href="https://api.gnavi.co.jp/api/scope/" target="_blank">Supported by ぐるなびWebService</a>
+        </small>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -65,19 +60,8 @@ export default {
   data() {
     return {
       noImage: "/images/no_image.jpg",
-      selected: 5,
       functions: firebase.functions(),
       error: ""
-      // options: [
-      //   //ぐるなびrange
-      //   { text: "300m", value: 1 },
-      //   { text: "500m", value: 2 },
-      //   { text: "1000m", value: 3 },
-      //   { text: "2000m", value: 4 },
-      //   { text: "3000m", value: 5 }
-      // ],
-      // freeword: "",
-      // range: 5, //緯度、経度からの検索範囲
     };
   },
 
@@ -93,7 +77,7 @@ export default {
       this.searchShops(this.latLng);
     }
   },
-  
+
   methods: {
     starSet(index) {
       /**
@@ -102,7 +86,6 @@ export default {
        */
       const shop = this.shops[index];
       const star = this.functions.httpsCallable("star");
-      console.log(shop);
       star({
         id: 1, //マーカーを分けるためのid
         category: "食事",
@@ -119,7 +102,8 @@ export default {
           this.$store.commit("myPage", shop.name);
         })
         .catch(() => {
-          console.error("error");
+          alert("登録に失敗しました")
+          console.log("error");
         });
     },
     //飲食店の検索
@@ -127,7 +111,7 @@ export default {
       const params = {
         keyid: process.env.VUE_APP_GNAVI,
         hit_per_page: 30,
-        range: this.selected,
+        range: 5,
         latitude: latLng.latitude,
         longitude: latLng.longitude
       };
@@ -135,11 +119,9 @@ export default {
       axios
         .get("https://api.gnavi.co.jp/RestSearchAPI/v3/", { params })
         .then(response => {
-          console.log(response);
           this.error = "";
           const shops = response.data.rest;
           this.$store.commit("shopsData", shops);
-          this.selected = 5;
         })
         .catch(() => {
           //前の履歴を消すため

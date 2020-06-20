@@ -11,11 +11,6 @@ export default new Vuex.Store({
     latLng: null,
     latLngC: null,
     myMarker: [],
-    weather: [],
-    temp: 0,
-    tempMax: 0,
-    tempMin: 0,
-    humidity: 0,
     shops: [],
     hotels: [],
     places: [],
@@ -64,20 +59,6 @@ export default new Vuex.Store({
       console.log("places mutation")
       state.places = place
     },
-    // weatherData(state, payload) {//天気
-    //   console.log("weather mutation")
-    //   let max = [];
-    //   let min = [];
-    //   for (let i = 0; i < 9; i++) {
-    //     max.push(payload[i].main.temp_max);
-    //     min.push(payload[i].main.temp_min);
-    //   }
-    //   state.weather = payload
-    //   state.temp = parseInt(payload[0].main.temp)
-    //   state.tempMax = parseInt(max.reduce((a, b) => (a > b ? a : b)))
-    //   state.tempMin = parseInt(min.reduce((a, b) => (a < b ? a : b)))
-    //   state.humidity = payload[0].main.humidity
-    // },
     newMarker(state, payload) {//ルート検索に使うマーカーの数の監視
       console.log("marker mutation")
       if (state.myMarker.length > 9) {
@@ -96,7 +77,7 @@ export default new Vuex.Store({
     distance(state, payload) {//トータルの移動距離
       state.distance = payload
     },
-    deleteAlert(state, payload) {//削除用(仮)
+    deleteAlert(state, payload) {//削除用
       state.deleteAlert = payload
     }
   },
@@ -105,8 +86,4 @@ export default new Vuex.Store({
       return state.myMarker.filter(marker => marker.name !== name)
     },
   },
-  actions: {
-  }
-
-
 })

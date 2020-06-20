@@ -9,7 +9,7 @@
 import { mapState } from "vuex";
 export default {
   name: "GmapSearch",
-  
+
   data() {
     return {
       render: null,
@@ -17,7 +17,7 @@ export default {
       avoidTolls: false
     };
   },
-  
+
   computed: {
     ...mapState(["myMarker", "latLng", "map", "google"])
   },
@@ -72,7 +72,6 @@ export default {
         optimizeWaypoints: true, //rootの最適化(最短ルートに並べ替え)
         avoidTolls: this.avoidTolls //有料道路の除外
       };
-
       direction.route(request, (result, status) => {
         //  ルート全体の移動時間
 
@@ -94,6 +93,8 @@ export default {
           this.$store.commit("time", totalTime);
           this.$store.commit("distance", totalDistance);
           this.wayPoints = [];
+        } else {
+          alert("ルート検索を行う場合は現在地を取得してください")
         }
         console.log("時間:" + totalTime + "分、距離" + totalDistance + "km");
       });

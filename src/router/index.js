@@ -1,14 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home'
-// import Gnavi from '../components/Gnavi'
-// import Weather from '../components/Weather'
-// import Travel from '../components/Travel'
-// import Sightseeing from '../components/Sightseeing'
 import MyPage from '../components/MyPage'
 import Sign from '../components/sign'
 import firebase from 'firebase'
-// import Menu from '../components/Menu'
 
 
 
@@ -17,7 +12,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [//link元App.vue
+  routes: [
     
     {
       path: '/',
@@ -32,30 +27,6 @@ const router = new VueRouter({
       component: MyPage,
       meta: { requiresAuth: true }
     },
-    // {
-    //   path: '/gnavi',
-    //   name: 'Gnavi',
-    //   component: Gnavi,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/weather',
-    //   name: 'Weather',
-    //   component: Weather,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/travel',
-    //   name: 'Travel',
-    //   component: Travel,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/sightseeing',
-    //   name: 'Sightseeing',
-    //   component: Sightseeing,
-    //   meta: { requiresAuth: true }
-    // },
     {
       path: '/sign',
       name: 'Sign',

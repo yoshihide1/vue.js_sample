@@ -1,13 +1,6 @@
 <template>
   <div>
     <div id="gmap" class="map" ref="googleMap"></div>
-    <!-- <b-container>
-      <b-row>
-        <div v-for="(marker, index) in myMarker" :key="index">
-          <p id="waypoints">{{ index+1 }}:{{ marker.name }}>></p>
-        </div>
-      </b-row>
-    </b-container>-->
   </div>
 </template>
 
@@ -128,7 +121,6 @@ export default {
 
     clearCircle() {
       //circle削除
-      console.log(this.circle);
       if (this.circle.length !== 0) {
         for (let i in this.circle) {
           //マップから削除

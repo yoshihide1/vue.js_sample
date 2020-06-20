@@ -31,7 +31,6 @@
                     <b-button id="button-group" variant="secondary" @click="placeLatLng(place)">マーカー</b-button>
                   </b-button-group>
                   <p>住所{{ place.vicinity }}</p>
-                  <!-- <b-form-textarea id="textarea-rows" class="p-0" rows="4" placeholder="説明～？"></b-form-textarea> -->
                 </b-card-text>
               </b-card>
             </b-col>
@@ -113,7 +112,6 @@ export default {
     },
     //PlaceApiでの検索
     searchPlace(latLng) {
-      console.log(latLng);
       this.place.nearbySearch(
         {
           location: new this.google.maps.LatLng(
@@ -124,13 +122,10 @@ export default {
           radius: 6000
         },
         result => {
-          console.log(result);
           if (result.length > 0) {
-            console.log("if");
             this.error = "";
             this.$store.commit("placeData", result);
           } else {
-            console.log("else");
             this.error = `近くに${this.selected}は見つかりませんでした。`;
             this.$store.commit("placeData", []);
           }

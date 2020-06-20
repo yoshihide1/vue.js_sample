@@ -10,11 +10,6 @@
         <gmap></gmap>
       </div>
     </b-container>
-    <!-- <b-container fluid class="home px-0">
-      <b-row class="text-center">
-        <weather></weather>
-      </b-row>
-    </b-container>-->
     <div>
       <b-tabs content-class="mt-2 mb-3" fill>
         <b-tab title="食事">
@@ -44,7 +39,6 @@
 <script>
 import menuList from "@/components/Menu";
 import gmap from "@/components/Gmap";
-// import weather from "@/components/Weather";
 import gnavi from "@/components/Gnavi";
 import travel from "@/components/Travel";
 import root from "@/components/Root";
@@ -55,7 +49,6 @@ export default {
   components: {
     menuList,
     gmap,
-    // weather,
     gnavi,
     travel,
     root,

@@ -43,6 +43,7 @@ export default {
   },
 
   methods: {
+    //配列の並べ替え
     upSort(index) {
       this.rootIndex = index;
       this.myMarker.splice(
