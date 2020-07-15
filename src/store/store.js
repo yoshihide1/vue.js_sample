@@ -26,7 +26,6 @@ export default new Vuex.Store({
 
   mutations: {
     myPage(state, name) {//myPageを更新させるため
-      console.log(`${name}追加`)
       state.alternatives = name
     },
     google(state, google) {
@@ -39,28 +38,21 @@ export default new Vuex.Store({
       state.place = place
     },
     geoLatLng(state, latLng) {//現在地
-      console.log("geoLatLng mutation")
       state.latLng = latLng
     },
     clickLatLng(state, latLng) {//クリック位置
-      console.log("click")
       state.latLngC = latLng
     },
     shopsData(state, shops) {//APIで取得したshopのデータ
-      console.log("shops mutation")
       state.shops = shops
     },
     hotelsData(state, hotels) {//APIで取得したhotelのデータ
-      console.log("hotels mutation")
       state.hotels = hotels
     },
     placeData(state, place) {//APIで取得したplaceのデータ
-      console.log(place)
-      console.log("places mutation")
       state.places = place
     },
     newMarker(state, payload) {//ルート検索に使うマーカーの数の監視
-      console.log("marker mutation")
       if (state.myMarker.length > 9) {
         alert("最大１０件まで")
       } else {
@@ -68,7 +60,6 @@ export default new Vuex.Store({
       }
     },
     deleteMarker(state, payload) {
-      console.log("markerDelete")
       state.myMarker = payload
     },
     time(state, payload) {//トータルの時間

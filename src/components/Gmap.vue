@@ -84,6 +84,24 @@ export default {
     updateDevice() {
       const height = window.innerHeight;
       document.getElementById("gmap").style.height = height - 40 + "px";
+      
+      if (navigator.geolocation) {
+        //現在地取得
+        navigator.geolocation.getCurrentPosition(this.success);
+      } else {
+        alert("端末が対応していません");
+      }
+    },
+    success(position) {
+      const geoLatlng = position.coords;
+      const latLng = {
+        latitude: geoLatlng.latitude,
+        longitude: geoLatlng.longitude,
+        name: "現在地",
+        id: 5 //マーカーの識別の為
+      };
+      this.$store.commit("geoLatLng", latLng);
+      this.$store.commit("newMarker", latLng);
     },
     /**
      * circleの表示
