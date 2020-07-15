@@ -91,8 +91,24 @@ export default {
       this.position =
         document.documentElement.scrollTop || document.body.scrollTop;
     };
+     if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.success);
+      } else {
+        alert("端末が対応していません");
+      }
   },
   methods: {
+    success(position) {
+      const geoLatlng = position.coords;
+      const latLng = {
+        latitude: geoLatlng.latitude,
+        longitude: geoLatlng.longitude,
+        name: "現在地",
+        id: 5 //マーカーの識別の為
+      };
+      this.$store.commit("geoLatLng", latLng);
+      this.$store.commit("newMarker", latLng);
+    },
     scrollTop() {
       scrollTo({
         top: 0,

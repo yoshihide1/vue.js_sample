@@ -10,9 +10,9 @@
               <b-button variant="secondary" @click="scrollTop">Home</b-button>
             </router-link>
           </b-nav-item>
-          <b-nav-item>
+          <!-- <b-nav-item>
             <b-button variant="secondary" class="geolocation" @click="geoLocation">現在地取得</b-button>
-          </b-nav-item>
+          </b-nav-item> -->
           <gmapSearch></gmapSearch>
           <b-nav-item>
             <h4>
@@ -64,25 +64,25 @@ export default {
     scrollTop() {
       scrollTo(0, 0);
     },
-    geoLocation() {
-      //現在地取得
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.success);
-      } else {
-        alert("端末が対応していません");
-      }
-    },
-    success(position) {
-      const geoLatlng = position.coords;
-      const latLng = {
-        latitude: geoLatlng.latitude,
-        longitude: geoLatlng.longitude,
-        name: "現在地",
-        id: 5 //マーカーの識別の為
-      };
-      this.$store.commit("geoLatLng", latLng);
-      this.$store.commit("newMarker", latLng);
-    }
+    // geoLocation() {
+    //   //現在地取得
+    //   if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(this.success);
+    //   } else {
+    //     alert("端末が対応していません");
+    //   }
+    // },
+    // success(position) {
+    //   const geoLatlng = position.coords;
+    //   const latLng = {
+    //     latitude: geoLatlng.latitude,
+    //     longitude: geoLatlng.longitude,
+    //     name: "現在地",
+    //     id: 5 //マーカーの識別の為
+    //   };
+    //   this.$store.commit("geoLatLng", latLng);
+    //   this.$store.commit("newMarker", latLng);
+    // }
   }
 };
 </script>
